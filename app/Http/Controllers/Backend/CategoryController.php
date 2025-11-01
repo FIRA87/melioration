@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -20,18 +21,20 @@ class CategoryController extends Controller
         return view('backend.category.create');
     }
 
-    public function storeCategory(Request $request)
+    public function storeCategory(CategoryRequest $request)
     {
-         Category::insert([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'category_slug' => strtolower(str_replace(' ', '-', $request->title_en)),
-            'position' => $request->position,
-            'active' => $request->active,
+        $data = $request->validated();
+
+        Category::insert([
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'category_slug' => strtolower(str_replace(' ', '-', $data['title_en'])),
+            'position' => $data['position'] ?? null,
+            'active' => $data['active'],
             'created_at' => now(),
             'updated_at' => now(),
-         ]);
+        ]);
 
         $notification = array(
             'message' =>'Категория успешно добавлена',
@@ -46,18 +49,18 @@ class CategoryController extends Controller
        return view('backend.category.edit',compact('category'));
     }
 
-    public function updateCategory(Request $request)
+    public function updateCategory(CategoryRequest $request)
     {
+        $data = $request->validated();
         $cat_id = $request->id;
 
         Category::findOrFail($cat_id)->update([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'category_slug' => strtolower(str_replace(' ', '-', $request->title_en)),
-            'position' => $request->position,
-            'active' => $request->active,
-            'created_at' => now(),
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'category_slug' => strtolower(str_replace(' ', '-', $data['title_en'])),
+            'position' => $data['position'] ?? null,
+            'active' => $data['active'],
             'updated_at' => now(),
         ]);
 
