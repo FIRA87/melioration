@@ -1,0 +1,134 @@
+/* ==== 
+ --------- (3.2) forms styles start ---------
+ ==== */
+
+.alert {
+    transition: 1s;
+    margin-bottom: -20px;
+    margin-top: 10px;
+    display: block;
+}
+
+label.error {
+    color: red;
+    font-size: 14px;
+    position: absolute;
+    left: 0;
+    top: 100%;
+}
+
+.message-error.error {
+    position: absolute;
+    color: red;
+    font-size: 14px;
+}
+
+.form-control {
+    padding: 12px 24px;
+    background: $neutral-n-0;
+    border: 1px solid $neutral-n-40;
+    border-radius: 30px;
+    font-size: 14px;
+    color: $neutral-n-700;
+    
+    &:focus {
+        border-color: $primary-color;
+        outline: none;
+        box-shadow: none;
+        background: transparent;
+    }
+}
+
+.input-group {
+    justify-content: space-between;
+    align-items: center;
+    .input-single {
+        width: calc(50% - 12px);
+        position: relative;
+    }
+}
+
+.input-single {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    .label{
+        color: $head-color;
+        font-size: 18px;
+        font-weight: 500;
+        span{
+            color: $neutral-n-200;
+            font-weight: 400;
+        }
+    }
+    .headingFour{
+        color: $neutral-n-700;
+    }
+}
+
+.input-pass{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    .password-eye-icon{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:after{
+            content: "\F340";
+            font-family: "bootstrap-icons";
+            font-weight: 600;
+            padding-right: 44px;
+            position: absolute;
+            font-size: 20px;
+            color: $neutral-n-100;
+            transition: $transition;
+        }
+    }
+}
+
+.filter__search{
+    .input-group{
+        border-radius: 30px;
+        border: 1px solid $neutral-n-40;
+        background: rgba(7, 76, 62, 0.03);
+        .form-control{
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+        }
+        .search_icon{
+            padding-right: 20px;
+            font-size: 24px;
+            background: transparent;
+
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    textarea.form-control {
+       max-height: 120px;
+    }
+}
+@media (max-width: 575px) {
+    .input-group {
+        display: flex;
+        gap: 20px;
+        .input-single {
+            width: 100%;
+        }
+    }
+    .sign-up .sign-up__form .sign-up__form-part .forget-pass{
+        margin-bottom: 10px;
+    }
+}
+
+/* ==== 
+ --------- (3.2) forms styles end ---------
+ ==== */
