@@ -8,6 +8,7 @@ use App\Models\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use App\Http\Requests\VideoRequest;
 
 class VideoController extends Controller
 {
@@ -29,7 +30,8 @@ class VideoController extends Controller
         return view('backend.videos.create');
     }
 
-    public function storeVideo(Request $request){
+    public function storeVideo(VideoRequest $request){
+        $data = $request->validated();
 
         $image = $request->file('caption');
         $name_gen = date('Y-m-d') . 'Backend' .$image->getClientOriginalName();
@@ -37,13 +39,13 @@ class VideoController extends Controller
         $save_url = 'upload/video/'.$name_gen;
 
         Video::insert([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'video_url' => $request->video_url,
-            'caption' =>$save_url,
-            'status' => $request->status,
-            'position' => $request->position,
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'video_url' => $data['video_url'],
+            'caption' => $save_url,
+            'status' => $data['status'],
+            'position' => $data['position'] ?? null,
             'created_at' => Carbon::now(),
         ]);
         $notification = array(
@@ -58,7 +60,8 @@ class VideoController extends Controller
         return view('backend.videos.edit', compact('video'));
     }
 
-    public function updateVideo(Request $request){
+    public function updateVideo(VideoRequest $request){
+        $data = $request->validated();
 
         $video_id = $request->id;
         if($request->file('caption')) {
@@ -68,13 +71,13 @@ class VideoController extends Controller
             $save_url = 'upload/video/'.$name_gen;
 
             Video::findOrFail($video_id)->update([
-                'title_ru' => $request->title_ru,
-                'title_tj' => $request->title_tj,
-                'title_en' => $request->title_en,
-                'video_url' => $request->video_url,
-                'caption' =>$save_url,
-                'status' => $request->status,
-                'position' => $request->position,
+                'title_ru' => $data['title_ru'],
+                'title_tj' => $data['title_tj'] ?? null,
+                'title_en' => $data['title_en'],
+                'video_url' => $data['video_url'],
+                'caption' => $save_url,
+                'status' => $data['status'],
+                'position' => $data['position'] ?? null,
                 'updated_at' => Carbon::now(),
             ]);
             $notification = array(
@@ -84,12 +87,12 @@ class VideoController extends Controller
             return redirect()->route('all.video')->with($notification);
         } else {
             Video::findOrFail($video_id)->update([
-                'title_ru' => $request->title_ru,
-                'title_tj' => $request->title_tj,
-                'title_en' => $request->title_en,
-                'video_url' => $request->video_url,
-                'status' => $request->status,
-                'position' => $request->position,
+                'title_ru' => $data['title_ru'],
+                'title_tj' => $data['title_tj'] ?? null,
+                'title_en' => $data['title_en'],
+                'video_url' => $data['video_url'],
+                'status' => $data['status'],
+                'position' => $data['position'] ?? null,
                 'updated_at' => Carbon::now(),
             ]);
             $notification = array(

@@ -7,6 +7,7 @@ use App\Models\Link;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use App\Http\Requests\LinkRequest;
 
 class LinkController extends Controller
 {
@@ -22,21 +23,23 @@ class LinkController extends Controller
         return view('backend.links.create');
     }
 
-    public function store(Request $request)
+    public function store(LinkRequest $request)
     {
+        $data = $request->validated();
+        
         $image = $request->file('img');
         $name_gen = date('Y-m-d') . 'Backend' .$image->getClientOriginalName();
         Image::make($image)->resize(700,700)->save('upload/links/'.$name_gen);
         $save_url = 'upload/links/'.$name_gen;
 
         Link::insert([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'url' => $request->url,
-            'img' =>$save_url,
-            'status' => $request->status,
-            'position' => $request->position,
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'url' => $data['url'],
+            'img' => $save_url,
+            'status' => $data['status'],
+            'position' => $data['position'] ?? null,
             'created_at' => Carbon::now(),
         ]);
         $notification = array(
@@ -58,8 +61,9 @@ class LinkController extends Controller
         return view('backend.links.edit', compact('links'));
     }
 
-  public function update(Request $request, Link $link)
+  public function update(LinkRequest $request, Link $link)
 {
+    $data = $request->validated();
     $links_id = $request->id;
     $oldLink = Link::findOrFail($links_id);
 
@@ -78,13 +82,13 @@ class LinkController extends Controller
 
         // Обновление записи
         $oldLink->update([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'url' => $request->url,
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'url' => $data['url'],
             'img' => $save_url,
-            'status' => $request->status,
-            'position' => $request->position,
+            'status' => $data['status'],
+            'position' => $data['position'] ?? null,
             'updated_at' => Carbon::now(),
         ]);
 
@@ -96,12 +100,12 @@ class LinkController extends Controller
     } else {
         // Обновление без нового изображения
         $oldLink->update([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'url' => $request->url,
-            'status' => $request->status,
-            'position' => $request->position,
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'url' => $data['url'],
+            'status' => $data['status'],
+            'position' => $data['position'] ?? null,
             'updated_at' => Carbon::now(),
         ]);
 

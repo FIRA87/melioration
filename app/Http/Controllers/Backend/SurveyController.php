@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\SurveyRequest;
 
 class SurveyController extends Controller
 {
@@ -16,26 +17,12 @@ class SurveyController extends Controller
         return view('backend.surveys.index', compact('surveys'));
     }
 
-    public function store(Request $request)
+    public function store(SurveyRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title_ru' => 'required|string|max:255',
-            'title_tj' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
-            'description_ru' => 'nullable|string',
-            'description_tj' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'is_active' => 'nullable|boolean',
-        ]);
+        $data = $request->validated();
+        $data['is_active'] = isset($data['is_active']) ? (bool)$data['is_active'] : true;
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $payload = $validator->validated();
-        $payload['is_active'] = isset($payload['is_active']) ? (bool)$payload['is_active'] : true;
-
-        $survey = Survey::create($payload);
+        $survey = Survey::create($data);
 
         return response()->json(['message' => 'Опрос создан', 'survey' => $survey], 201);
     }
@@ -52,26 +39,12 @@ class SurveyController extends Controller
         return response()->json(['survey' => $survey]);
     }
 
-    public function update(Request $request, Survey $survey)
+    public function update(SurveyRequest $request, Survey $survey)
     {
-        $validator = Validator::make($request->all(), [
-            'title_ru' => 'required|string|max:255',
-            'title_tj' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
-            'description_ru' => 'nullable|string',
-            'description_tj' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'is_active' => 'nullable|boolean',
-        ]);
+        $data = $request->validated();
+        $data['is_active'] = isset($data['is_active']) ? (bool)$data['is_active'] : false;
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $payload = $validator->validated();
-        $payload['is_active'] = isset($payload['is_active']) ? (bool)$payload['is_active'] : false;
-
-        $survey->update($payload);
+        $survey->update($data);
 
         return response()->json(['message' => 'Опрос обновлён', 'survey' => $survey]);
     }

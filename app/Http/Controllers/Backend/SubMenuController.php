@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\SubPage;
 use Illuminate\Http\Request;
+use App\Http\Requests\SubMenuRequest;
 
 class SubMenuController extends Controller
 {
@@ -32,20 +33,21 @@ class SubMenuController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SubMenuRequest $request)
     {
+        $data = $request->validated();
 
         SubPage::insert([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'url' => strtolower(str_replace(' ', '-', $request->title_en)),
-            'text_ru' => $request->text_ru,
-            'text_tj' => $request->text_tj,
-            'text_en' => $request->text_en,
-            'status' => $request->status,
-            'page_id' => $request->page_id,
-            'sort' => $request->sort,
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'url' => strtolower(str_replace(' ', '-', $data['title_en'])),
+            'text_ru' => $data['text_ru'] ?? null,
+            'text_tj' => $data['text_tj'] ?? null,
+            'text_en' => $data['text_en'] ?? null,
+            'status' => $data['status'],
+            'page_id' => $data['page_id'],
+            'sort' => $data['sort'] ?? null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -78,22 +80,22 @@ class SubMenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(SubMenuRequest $request)
     {
+        $data = $request->validated();
         $submenu_id = $request->id;
 
         SubPage::findOrFail($submenu_id)->update([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'url' => strtolower(str_replace(' ', '-', $request->title_en)),
-            'text_ru' => $request->text_ru,
-            'text_tj' => $request->text_tj,
-            'text_en' => $request->text_en,
-            'status' => $request->status,
-            'page_id' => $request->page_id,
-            'sort' => $request->sort,
-            'created_at' => now(),
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'url' => strtolower(str_replace(' ', '-', $data['title_en'])),
+            'text_ru' => $data['text_ru'] ?? null,
+            'text_tj' => $data['text_tj'] ?? null,
+            'text_en' => $data['text_en'] ?? null,
+            'status' => $data['status'],
+            'page_id' => $data['page_id'],
+            'sort' => $data['sort'] ?? null,
             'updated_at' => now(),
         ]);
 

@@ -7,6 +7,7 @@ use App\Models\Gallery;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\GalleryRequest;
 
 
 class GalleryController extends Controller
@@ -32,22 +33,23 @@ class GalleryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GalleryRequest $request)
     {
+        $data = $request->validated();
 
         if($request->hasFile('cover')) {
-            $file =$request->file('cover');
-            $imageName =time().'_'.$file->getClientOriginalName();
+            $file = $request->file('cover');
+            $imageName = time().'_'.$file->getClientOriginalName();
             $file->move(\public_path('/upload/cover/'), $imageName);
 
             $gallery = new Gallery([
-                'title_ru' => $request->title_ru,
-                'title_tj' => $request->title_tj,
-                'title_en' => $request->title_en,
-                'text_ru' => $request->text_ru,
-                'text_tj' => $request->text_tj,
-                'text_en' => $request->text_en,
-                'cover' =>$imageName,
+                'title_ru' => $data['title_ru'],
+                'title_tj' => $data['title_tj'] ?? null,
+                'title_en' => $data['title_en'],
+                'text_ru' => $data['text_ru'] ?? null,
+                'text_tj' => $data['text_tj'] ?? null,
+                'text_en' => $data['text_en'] ?? null,
+                'cover' => $imageName,
             ]);
             $gallery->save();
         }
@@ -57,10 +59,11 @@ class GalleryController extends Controller
 
             foreach($files as $file) {
                 $imageName = time().'_'.$file->getClientOriginalName();
-                $request['gallery_id']= $gallery->id;
-                $request['image'] = $imageName;
                 $file->move(\public_path('/upload/gallery'), $imageName);
-                Image::create($request->all());
+                Image::create([
+                    'gallery_id' => $gallery->id,
+                    'image' => $imageName,
+                ]);
             }
         }
 
@@ -83,8 +86,9 @@ class GalleryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(GalleryRequest $request, $id)
     {
+        $data = $request->validated();
         $gallery = Gallery::findOrFail($id);
 
         if($request->hasFile('cover')) {
@@ -94,16 +98,15 @@ class GalleryController extends Controller
             $file = $request->file("cover");
             $gallery->cover = time().'_'.$file->getClientOriginalName();
             $file->move(\public_path("/upload/cover"),$gallery->cover);
-            $request['cover'] = $gallery->cover;
         }
 
         $gallery->update([
-            'title_ru' => $request->title_ru,
-            'title_tj' => $request->title_tj,
-            'title_en' => $request->title_en,
-            'text_ru' => $request->text_ru,
-            'text_tj' => $request->text_tj,
-            'text_en' => $request->text_en,
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? null,
+            'title_en' => $data['title_en'],
+            'text_ru' => $data['text_ru'] ?? null,
+            'text_tj' => $data['text_tj'] ?? null,
+            'text_en' => $data['text_en'] ?? null,
             'cover' => $gallery->cover,
         ]);
 
@@ -111,10 +114,11 @@ class GalleryController extends Controller
             $files = $request->file("images");
             foreach ($files as $file){
                 $imageName = time().'_'.$file->getClientOriginalName();
-                $request["gallery_id"] = $id;
-                $request["image"] = $imageName;
                 $file->move(\public_path('/upload/gallery'), $imageName);
-                Image::create($request->all());
+                Image::create([
+                    'gallery_id' => $id,
+                    'image' => $imageName,
+                ]);
             }
         }
 

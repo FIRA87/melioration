@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\Websitemail;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use App\Http\Requests\SettingRequest;
 
 class SettingController extends Controller
 {
@@ -16,23 +17,24 @@ class SettingController extends Controller
         return view('backend.settings.data', compact('settings'));
     }
 
-    public function siteUpdate(Request $request)
+    public function siteUpdate(SettingRequest $request)
     {
+        $data = $request->validated();
         $setting_id = $request->id;
        Setting::findOrFail($setting_id)->update([
-            'street_ru' => $request->street_ru,
-            'street_tj' => $request->street_tj,
-            'street_en' => $request->street_en,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'facebook' => $request->facebook,
-            'twitter' => $request->twitter,
-            'telegram' => $request->telegram,
-            'instagram' => $request->instagram,
-            'youtube' => $request->youtube,
-            'contact_title' => $request->contact_title,
-            'contact_detail' => $request->contact_detail,
-            'contact_map' => $request->contact_map,
+            'street_ru' => $data['street_ru'] ?? null,
+            'street_tj' => $data['street_tj'] ?? null,
+            'street_en' => $data['street_en'] ?? null,
+            'phone' => $data['phone'] ?? null,
+            'email' => $data['email'] ?? null,
+            'facebook' => $data['facebook'] ?? null,
+            'twitter' => $data['twitter'] ?? null,
+            'telegram' => $data['telegram'] ?? null,
+            'instagram' => $data['instagram'] ?? null,
+            'youtube' => $data['youtube'] ?? null,
+            'contact_title' => $data['contact_title'],
+            'contact_detail' => $data['contact_detail'] ?? null,
+            'contact_map' => $data['contact_map'] ?? null,
         ]);
         $notification = array(
             'message' =>'Настройка успешно обновлена',
@@ -47,15 +49,13 @@ class SettingController extends Controller
         return view('backend.settings.data', compact('siteSetting'));
     }
 
-    public function contact_update(Request $request){
-        $request->validate([
-            'contact_title' =>'required',
-        ]);
+    public function contact_update(SettingRequest $request){
+        $data = $request->validated();
 
         $page = Setting::where('id',$request->id)->first();
-        $page->contact_title = $request->contact_title;
-        $page->contact_map = $request->contact_map;
-        $page->contact_detail = $request->contact_detail;
+        $page->contact_title = $data['contact_title'];
+        $page->contact_map = $data['contact_map'] ?? null;
+        $page->contact_detail = $data['contact_detail'] ?? null;
         $page->update();
 
         return redirect()->route('contact_page')->with('success', 'Данные успешно обновлены.');

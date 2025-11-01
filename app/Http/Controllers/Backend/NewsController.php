@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\NewsRequest;
 
 class NewsController extends Controller
 {
@@ -33,7 +34,8 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-  public function storeNewsPost(Request $request){
+  public function storeNewsPost(NewsRequest $request){
+    $data = $request->validated();
     $q = DB::select("SHOW TABLE STATUS LIKE 'news_posts'");
     $ai_id = $q[0]->Auto_increment;
 
@@ -47,17 +49,17 @@ class NewsController extends Controller
     }
 
     News::insert([
-        'category_id' => $request->category_id,
+        'category_id' => $data['category_id'],
         'user_id' => Auth::id(),
-        'title_ru' => $request->title_ru,
-        'title_tj' => $request->title_tj,
-        'title_en' => $request->title_en,
-        'slug' => strtolower(str_replace(' ', '-', $request->title_en)),
-        'news_details_ru' => $request->news_details_ru,
-        'news_details_tj' => $request->news_details_tj,
-        'news_details_en' => $request->news_details_en,
-        'top_slider' => $request->top_slider,
-        'publish_date' => date('Y-m-d'),
+        'title_ru' => $data['title_ru'],
+        'title_tj' => $data['title_tj'] ?? null,
+        'title_en' => $data['title_en'],
+        'slug' => strtolower(str_replace(' ', '-', $data['title_en'])),
+        'news_details_ru' => $data['news_details_ru'] ?? null,
+        'news_details_tj' => $data['news_details_tj'] ?? null,
+        'news_details_en' => $data['news_details_en'] ?? null,
+        'top_slider' => $data['top_slider'] ?? null,
+        'publish_date' => $data['publish_date'] ?? date('Y-m-d'),
         'image' => $save_url,
         'views' => 1,
         'created_at' => Carbon::now(),
@@ -88,8 +90,9 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateNewsPost(Request $request)
+    public function updateNewsPost(NewsRequest $request)
     {
+        $data = $request->validated();
         $news_post_id = $request->id;
 
         if($request->file('image')) {
@@ -99,19 +102,19 @@ class NewsController extends Controller
             $save_url = 'upload/news/'.$name_gen;
 
             News::findOrFail($news_post_id)->update([
-                'category_id' => $request->category_id,
-                'subcategory_id' => $request->subcategory_id,
+                'category_id' => $data['category_id'],
+                'subcategory_id' => $data['subcategory_id'] ?? null,
                 'user_id' => Auth::id(),
-                'title_ru' => $request->title_ru,
-                'title_tj' => $request->title_tj,
-                'title_en' => $request->title_en,
-                'slug' => strtolower(str_replace(' ', '-', $request->title_en)),
-                'news_details_ru' => $request->news_details_ru,
-                'news_details_tj' => $request->news_details_tj,
-                'news_details_en' => $request->news_details_en,
-                'top_slider' => $request->top_slider,
-                'publish_date' => date('Y-m-d'),
-                'image' =>$save_url,
+                'title_ru' => $data['title_ru'],
+                'title_tj' => $data['title_tj'] ?? null,
+                'title_en' => $data['title_en'],
+                'slug' => strtolower(str_replace(' ', '-', $data['title_en'])),
+                'news_details_ru' => $data['news_details_ru'] ?? null,
+                'news_details_tj' => $data['news_details_tj'] ?? null,
+                'news_details_en' => $data['news_details_en'] ?? null,
+                'top_slider' => $data['top_slider'] ?? null,
+                'publish_date' => $data['publish_date'] ?? date('Y-m-d'),
+                'image' => $save_url,
                 'updated_at' => Carbon::now(),
             ]);
             $notification = array(
@@ -121,17 +124,17 @@ class NewsController extends Controller
             return redirect()->route('all.news.post')->with($notification);
         } else {
             News::findOrFail($news_post_id)->update([
-                'category_id' => $request->category_id,
+                'category_id' => $data['category_id'],
                 'user_id' => Auth::id(),
-                'title_ru' => $request->title_ru,
-                'title_tj' => $request->title_tj,
-                'title_en' => $request->title_en,
-                'slug' => strtolower(str_replace(' ', '-', $request->title_en)),
-                'news_details_ru' => $request->news_details_ru,
-                'news_details_tj' => $request->news_details_tj,
-                'news_details_en' => $request->news_details_en,
-                'top_slider' => $request->top_slider,
-                'publish_date' => date('Y-m-d'),
+                'title_ru' => $data['title_ru'],
+                'title_tj' => $data['title_tj'] ?? null,
+                'title_en' => $data['title_en'],
+                'slug' => strtolower(str_replace(' ', '-', $data['title_en'])),
+                'news_details_ru' => $data['news_details_ru'] ?? null,
+                'news_details_tj' => $data['news_details_tj'] ?? null,
+                'news_details_en' => $data['news_details_en'] ?? null,
+                'top_slider' => $data['top_slider'] ?? null,
+                'publish_date' => $data['publish_date'] ?? date('Y-m-d'),
                 'updated_at' => Carbon::now(),
             ]);
             $notification = array(
