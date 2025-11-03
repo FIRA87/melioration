@@ -32,7 +32,7 @@ class CategoryRequest extends FormRequest
             'title_tj' => 'nullable|string|max:255',
             'title_en' => 'required|string|max:255|unique:categories,title_en,' . $categoryId,
             'position' => 'nullable|integer|min:0',
-            'active' => 'required|in:0,1,Yes,No',
+            'status' => 'required|in:0,1,true,false',
         ];
     }
 
@@ -56,8 +56,8 @@ class CategoryRequest extends FormRequest
             'title_en.unique' => 'Категория с таким английским названием уже существует.',
             'position.integer' => 'Позиция должна быть целым числом.',
             'position.min' => 'Позиция не может быть отрицательной.',
-            'active.required' => 'Укажите статус активности категории.',
-            'active.in' => 'Статус активности может быть только: 0, 1, Yes или No.',
+            'status.required' => 'Укажите статус категории.',
+            'status.in' => 'Статус может быть только: 0, 1, true или false.',
         ];
     }
 }

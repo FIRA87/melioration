@@ -8,7 +8,7 @@ class NewsRequest extends FormRequest
 {
     /**
      * Определяет, авторизован ли пользователь для выполнения этого запроса.
-     * 
+     *
      * @return bool
      */
     public function authorize(): bool
@@ -19,7 +19,7 @@ class NewsRequest extends FormRequest
     /**
      * Правила валидации для полей новости.
      * Работает как для создания, так и для обновления новости.
-     * 
+     *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -27,9 +27,8 @@ class NewsRequest extends FormRequest
         $newsId = $this->id ?? null;
 
         return [
-            'id' => 'sometimes|exists:news_posts,id',
+            'id' => 'sometimes|exists:news,id',
             'category_id' => 'required|exists:categories,id',
-            'subcategory_id' => 'nullable|exists:subcategories,id',
             'title_ru' => 'required|string|max:255',
             'title_tj' => 'nullable|string|max:255',
             'title_en' => 'required|string|max:255',
@@ -44,7 +43,7 @@ class NewsRequest extends FormRequest
 
     /**
      * Кастомные сообщения об ошибках валидации на русском языке.
-     * 
+     *
      * @return array<string, string>
      */
     public function messages(): array
@@ -53,7 +52,6 @@ class NewsRequest extends FormRequest
             'id.exists' => 'Новость не найдена.',
             'category_id.required' => 'Выберите категорию новости.',
             'category_id.exists' => 'Выбранная категория не существует.',
-            'subcategory_id.exists' => 'Выбранная подкатегория не существует.',
             'title_ru.required' => 'Введите заголовок новости на русском языке.',
             'title_ru.string' => 'Заголовок новости на русском должен быть строкой.',
             'title_ru.max' => 'Заголовок новости на русском не должен превышать 255 символов.',

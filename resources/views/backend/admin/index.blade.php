@@ -9,8 +9,8 @@
                 <div class="page-title-box">
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('add.admin') }}" class="btn btn-blue waves-effect waves-light">
-                                    Добавить пользователя
+                            <li class="breadcrumb-item"><a href="{{ route('add.admin') }}" class="btn btn-blue waves-effect waves-light text-white">
+                                    Добавить
                                 </a></li>
 
                         </ol>
@@ -57,8 +57,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('edit.admin', $item->id) }}" class="btn btn-primary waves-effect waves-light">Изменить</a>
-                                        <a href="{{ route('delete.admin', $item->id) }}" class="btn btn-danger waves-effect waves-light" id="delete">Удалить</a>
+                                        <a href="{{ route('edit.admin', $item->id) }}" class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   </a>
+                                        <a href="{{ route('delete.admin', $item->id) }}" class="btn btn-danger waves-effect waves-light" id="delete"> <i class="fa-solid fa-trash"></i>  </a>
 
                                         @if($item->status == 'active')
                                             <a href="{{ route('inactive.admin.user', $item->id) }}" class="btn  waves-effect waves-light" title="InActive">

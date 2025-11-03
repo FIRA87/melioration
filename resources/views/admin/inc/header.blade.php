@@ -1,3 +1,12 @@
+@php
+   $id = Auth::user()->id;
+   $adminData = App\Models\User::find($id);
+   $user = Auth::user();
+   $reviewCount = Auth::user()->unreadNotifications()->count()
+@endphp
+
+
+
 <div class="navbar-custom">
     <div class="container-fluid">
         <ul class="list-unstyled topnav-menu float-end mb-0">
@@ -6,28 +15,12 @@
                 <form class="app-search">
                     <div class="app-search-box dropdown">
                         <div class="dropdown-menu dropdown-lg" id="search-dropdown">
-                            <!-- item-->
-                            <div class="dropdown-header noti-title">
-                                <h5 class="text-overflow mb-2">Found 22 results</h5>
-                            </div>
-
-                            <!-- item-->
+                                               <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="fe-home me-1"></i>
                                 <span>Analytics Report</span>
                             </a>
 
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-aperture me-1"></i>
-                                <span>How can I help you?</span>
-                            </a>
-
-                            <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-settings me-1"></i>
-                                <span>User profile settings</span>
-                            </a>
 
                             <!-- item-->
                             <div class="dropdown-header noti-title">
@@ -46,16 +39,7 @@
                                     </div>
                                 </a>
 
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="d-flex align-items-start">
-                                        <img class="d-flex me-2 rounded-circle" src="{{ asset('backend/assets/images/users/user-5.jpg') }}" alt="Generic placeholder image" height="32">
-                                        <div class="w-100">
-                                            <h5 class="m-0 font-14">Jacob Deo</h5>
-                                            <span class="font-12 mb-0">Developer</span>
-                                        </div>
-                                    </div>
-                                </a>
+
                             </div>
 
                         </div>
@@ -63,9 +47,6 @@
                 </form>
             </li>
 
-            @php
-            $reviewCount = Auth::user()->unreadNotifications()->count()
-            @endphp
             <li class="dropdown notification-list topbar-dropdown">
                 <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="fe-bell noti-icon"></i>
@@ -85,9 +66,7 @@
                     </div>
 
                     <div class="noti-scroll" data-simplebar>
-@php
-$user = Auth::user();
-@endphp
+
 
 
                         @forelse($user->notifications as $notification)
@@ -115,10 +94,7 @@ $user = Auth::user();
                 </div>
             </li>
 
-      @php
-          $id = Auth::user()->id;
-         $adminData = App\Models\User::find($id);
-      @endphp
+
 
             <li class="dropdown notification-list topbar-dropdown">
                 <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -164,20 +140,20 @@ $user = Auth::user();
         <div class="logo-box">
             <a href="{{ route('admin.dashboard') }}" class="logo logo-dark text-center">
                             <span class="logo-sm">
-                                <img src="{{ asset('backend/assets/images/nbt-logo.svg') }}" alt="" height="22">
+                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="22">
                                 <!-- <span class="logo-lg-text-light">UBold</span> -->
                             </span>
                 <span class="logo-lg">
-                                <img src="{{ asset('backend/assets/images/nbt-logo.svg') }}" alt="" height="20">
+                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="20">
                     <!-- <span class="logo-lg-text-light">U</span> -->
                             </span>
             </a>
             <a href="{{ route('admin.dashboard') }}" class="logo logo-light text-center">
                             <span class="logo-sm">
-                                <img src="{{ asset('frontend/img/NBT.png') }}" alt="" height="70">
+                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="70">
                             </span>
                 <span class="logo-lg">
-                                <img src="{{ asset('frontend/img/NBT.png') }}" alt="" height="70">
+                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="70">
                             </span>
             </a>
 

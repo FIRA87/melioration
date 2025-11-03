@@ -1,11 +1,6 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 
-    @php
-        $activenews = App\Models\News::where('status', 1)->get();
-        $inactivenews = App\Models\News::where('status', 0)->get();
-        $breakingnews = App\Models\News::where('breaking_news', 1)->get();
-    @endphp
 
     <div class="content">
         <!-- Start Content-->
@@ -16,9 +11,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('add.news.post') }}"
-                                                               class="btn btn-blue waves-effect waves-light">Добавить
-                                        новость</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('add.news') }}" class="btn btn-blue waves-effect waves-light text-white">Добавить</a></li>
                             </ol>
                         </div>
                         <h4 class="page-title">Все новости<span class="btn btn-danger"> {{ count($allNews) }}</span>
@@ -37,7 +30,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Изображение</th>
-                                    <th>Заголовок новости</th>
+                                    <th>Заголовок </th>
                                     <th>Категория</th>
                                     <th>Пользователь</th>
                                     <th>Дата</th>
@@ -59,7 +52,7 @@
                                         <td title="{{ $item->title_ru }}">{{ Str::limit($item->title_ru, 30) }}</td>
                                         <td>{{ $item->category->title_ru  }}</td>
                                         <td> {{ $item->user->name  }}</td>
-                                        <td> {{ $item->post_date }}</td>
+                                        <td> {{ $item->publish_date }}</td>
 
                                         <td>
                                             @if($item->status == 1)
@@ -69,17 +62,24 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('edit.news.post', $item->id) }}"
-                                               class="btn btn-primary waves-effect waves-light">Изменить</a>
-                                            <a href="{{ route('delete.news.post', $item->id) }}"
-                                               class="btn btn-danger waves-effect waves-light" id="delete">Удалить</a>
+                                            <a href="{{ route('edit.news', $item->id) }}"
+                                               class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   </a>
+
+                                            <form action="{{ route('delete.news', $item) }}" method="POST" style="display:inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger waves-effect waves-light"
+                                                        onclick="return confirm('Удалить новость?')">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
 
                                             @if($item->status == 1)
-                                                <a href="{{ route('inactive.news.post', $item->id) }}"
+                                                <a href="{{ route('inactive.news', $item->id) }}"
                                                    class="btn btn-primary waves-effect waves-light"
                                                    title="Неактивный"><i class="fa-solid fa-thumbs-down"></i></a>
                                             @else
-                                                <a href="{{ route('active.news.post', $item->id) }}"
+                                                <a href="{{ route('active.news', $item->id) }}"
                                                    class="btn btn-primary waves-effect waves-light" title="Активный "><i
                                                             class="fa-solid fa-thumbs-up"></i></a>
                                             @endif

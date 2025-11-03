@@ -8,7 +8,7 @@ class LinkRequest extends FormRequest
 {
     /**
      * Определяет, авторизован ли пользователь для выполнения этого запроса.
-     * 
+     *
      * @return bool
      */
     public function authorize(): bool
@@ -19,7 +19,7 @@ class LinkRequest extends FormRequest
     /**
      * Правила валидации для полей ссылки.
      * Работает как для создания, так и для обновления ссылки.
-     * 
+     *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -34,13 +34,13 @@ class LinkRequest extends FormRequest
             'url' => 'required|url|max:500',
             'img' => $this->isMethod('post') ? 'required|image|mimes:jpeg,jpg,png,gif|max:2048' : 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
             'status' => 'required|in:0,1,Active,Inactive',
-            'position' => 'nullable|integer|min:0',
+            'sort' => 'nullable|integer|min:0',
         ];
     }
 
     /**
      * Кастомные сообщения об ошибках валидации на русском языке.
-     * 
+     *
      * @return array<string, string>
      */
     public function messages(): array
@@ -64,8 +64,8 @@ class LinkRequest extends FormRequest
             'img.max' => 'Размер изображения не должен превышать 2 МБ.',
             'status.required' => 'Укажите статус ссылки.',
             'status.in' => 'Статус может быть только: 0, 1, Active или Inactive.',
-            'position.integer' => 'Позиция должна быть целым числом.',
-            'position.min' => 'Позиция не может быть отрицательной.',
+            'sort.integer' => 'Позиция должна быть целым числом.',
+            'sort.min' => 'Позиция не может быть отрицательной.',
         ];
     }
 }

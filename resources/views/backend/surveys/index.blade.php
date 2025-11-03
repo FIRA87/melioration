@@ -43,9 +43,9 @@
                     <td>{{ $s->created_at->format('d.m.Y H:i') }}</td>
                     <td>{{ $s->updated_at->format('d.m.Y H:i') }}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $s->id }}">Редактировать</button>
-                        <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $s->id }}">Удалить</button>
-                        <a href="{{ route('admin.surveys.show', $s) }}" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                        <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $s->id }}"><i class="fa-solid fa-pen"></i>   </button>
+                        <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $s->id }}"><i class="fa-solid fa-trash"></i></button>
+                        <a href="{{ route('admin.surveys.show', $s) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i></a>
                     </td>
                 </tr>
                 @endforeach

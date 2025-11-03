@@ -1,90 +1,85 @@
 @extends('admin.admin_dashboard')
-@section('heading', 'Video Create')
+@section('heading', 'Редактировать видео')
 
 @section('admin')
 
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
-            <div class="d-flex justify-content-between">
-               <div> <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Редактировать видео</span> </h4></div>
-                <div ><h5><a href="{{ route('all.video') }}">Назад</a></h5></div>
+
+            <div class="d-flex justify-content-between mb-4">
+                <h4 class="fw-bold">Редактировать видео</h4>
+                <a href="{{ route('all.video') }}" class="btn btn-secondary">Назад</a>
             </div>
 
-
-            <form method="POST" action="{{ route('update.video') }}" enctype="multipart/form-data">
-                @csrf
+            <form method="POST" action="{{ route('update.video', $video->id) }}" enctype="multipart/form-data">
+            @csrf
                 <input type="hidden" name="id" value="{{ $video->id }}">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card mb-4">
-                            <h5 class="card-header">Видео</h5>
 
-                            <hr class="my-0">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-3 ">
-                                            <label for="title_ru" class="form-label">Название RU</label>
-                                            <input type="text" id="title_ru" class="form-control" name="title_ru" value="{{  $video->title_ru }}">
-                                        </div>
+                <div class="card mb-4">
+                    <h5 class="card-header">Информация о видео</h5>
+                    <hr class="my-0">
+                    <div class="card-body">
+                        <div class="row">
 
-                                        <div class="form-group mb-3 ">
-                                            <label for="title_tj" class="form-label">Название TJ</label>
-                                            <input type="text" id="title_tj" class="form-control" name="title_tj" value="{{  $video->title_tj }}">
-                                        </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="title_ru" class="form-label">Название RU</label>
+                                    <input type="text" id="title_ru" class="form-control" name="title_ru" value="{{ $video->title_ru }}" required>
+                                </div>
 
-                                        <div class="form-group mb-3">
-                                            <label for="title_en" class="form-label">Название EN</label>
-                                            <input type="text" id="title_en" class="form-control" name="title_en" value="{{  $video->title_en }}">
-                                        </div>
-                                    </div>
+                                <div class="form-group mb-3">
+                                    <label for="title_tj" class="form-label">Название TJ</label>
+                                    <input type="text" id="title_tj" class="form-control" name="title_tj" value="{{ $video->title_tj }}" required>
+                                </div>
 
+                                <div class="form-group mb-3">
+                                    <label for="title_en" class="form-label">Название EN</label>
+                                    <input type="text" id="title_en" class="form-control" name="title_en" value="{{ $video->title_en }}" required>
+                                </div>
+                            </div>
 
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="video_url" class="form-label">Адрес видео *</label>
-                                            <input class="form-control" type="text" id="video_url" name="video_url"  autofocus="" value="{{  $video->video_url }}">
-                                        </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="video_url" class="form-label">Адрес видео *</label>
+                                    <input class="form-control" type="text" id="video_url" name="video_url" value="{{ $video->video_url }}" required>
+                                </div>
 
-                                        <div class="mb-3 ">
-                                            <label for="caption" class="form-label">Обложка видео*</label>
-                                            <input class="form-control" type="file" id="caption" name="caption"  autofocus="" value="{{  $video->caption }}">
-                                        </div>
+                                <div class="mb-3">
+                                    <label for="caption" class="form-label">Обложка видео *</label>
+                                    <input class="form-control" type="file" id="caption" name="caption" accept="image/*">
+                                </div>
 
-                                        <div class="form-group col-md-6">
-                                            <label for="showImage" class="form-label"></label>
-                                            <img src="{{ asset($video->caption) }}"  class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
-                                        </div>
+                                <div class="form-group mb-3">
+                                    <label>Текущая обложка:</label><br>
+                                    <img src="{{ asset($video->caption) }}" class="rounded img-thumbnail" alt="Video Cover" width="150">
+                                </div>
+                            </div>
 
-                                    </div>
-                                    <div class="col-md-6 form-group mb-3">
+                            <div class="col-md-6">
+                                <label for="status" class="form-label">Статус</label>
+                                <select class="form-select" name="status" required>
+                                    <option value="1" {{ $video->status == 1 ? 'selected' : '' }}>Активный</option>
+                                    <option value="0" {{ $video->status == 0 ? 'selected' : '' }}>Неактивный</option>
+                                </select>
+                            </div>
 
-                                        <label for="status" class="form-label">Статус</label>
-                                        <select class="form-select" name="status" aria-invalid="false" >
-                                            <option value="Yes" @if($video->status == 'Yes')  selected @endif>Активный</option>
-                                            <option value="NO" @if($video->status == 'NO')  selected @endif >Неактивный</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 ">
-                                            <label for="position" class="form-label">Позиция</label>
-                                            <input class="form-control" type="text" id="position" name="position" autofocus="" value="{{  $video->position }}">
-                                        </div>
-                                    </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="position" class="form-label">Позиция</label>
+                                    <input class="form-control" type="number" id="position" name="position" min="0" value="{{ $video->position }}">
                                 </div>
                             </div>
 
                         </div>
                     </div>
-
-
                 </div>
+
                 <div class="mt-2">
-                    <button type="submit" class="btn btn-primary me-2">Обновить</button>
+                    <button type="submit" class="btn btn-success">Обновить</button>
                 </div>
             </form>
+
         </div>
     </div>
-
 
 @endsection

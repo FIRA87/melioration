@@ -12,7 +12,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('add.pages') }}" class="btn btn-blue waves-effect waves-light">Добавить страницу</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('add.pages') }}" class="btn btn-blue waves-effect waves-light text-white">Добавить </a></li>
 
                             </ol>
                         </div>
@@ -30,10 +30,10 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Название RU</th>                                
+                                    <th>Название RU</th>
                                     <th>Адрес страницы</th>
                                     <th>Статус</th>
-																		<th>Сортировка</th>
+								   <th>Сортировка</th>
                                     <th>Действие</th>
                                 </tr>
                                 </thead>
@@ -44,7 +44,7 @@
                                 <tr>
                                     <td>{{ $page->id}}</td>
                                     <td>{{ $page->title_ru }} </td>
-                                  
+
                                     <td>{{ $page->url }}</td>
                                     <td>
                                         @if($page['status'] == 1)
@@ -57,10 +57,10 @@
                                             </a>
                                         @endif
                                     </td>
-																		<td>{{ $page->sort }}</td>
+									<td>{{ $page->sort }}</td>
                                     <td>
-                                        <a href="{{ route('edit.pages', $page->id) }}" class="btn btn-primary waves-effect waves-light">Изменить</a>
-                                        <a href="{{ route('delete.pages', $page->id) }}" class="btn btn-danger waves-effect waves-light" id="delete">Удалить</a>
+                                        <a href="{{ route('edit.pages', $page->id) }}" class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   </a>
+                                        <a href="{{ route('delete.pages', $page->id) }}" class="btn btn-danger waves-effect waves-light" id="delete"> <i class="fa-solid fa-trash"></i> </a>
                                     </td>
                                 </tr>
                                 @endforeach

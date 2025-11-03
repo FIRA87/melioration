@@ -91,13 +91,17 @@ class GalleryController extends Controller
         $data = $request->validated();
         $gallery = Gallery::findOrFail($id);
 
-        if($request->hasFile('cover')) {
-            if(File::exists("/upload/cover/".$gallery->cover)) {
-                File::delete("/upload/cover/".$gallery->cover);
+        // Удаляем старый cover при загрузке нового
+        if ($request->hasFile('cover')) {
+            $oldCoverPath = public_path('upload/cover/' . $gallery->cover);
+            if (File::exists($oldCoverPath)) {
+                File::delete($oldCoverPath);
             }
+
             $file = $request->file("cover");
-            $gallery->cover = time().'_'.$file->getClientOriginalName();
-            $file->move(\public_path("/upload/cover"),$gallery->cover);
+            $newName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path("upload/cover"), $newName);
+            $gallery->cover = $newName;
         }
 
         $gallery->update([
@@ -110,11 +114,10 @@ class GalleryController extends Controller
             'cover' => $gallery->cover,
         ]);
 
-        if($request->hasFile("images")) {
-            $files = $request->file("images");
-            foreach ($files as $file){
-                $imageName = time().'_'.$file->getClientOriginalName();
-                $file->move(\public_path('/upload/gallery'), $imageName);
+        if ($request->hasFile("images")) {
+            foreach ($request->file("images") as $file) {
+                $imageName = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('upload/gallery'), $imageName);
                 Image::create([
                     'gallery_id' => $id,
                     'image' => $imageName,
@@ -122,15 +125,12 @@ class GalleryController extends Controller
             }
         }
 
-
-
-        $notification = array(
-            'message' =>'Изображение успешно обновлено',
-            'alert-type'=> 'success'
-        );
-        return redirect('/gallery')->with($notification);
-
+        return redirect('/gallery')->with([
+            'message' => 'Изображение успешно обновлено',
+            'alert-type' => 'success'
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.

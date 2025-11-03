@@ -12,7 +12,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('add.gallery') }}" class="btn btn-blue waves-effect waves-light">Добавить галерею</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('add.gallery') }}" class="btn btn-blue waves-effect waves-light text-white">Добавить </a></li>
 
                             </ol>
                         </div>
@@ -31,8 +31,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Название RU</th>
-                                    <th>Название TJ</th>
-                                    <th>Название EN</th>
                                     <th>Обложка галереи</th>
                                     <th>Дата</th>
                                     <th>Действие</th>
@@ -44,16 +42,14 @@
                                 @foreach($galleries as $item)
                                 <tr>
                                     <td>{{ $item->id}}</td>
-                                    <td title="{{ $item->title_ru }}"> {{ \Illuminate\Support\Str::limit( $item->title_ru, 30)  }} </td>
-                                    <td title="{{ $item->title_tj }}">{{Str::limit( $item->title_tj, 30) }}</td>
-                                    <td title="{{ $item->title_en }}">{{ Str::limit( $item->title_en, 30)  }}</td>
+                                    <td title="{{ $item->title_ru }}"> {{ $item->title_ru  }} </td>
                                     <td>
-                                        <img src="upload/cover/{{ $item->cover }}" alt="" class="img-fluid" style="max-height: 100px; max-width: 100px;">
+                                        <img src="upload/cover/{{ $item->cover }}" alt="" class="img-fluid" style="max-height: 100px;">
                                     </td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>
-                                        <a href="{{ route('edit.gallery', $item->id) }}" class="btn btn-primary waves-effect waves-light">Изменить</a>
-                                        <a href="{{ route('delete.gallery', $item->id) }}" class="btn btn-danger waves-effect waves-light" id="delete">Удалить</a>
+                                        <a href="{{ route('edit.gallery', $item->id) }}" class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   </a>
+                                        <a href="{{ route('delete.gallery', $item->id) }}" class="btn btn-danger waves-effect waves-light" id="delete"> <i class="fa-solid fa-trash"></i> </a>
                                     </td>
                                 </tr>
                                 @endforeach

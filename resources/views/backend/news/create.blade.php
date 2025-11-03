@@ -11,14 +11,18 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('all.news.post') }}"
-                                        class="btn btn-primary">Назад</a></li>
-
+                                <li class="breadcrumb-item"><a href="{{ route('all.news') }}" class="btn btn-primary text-white">Назад</a></li>
                             </ol>
                         </div>
                         <h4 class="page-title">НОВОСТНАЯ СТАТЬЯ</h4>
                     </div>
                 </div>
+
+                @error('publish_date')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+
+
             </div>
             <!-- end page title -->
 
@@ -27,68 +31,56 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Добавить</h4>
-                            <form id="myForm" method="POST" action="{{ route('store.news.post') }}"
+                            <form id="myForm" method="POST" action="{{ route('store.news') }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Заголовок RU</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru">
                                         </div>
+                                    </div>
 
+                                    <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Заголовок TJ</label>
                                             <input type="text" id="title_tj" class="form-control" name="title_tj">
                                         </div>
+                                    </div>
 
+                                    <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Заголовок EN</label>
                                             <input type="text" id="title_en" class="form-control" name="title_en">
                                         </div>
+                                    </div>
 
-                                        <div class="form-group col-md-6 my-3">
-                                            <label for="image" class="form-label">Изображение</label>
-                                            <input type="file" class="form-control" name="image" id="image">
-                                        </div>
-
-                                    </div> <!-- end col -->
-
-                                    <div class="col-lg-6">
+                                    <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="category_id" class="form-label">Категория</label>
                                             <select class="form-select" id="category_id" name="category_id">
-                                                <option value="choose-category">Выберите категорию</option>
                                                 @foreach ($categories as $item)
                                                     <option value="{{ $item->id }}">{{ $item->title_ru }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
+                                    </div>
 
-                                        <div class="form-group mb-3" style="display: none">
-                                            <label for="subcategory_id" class="form-label">Подкатегория</label>
-                                            <select class="form-select" id="subcategory_id" name="subcategory_id">
-                                                <option></option>
-                                            </select>
-                                        </div>
-
-     
+                                    <div class="form-group mb-3 col-md-4">
                                         <div class="form-group mb-3">
-                                                <!-- Поле для выбора даты -->
-                                                <div class="form-group mb-3">
-                                                    <label for="post_date" class="form-label">Дата публикации</label>
-                                                    <input type="date" id="post_date" class="form-control" name="post_date" placeholder="Выберите дату">
-                                                </div>
+                                            <label for="publish_date" class="form-label">Дата публикации</label>
+                                            <input type="date" id="publish_date" class="form-control" name="publish_date" value="{{ old('publish_date', today()->format('Y-m-d')) }}">
                                         </div>
+                                    </div>
 
-                                        <div class="form-group col-md-6">
-                                            <label for="showImage" class="form-label"></label>
-                                            <img src="{{ '/upload/no-image.jpg' }}"
-                                                class="rounded-circle avatar-lg img-thumbnail" alt="profile-image"
-                                                id="showImage">
-                                        </div>
-                                    </div> <!-- end col -->
-
+                                    <div class="form-group mb-3 col-md-4">
+                                        <label for="subscriber_send_option" class="form-label">Статус </label>
+                                        <select class="form-select" id="subscriber_send_option" name="status">
+                                            <option value="1">Активный</option>
+                                            <option value="0">Неактивный</option>
+                                        </select>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
                                             <ul class="nav nav-tabs nav-bordered" role="tablist">
@@ -128,118 +120,29 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                      <!--   <div class="row">
-                                            <div class="col-lg-4">
-                                                Тег [RU]
-                                                <div>
-                                                    <label class="form-label">Удалить</label>
-                                                    <input type="text" class="selectize-close-btn selectized"
-                                                        value="RU" tabindex="-1" style="display: none;"
-                                                        name="tags_ru">
-                                                    <div
-                                                        class="selectize-control selectize-close-btn multi plugin-remove_button">
-                                                        <div class="selectize-input items not-full has-options has-items">
-                                                            <div data-value="awesome" class="active">"awesome"<a
-                                                                    href="javascript:void(0)" class="remove"
-                                                                    tabindex="-1" title="Удалить">×</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-4">
-                                                Тег [TJ]
-                                                <div>
-                                                    <label class="form-label">Удалить</label>
-                                                    <input type="text" class="selectize-close-btn selectized"
-                                                        value="neatTJ" tabindex="-1" style="display: none;"
-                                                        name="tags_tj">
-                                                    <div
-                                                        class="selectize-control selectize-close-btn multi plugin-remove_button">
-                                                        <div class="selectize-input items not-full has-options has-items">
-                                                            <div data-value="awesome" class="active">"awesome"<a
-                                                                    href="javascript:void(0)" class="remove"
-                                                                    tabindex="-1" title="Удалить">×</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-4">
-                                                Тег [EN]
-                                                <div>
-                                                    <label class="form-label">Удалить</label>
-                                                    <input type="text" class="selectize-close-btn selectized"
-                                                        value="neat" tabindex="-1" style="display: none;"
-                                                        name="tags_en">
-                                                    <div
-                                                        class="selectize-control selectize-close-btn multi plugin-remove_button">
-                                                        <div class="selectize-input items not-full has-options has-items">
-                                                            <div data-value="awesome" class="active">"awesome"<a
-                                                                    href="javascript:void(0)" class="remove"
-                                                                    tabindex="-1" title="Удалить">×</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div> -->
-
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-check mb-2 form-check-primary">
-                                                    <input class="form-check-input" type="checkbox" name="breaking_news"
-                                                        value="1" id="customckeck1">
-                                                    <label class="form-check-label" for="customckeck1">БЛОК 1</label>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="image" class="form-label">Изображение</label>
+                                                    <input type="file" class="form-control" name="image" id="image">
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="form-group col-md-1">
+                                                <label for="showImage" class="form-label"></label>
+                                                <img src="{{ '/upload/no-image.png' }}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
+                                            </div>
+
+                                            <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
                                                     <input class="form-check-input" type="checkbox" name="top_slider"
-                                                        value=1" id="customckeck_2">
+                                                           value=1" id="customckeck_2">
                                                     <label class="form-check-label" for="customckeck_2">Слайдер</label>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-check mb-2 form-check-danger">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        name="first_section_three" value="1" id="customckeck3">
-                                                    <label class="form-check-label" for="customckeck3">БЛОК 2</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-check mb-2 form-check-danger">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        name="first_section_nine" value="1" id="customckeck4">
-                                                    <label class="form-check-label" for="customckeck4">БЛОК 3</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group mb-3 col-md-6">
-                                                <label for="subscriber_send_option" class="form-label">Отправить рассылку
-                                                    по подписчикам </label>
-                                                <select class="form-select" id="subscriber_send_option"
-                                                    name="subscriber_send_option">                                                 
-                                                    <option value="0">Нет</option>
-                                                     <option value="1">Да</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group mb-3 col-md-6">
-                                                <label for="subscriber_send_option" class="form-label">Статус </label>
-                                                <select class="form-select" id="subscriber_send_option" name="status">
-                                                    <option value="1">Активный</option>
-                                                    <option value="0">Неактивный</option>
-                                                </select>
-                                            </div>
-
                                         </div>
+
                                         <div class="text-end">
                                             <button type="submit"
                                                 class="btn btn-success waves-effect waves-light mt-2"><i
@@ -247,8 +150,9 @@
                                         </div>
                                     </div>
                                     <!-- end row-->
-                            </form>
+
                         </div> <!-- end card-body -->
+                            </form>
                     </div> <!-- end card -->
                 </div><!-- end col -->
             </div>
@@ -340,5 +244,5 @@
         })
     </script>
 
-  
+
 @endsection

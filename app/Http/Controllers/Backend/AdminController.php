@@ -52,10 +52,12 @@ class AdminController extends Controller
         if($request->file('photo')) {
             $file = $request->file('photo');
             @unlink(public_path('upload/images/admin/'.$data->photo));
-            $filename = AdminController . phpdate('Y-m-d') . $file->getClientOriginalName();
+            $filename = date('Y-m-d') . $file->getClientOriginalName();
             $file->move(public_path('upload/images/admin/'),$filename);
             $data['photo'] = $filename;
         }
+
+
         $data->save();
         $notification = array(
             'message' =>'Профиль администратора успешно обновлен',

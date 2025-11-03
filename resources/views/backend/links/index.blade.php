@@ -1,7 +1,5 @@
 @extends('admin.admin_dashboard')
 @section('admin')
-
-
     <div class="content">
 
         <!-- Start Content-->
@@ -12,7 +10,8 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('add.links') }}" class="btn btn-blue waves-effect waves-light">Добавить ссылку</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('add.links') }}"
+                                        class="btn btn-blue waves-effect waves-light text-white">Добавить </a></li>
                             </ol>
                         </div>
                         <h4 class="page-title">Ссылки</h4>
@@ -27,32 +26,37 @@
                         <div class="card-body">
                             <table id="basic-datatable" class="table dt-responsive nowrap w-100">
                                 <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Название RU</th>
-                                    <th>Название TJ</th>
-                                    <th>Название EN</th>
-                                    <th>Изображение</th>
-                                    <th>Дата</th>
-                                    <th>Действие</th>
-                                </tr>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Название RU</th>
+                                        <th>Название TJ</th>
+                                        <th>Название EN</th>
+                                        <th>Изображение</th>
+                                        <th>Дата</th>
+                                        <th>Действие</th>
+                                    </tr>
                                 </thead>
 
                                 <tbody>
-                                @foreach($links as $item)
-                                <tr>
-                                    <td>{{ $item->id}}</td>
-                                    <td title="{{ $item->title_ru }}"> {{ \Illuminate\Support\Str::limit( $item->title_ru, 30)  }} </td>
-                                    <td title="{{ $item->title_tj }}">{{Str::limit( $item->title_tj, 30) }}</td>
-                                    <td title="{{ $item->title_en }}">{{ Str::limit( $item->title_en, 30)  }}</td>
-                                    <td> <img src="{{ asset($item->img) }}" alt="" class="img-fluid" style="max-width: 100px;">   </td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>
-                                        <a href="{{ route('edit.links', $item->id) }}" class="btn btn-primary waves-effect waves-light">Изменить</a>
-                                        <a href="{{ route('delete.links', $item->id) }}" class="btn btn-danger waves-effect waves-light" id="delete">Удалить</a>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                    @foreach ($links as $item)
+                                        <tr>
+                                            <td>{{ $item->id }}</td>
+                                            <td title="{{ $item->title_ru }}">
+                                                {{ \Illuminate\Support\Str::limit($item->title_ru, 30) }} </td>
+                                            <td title="{{ $item->title_tj }}">{{ Str::limit($item->title_tj, 30) }}</td>
+                                            <td title="{{ $item->title_en }}">{{ Str::limit($item->title_en, 30) }}</td>
+                                            <td> <img src="{{ asset($item->img) }}" alt="" class="img-fluid"
+                                                    style="max-width: 100px;"> </td>
+                                            <td>{{ $item->created_at }}</td>
+                                            <td>
+                                                <a href="{{ route('edit.links', $item->id) }}"
+                                                    class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>  </a>
+                                                <a href="{{ route('delete.links', $item->id) }}"
+                                                    class="btn btn-danger waves-effect waves-light"
+                                                    id="delete">   <i class="fa-solid fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
                                 </tbody>
                             </table>
@@ -66,8 +70,4 @@
         </div> <!-- container -->
 
     </div> <!-- content -->
-
-
-
-
 @endsection

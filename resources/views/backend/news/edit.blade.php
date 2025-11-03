@@ -11,13 +11,19 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('all.news.post') }}">Назад</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('all.news') }}">Назад</a></li>
 
                             </ol>
                         </div>
                         <h4 class="page-title">НОВОСТНАЯ СТАТЬЯ</h4>
                     </div>
                 </div>
+
+                @error('publish_date')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+
+
             </div>
             <!-- end page title -->
 
@@ -26,25 +32,26 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Редактировать новости</h4>
-                            <form id="myForm" method="POST" action="{{ route('update.news.post') }}" enctype="multipart/form-data">
+                            <form id="myForm" method="POST" action="{{ route('update.news', $news->id) }}" enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
+                                <input type="hidden" name="id" value="{{ $news->id }}">
 
-                                <input type="hidden" name="id" value="{{ $news_post->id}}">
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Заголовок RU</label>
-                                            <input type="text" id="title_ru" class="form-control" name="title_ru"  value="{{ $news_post->title_ru }}">
+                                            <input type="text" id="title_ru" class="form-control" name="title_ru"  value="{{ $news->title_ru }}">
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Заголовок TJ</label>
-                                            <input type="text" id="title_tj" class="form-control" name="title_tj" value="{{ $news_post->title_tj }}">
+                                            <input type="text" id="title_tj" class="form-control" name="title_tj" value="{{ $news->title_tj }}">
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Заголовок EN</label>
-                                            <input type="text" id="title_en" class="form-control" name="title_en" value="{{ $news_post->title_en }}">
+                                            <input type="text" id="title_en" class="form-control" name="title_en" value="{{ $news->title_en }}">
                                         </div>
 
                                         <div class="form-group col-md-6 my-3">
@@ -58,9 +65,8 @@
                                         <div class="form-group mb-3">
                                             <label for="category_id" class="form-label">Категория</label>
                                             <select class="form-select" id="category_id" name="category_id">
-                                                <option value="choose-category">Выберите категорию</option>
                                                 @foreach($categories as $cat)
-                                                    <option value="{{ $cat->id }}" {{ $cat->id == $news_post->category_id ? 'selected': '' }}>{{ $cat->title_ru }}</option>
+                                                    <option value="{{ $cat->id }}" {{ $cat->id == $news->category_id ? 'selected': '' }}>{{ $cat->title_ru }}</option>
 
                                                 @endforeach
                                             </select>
@@ -71,12 +77,12 @@
                                             <select class="form-select" id="subcategory_id" name="subcategory_id">
                                                 <option value="">Выберите подкатегорию</option>
 
-                                                @if($news_post->subcategory_id == NULL)
+                                                @if($news->subcategory_id == NULL)
                                                 @else
                                                     <option value="">Выберите подкатегорию</option>
                                                     @foreach($subcategories as $sub_cat)
                                                         <option value="{{ $sub_cat->id }}"
-                                                            {{ $sub_cat->id == $news_post->subcategory_id ? 'selected': 'Без категорий' }}  >
+                                                            {{ $sub_cat->id == $news->subcategory_id ? 'selected': 'Без категорий' }}  >
                                                             {{ $sub_cat->title_ru }}
                                                         </option>
                                                     @endforeach
@@ -87,16 +93,25 @@
                                       <div class="form-group mb-3">
                                             <!-- Поле для выбора даты -->
                                           <div class="form-group mb-3">
-                                            <label for="post_date" class="form-label">Дата публикации</label>
-                                            <input type="date" id="post_date" class="form-control" name="post_date" value="{{ $news_post->post_date }}" placeholder="Выберите дату">
+                                            <label for="publish_date" class="form-label">Дата публикации</label>
+                                            <input type="date"  id="publish_date" class="form-control" name="publish_date" value="{{ old('publish_date', $news->publish_date) }}">
                                         </div>
 
                                       </div>
 
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group col-md-4">
                                             <label for="showImage" class="form-label"></label>
-                                            <img src="{{ asset($news_post->image) }}"  class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
+                                            <img src="{{ asset($news->image) }}"  class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
                                         </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-check mb-2 form-check-primary">
+                                                <input class="form-check-input" type="checkbox" name="top_slider" value="1" id="customckeck_2"  {{ $news->top_slider == 1 ? 'checked' : ''}}>
+                                                <label class="form-check-label" for="customckeck_2">Слайдер</label>
+                                            </div>
+                                        </div>
+
+
                                     </div> <!-- end col -->
 
                                     <div class="col-md-12">
@@ -121,18 +136,18 @@
                                          <div class="tab-content">
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
                                                     <textarea id="summernote" name="news_details_ru" id="home-b1" cols="107" rows="10" class="form-control my-editor">
-                                                        {!! $news_post->news_details_ru !!}
+                                                        {!! $news->news_details_ru !!}
                                                     </textarea>
 
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
                                                     <textarea id="summernote2" name="news_details_tj" id="profile-b1" cols="107" rows="10" class="form-control my-editor">
-                                                          {!! $news_post->news_details_tj !!}
+                                                          {!! $news->news_details_tj !!}
                                                     </textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
                                                     <textarea id="summernote3" name="news_details_en" id="messages-b1" cols="107" rows="10" class="form-control my-editor">
-                                                          {!! $news_post->news_details_en !!}
+                                                          {!! $news->news_details_en !!}
                                                     </textarea>
                                                 </div>
                                             </div>
@@ -140,80 +155,6 @@
                                     </div>
 
                                     <div class="col-md-12">
-                               <!--          <div class="row">
-                                            <div class="col-lg-4">
-                                                Тег [RU]
-                                                <div>
-                                                    <label class="form-label">Удалить</label>
-                                                    <input type="text" class="selectize-close-btn selectized" value="{{ $news_post->tags_ru }}" tabindex="-1" style="display: none;" name="tags_ru">
-                                                    <div class="selectize-control selectize-close-btn multi plugin-remove_button">
-                                                        <div class="selectize-input items not-full has-options has-items">
-                                                            <div data-value="awesome" class="active">"awesome"<a href="javascript:void(0)" class="remove" tabindex="-1" title="Удалить">×</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-4">
-                                                Тег [TJ]
-                                                <div>
-                                                    <label class="form-label">Удалить</label>
-                                                    <input type="text" class="selectize-close-btn selectized" value="{{ $news_post->tags_tj }}" tabindex="-1" style="display: none;" name="tags_tj">
-                                                    <div class="selectize-control selectize-close-btn multi plugin-remove_button">
-                                                        <div class="selectize-input items not-full has-options has-items">
-                                                            <div data-value="awesome" class="active">"awesome"<a href="javascript:void(0)" class="remove" tabindex="-1" title="Удалить">×</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-4">
-                                                Тег [EN]
-                                                <div>
-                                                    <label class="form-label">Удалить</label>
-                                                    <input type="text" class="selectize-close-btn selectized" value="{{ $news_post->tags_en }}" tabindex="-1" style="display: none;" name="tags_en">
-                                                    <div class="selectize-control selectize-close-btn multi plugin-remove_button">
-                                                        <div class="selectize-input items not-full has-options has-items">
-                                                            <div data-value="awesome" class="active">"awesome"<a href="javascript:void(0)" class="remove" tabindex="-1" title="Удалить">×</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div> -->
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-check mb-2 form-check-primary">
-                                                    <input class="form-check-input" type="checkbox" name="breaking_news" value="1" id="customckeck1" {{ $news_post->breaking_news == 1 ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="customckeck1">БЛОК 1</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-check mb-2 form-check-primary">
-                                                    <input class="form-check-input" type="checkbox" name="top_slider" value="1" id="customckeck_2"  {{ $news_post->top_slider == 1 ? 'checked' : ''}}>
-                                                    <label class="form-check-label" for="customckeck_2">Слайдер</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-check mb-2 form-check-danger">
-                                                    <input class="form-check-input" type="checkbox" name="first_section_three" value="1" id="customckeck3" {{ $news_post->first_section_three == 1 ? 'checked' : ''}}>
-                                                    <label class="form-check-label" for="customckeck3">БЛОК 2</label>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-check mb-2 form-check-danger">
-                                                    <input class="form-check-input" type="checkbox" name="first_section_nine" value="1" id="customckeck4" {{ $news_post->first_section_nine == 1 ? 'checked' : ''}}>
-                                                    <label class="form-check-label" for="customckeck4">БЛОК 3</label>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i class="mdi mdi-content-save"></i> Сохранить</button>
                                         </div>

@@ -10,9 +10,7 @@ class Category extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function SubCategory(){
-        return $this->hasMany(Subcategory::class)->where('active', 'Yes')->orderBy('order', 'asc');
-    }
+
 
 
 }

@@ -34,50 +34,35 @@
                                     <div class="col-lg-2">
                                         <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Название RU</label>
-                                            <input type="text" id="title_ru" class="form-control" name="title_ru"   value="{{ $submenu->title_ru }}">
+                                            <input type="text" id="title_ru" class="form-control" name="title_ru"
+                                                value="{{ $submenu->title_ru }}">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-md-2">
                                         <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Название TJ</label>
-                                            <input type="text" id="title_tj" name="title_tj" class="form-control"   value="{{ $submenu->title_tj }}">
+                                            <input type="text" id="title_tj" name="title_tj" class="form-control"
+                                                value="{{ $submenu->title_tj }}">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
-                                            <input type="text" id="title_en" name="title_en" class="form-control"  value="{{ $submenu->title_en }}">
+                                            <input type="text" id="title_en" name="title_en" class="form-control"
+                                                value="{{ $submenu->title_en }}">
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <div class="form-group mb-3">
-                                            <label for="title_fr" class="form-label">Название FR</label>
-                                            <input type="text" id="title_fr" name="title_fr" class="form-control" value="{{ $submenu->title_fr }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="form-group mb-3">
-                                            <label for="title_es" class="form-label">Название ES</label>
-                                            <input type="text" id="title_es" name="title_es" class="form-control" value="{{ $submenu->title_es }}">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="form-group mb-3">
-                                            <label for="title_ch class="form-label">Название CH</label>
-                                            <input type="text" id="title_ch" name="title_ch" class="form-control" value="{{ $submenu->title_ch }}">
-                                        </div>
-                                    </div>
 
 
                                     <div class="col-lg-3">
                                         <div class="form-group mb-3">
                                             <label for="active" class="form-label">Статус</label>
                                             <select class="form-select" id="active" name="status">
-                                                <option value="1" @if ($submenu->status == '1') selected @endif>  Активный</option>
-                                                <option value="0" @if ($submenu->status == '0') selected @endif>Неактивный</option>
+                                                <option value="1" @if ($submenu->status == '1') selected @endif>
+                                                    Активный</option>
+                                                <option value="0" @if ($submenu->status == '0') selected @endif>
+                                                    Неактивный</option>
                                             </select>
                                         </div>
 
@@ -86,7 +71,7 @@
                                         <div class="form-group mb-3">
                                             <label for="url" class="form-label">Адрес страницы</label>
                                             <input type="text" id="url" name="url" class="form-control"
-                                                   value="{{ $submenu->url }}">
+                                                value="{{ $submenu->url }}">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-lg-3">
@@ -94,8 +79,10 @@
                                             <label for="page_id" class="form-label">Меню</label>
                                             <select class="form-select" id="page_id" name="page_id">
                                                 <option value="choose-category">Выберите меню</option>
-                                                @foreach($menu as $item)
-                                                    <option value="{{ $item->id }}" @if($submenu->page_id == $item->id ? 'selected': '') selected @endif>{{ $item->title_ru }}</option>
+                                                @foreach ($menu as $item)
+                                                    <option value="{{ $item->id }}"
+                                                        @if ($submenu->page_id == $item->id ? 'selected' : '') selected @endif>
+                                                        {{ $item->title_ru }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -104,7 +91,7 @@
                                         <div class="form-group mb-3">
                                             <label for="sort" class="form-label"> Сортировка</label>
                                             <input type="text" id="sort" name="sort" class="form-control"
-                                                   value="{{ $submenu->sort }}">
+                                                value="{{ $submenu->sort }}">
                                         </div>
                                     </div> <!-- end col -->
 
@@ -113,73 +100,47 @@
                                         <div class="form-group mb-3">
                                             <ul class="nav nav-tabs nav-bordered" role="tablist">
                                                 <li class="nav-item" role="presentation">
-                                                    <a href="#home-b1" data-bs-toggle="tab" aria-expanded="false"   class="nav-link" aria-selected="false" tabindex="-1" role="tab">
+                                                    <a href="#home-b1" data-bs-toggle="tab" aria-expanded="false"
+                                                        class="nav-link" aria-selected="false" tabindex="-1"
+                                                        role="tab">
                                                         ТЕКСТ [RU]
                                                     </a>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true"  class="nav-link active" aria-selected="true" role="tab">
+                                                    <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true"
+                                                        class="nav-link active" aria-selected="true" role="tab">
                                                         ТЕКСТ [TJ]
                                                     </a>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b1" data-bs-toggle="tab" aria-expanded="false"  class="nav-link" aria-selected="false" tabindex="-1"  role="tab">
+                                                    <a href="#messages-b1" data-bs-toggle="tab" aria-expanded="false"
+                                                        class="nav-link" aria-selected="false" tabindex="-1"
+                                                        role="tab">
                                                         ТЕКСТ [EN]
                                                     </a>
                                                 </li>
 
-                                                <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b2" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" tabindex="-1"  role="tab">
-                                                        ТЕКСТ [FR]
-                                                    </a>
-                                                </li>
-
-                                                <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b3" data-bs-toggle="tab" aria-expanded="false"  class="nav-link" aria-selected="false" tabindex="-1" role="tab">
-                                                        ТЕКСТ [ES]
-                                                    </a>
-                                                </li>
-
-                                                <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b4" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" tabindex="-1" role="tab">
-                                                        ТЕКСТ [CH]
-                                                    </a>
-                                                </li>
                                             </ul>
                                             <div class="tab-content">
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
-                                                    <textarea id="summernote"name="text_ru" id="home-b1" cols="107" rows="10" class="form-control my-editor">
+                                                    <textarea id="summernote"name="text_ru" id="home-b1" cols="107" rows="10"
+                                                        class="form-control my-editor">
                                             {!! $submenu->text_ru !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
-                                                    <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10" class="form-control my-editor">
+                                                    <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10"
+                                                        class="form-control my-editor">
                                               {!! $submenu->text_tj !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
-                                                    <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10" class="form-control my-editor">
+                                                    <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10"
+                                                        class="form-control my-editor">
                                               {!! $submenu->text_en !!}
                                         </textarea>
                                                 </div>
 
-                                                <div class="tab-pane active" id="messages-b2" role="tabpanel">
-                                                    <textarea id="summernote4" name="text_fr" id="messages-b2" cols="107" rows="10" class="form-control my-editor">
-                                              {!! $submenu->text_fr !!}
-                                        </textarea>
-                                                </div>
-
-                                                <div class="tab-pane active" id="messages-b3" role="tabpanel">
-                                                    <textarea id="summernote5" name="text_es" id="messages-b3" cols="107" rows="10" class="form-control my-editor">
-                                              {!! $submenu->text_es !!}
-                                        </textarea>
-                                                </div>
-
-                                                <div class="tab-pane active" id="messages-b4" role="tabpanel">
-                                                    <textarea id="summernote6" name="text_ch" id="messages-b4" cols="107" rows="10" class="form-control my-editor">
-                                              {!! $submenu->text_ch !!}
-                                        </textarea>
-                                                </div>
 
 
                                             </div>
@@ -188,7 +149,8 @@
 
 
                                     <div class="text-end">
-                                        <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i  class="mdi mdi-content-save"></i> Обновить</button>
+                                        <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i
+                                                class="mdi mdi-content-save"></i> Обновить</button>
                                     </div>
                                 </div>
                                 <!-- end row-->
@@ -271,5 +233,4 @@
             });
         });
     </script>
-
 @endsection

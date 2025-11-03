@@ -49,26 +49,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <div class="form-group mb-3">
-                                            <label for="title_fr" class="form-label">Название FR</label>
-                                            <input type="text" id="title_fr" name="title_fr" class="form-control">
-                                        </div>
-                                    </div>
 
-                                    <div class="col-md-2">
-                                        <div class="form-group mb-3">
-                                            <label for="title_es" class="form-label">Название ES</label>
-                                            <input type="text" id="title_es" name="title_es" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="form-group mb-3">
-                                            <label for="title_ch" class="form-label">Название CH</label>
-                                            <input type="text" id="title_ch" name="title_ch" class="form-control">
-                                        </div>
-                                    </div>
 
 
 
@@ -78,38 +59,26 @@
                                         <div class="form-group mb-3">
                                             <ul class="nav nav-tabs nav-bordered" role="tablist">
                                                 <li class="nav-item" role="presentation">
-                                                    <a href="#home-b1" data-bs-toggle="tab" aria-expanded="false"  class="nav-link" aria-selected="false" tabindex="-1" role="tab">
+                                                    <a href="#home-b1" data-bs-toggle="tab" aria-expanded="false"
+                                                        class="nav-link" aria-selected="false" tabindex="-1"
+                                                        role="tab">
                                                         ТЕКСТ [RU]
                                                     </a>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true"  class="nav-link active" aria-selected="true" role="tab">
+                                                    <a href="#profile-b1" data-bs-toggle="tab" aria-expanded="true"
+                                                        class="nav-link active" aria-selected="true" role="tab">
                                                         ТЕКСТ [TJ]
                                                     </a>
                                                 </li>
                                                 <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b1" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" tabindex="-1"  role="tab">
+                                                    <a href="#messages-b1" data-bs-toggle="tab" aria-expanded="false"
+                                                        class="nav-link" aria-selected="false" tabindex="-1"
+                                                        role="tab">
                                                         ТЕКСТ [EN]
                                                     </a>
                                                 </li>
 
-                                                <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b2" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" tabindex="-1" role="tab">
-                                                        ТЕКСТ [FR]
-                                                    </a>
-                                                </li>
-
-                                                <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b3" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" tabindex="-1"  role="tab">
-                                                        ТЕКСТ [ES]
-                                                    </a>
-                                                </li>
-
-                                                <li class="nav-item" role="presentation">
-                                                    <a href="#messages-b4" data-bs-toggle="tab" aria-expanded="false" class="nav-link" aria-selected="false" tabindex="-1"  role="tab">
-                                                        ТЕКСТ [CH]
-                                                    </a>
-                                                </li>
 
 
                                             </ul>
@@ -123,17 +92,10 @@
                                                     <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10" class="form-control my-editor">ТЕКСТ TJ</textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
-                                                    <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10" class="form-control my-editor">ТЕКСТ EN</textarea>
+                                                    <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10"
+                                                        class="form-control my-editor">ТЕКСТ EN</textarea>
                                                 </div>
-                                                <div class="tab-pane active" id="messages-b2" role="tabpanel">
-                                                    <textarea id="summernote4" name="text_fr" id="messages-b2" cols="107" rows="10" class="form-control my-editor">ТЕКСТ FR</textarea>
-                                                </div>
-                                                <div class="tab-pane active" id="messages-b3" role="tabpanel">
-                                                    <textarea id="summernote5" name="text_es" id="messages-b3" cols="107" rows="10" class="form-control my-editor">ТЕКСТ ES</textarea>
-                                                </div>
-                                                <div class="tab-pane active" id="messages-b4" role="tabpanel">
-                                                    <textarea id="summernote6" name="text_ch" id="messages-b4" cols="107" rows="10" class="form-control my-editor">ТЕКСТ CH</textarea>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +110,7 @@
                                         </div>
                                     </div> <!-- end col -->
 
-                                   <div class="col-md-4">
+                                    <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="sort" class="form-label">Сортировка</label>
                                             <input type="text" id="sort" name="sort" class="form-control">
@@ -161,8 +123,8 @@
                                         <div class="form-group mb-3">
                                             <label for="status" class="form-label">Подменю</label>
                                             <select class="form-select" id="active" name="page_id">
-                                                @foreach($menuItem as $menu)
-                                                <option value="{{ $menu->id }}">{{ $menu->title_ru }}</option>
+                                                @foreach ($menuItem as $menu)
+                                                    <option value="{{ $menu->id }}">{{ $menu->title_ru }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -255,7 +217,4 @@
             });
         });
     </script>
-
-
-
 @endsection

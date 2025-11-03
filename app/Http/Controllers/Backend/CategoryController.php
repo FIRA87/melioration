@@ -30,8 +30,8 @@ class CategoryController extends Controller
             'title_tj' => $data['title_tj'] ?? null,
             'title_en' => $data['title_en'],
             'category_slug' => strtolower(str_replace(' ', '-', $data['title_en'])),
-            'position' => $data['position'] ?? null,
-            'active' => $data['active'],
+            'position' => $data['position'] ?? 0,
+            'status' => (int)$data['status'],
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -59,8 +59,8 @@ class CategoryController extends Controller
             'title_tj' => $data['title_tj'] ?? null,
             'title_en' => $data['title_en'],
             'category_slug' => strtolower(str_replace(' ', '-', $data['title_en'])),
-            'position' => $data['position'] ?? null,
-            'active' => $data['active'],
+            'position' => $data['position'] ?? 0,
+            'status' => (int)$data['status'],
             'updated_at' => now(),
         ]);
 
@@ -82,9 +82,5 @@ class CategoryController extends Controller
     }
 
 
-    public function getSubCategory($category_id){
-        $subcat = Subcategory::where('category_id', $category_id)->orderBy('title_ru', 'ASC')->get();
-        return json_encode($subcat);
-    }
 
 }

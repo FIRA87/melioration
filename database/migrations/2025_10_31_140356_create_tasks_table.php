@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('title_tj');
             $table->string('title_en')->nullable();
             $table->string('slug');
-            $table->integer('order')->nullable();
             $table->text('text_ru')->nullable();
             $table->text('text_tj');
             $table->text('text_en')->nullable();
             $table->unsignedInteger('views')->default(0);
             $table->boolean('status')->default(true);
             $table->unsignedInteger('sort')->default(0);
+            $table->timestamps();
         });
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\ServiceRequestAdminController;
 use App\Http\Controllers\Backend\SurveyController;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\CategoryController;
@@ -11,8 +12,13 @@ use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\VideoController;
 use App\Http\Controllers\Backend\GalleryController;
 use App\Http\Controllers\Backend\SubMenuController;
+use App\Http\Controllers\Backend\PresidentController;
+use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\TaskController;
+use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\LanguageController;
+use App\Http\Controllers\Frontend\ServiceRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -40,19 +46,21 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user/change/password', [UserController::class, 'userChangePassword'])->name('user.change.password');
 });
 
-Route::middleware(['auth', 'roles:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/logout', [AdminController::class, 'adminLogout'])->name('admin.logout');
-    Route::get('/admin/profile', [AdminController::class, 'adminProfile'])->name('admin.profile');
-    Route::post('/admin/profile/store', [AdminController::class, 'adminProfileStore'])->name('admin.profile.store');
-    Route::get('/admin/change/password', [AdminController::class, 'adminChangePassword'])->name('admin.change.password');
-    Route::post('/admin/update/password', [AdminController::class, 'adminUpdatePassword'])->name('admin.update.password');
-});
-
+// Admin Login/Logout Routes (without auth middleware)
 Route::get('/admin/login', [AdminController::class, 'adminLogin'])->middleware(RedirectIfAuthenticated::class)->name('admin.login');
 Route::get('/admin/logout/page', [AdminController::class, 'adminLogoutPage'])->middleware(RedirectIfAuthenticated::class)->name('admin.logout.page');
 
+// Admin Dashboard Routes (with auth middleware)
 Route::middleware(['auth', 'roles:admin'])->group(function () {
+    // Admin Dashboard & Profile
+    Route::controller(AdminController::class)->group(function () {
+        Route::get('/admin/dashboard', 'index')->name('admin.dashboard');
+        Route::get('/admin/logout', 'adminLogout')->name('admin.logout');
+        Route::get('/admin/profile', 'adminProfile')->name('admin.profile');
+        Route::post('/admin/profile/store', 'adminProfileStore')->name('admin.profile.store');
+        Route::get('/admin/change/password', 'adminChangePassword')->name('admin.change.password');
+        Route::post('/admin/update/password', 'adminUpdatePassword')->name('admin.update.password');
+    });
     Route::controller(CategoryController::class)->group(function () { // Category Route
         Route::get('/all/category', 'allCategory')->name('all.category');
         Route::get('/add/category', 'addCategory')->name('add.category');
@@ -61,17 +69,17 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/update/category', 'updateCategory')->name('update.category');
         Route::get('/delete/category/{id}', 'deleteCategory')->name('delete.category');
     });
+    // Surveys Routes
+    Route::prefix('admin')->group(function () {
+        Route::get('surveys', [SurveyController::class, 'index'])->name('admin.surveys.index');
+        Route::post('surveys', [SurveyController::class, 'store'])->name('admin.surveys.store');
+        Route::get('surveys/{survey}', [SurveyController::class, 'show'])->name('admin.surveys.show');
+        Route::get('surveys/{survey}/edit', [SurveyController::class, 'edit'])->name('admin.surveys.edit');
+        Route::put('surveys/{survey}', [SurveyController::class, 'update'])->name('admin.surveys.update');
+        Route::delete('surveys/{survey}', [SurveyController::class, 'destroy'])->name('admin.surveys.destroy');
+    });
 
-		Route::get('admin/surveys', [SurveyController::class, 'index'])->name('admin.surveys.index');
-    Route::post('admin/surveys', [SurveyController::class, 'store'])->name('admin.surveys.store');
-    Route::get('admin/surveys/{survey}', [SurveyController::class, 'show'])->name('admin.surveys.show');
-    Route::get('admin/surveys/{survey}/edit', [SurveyController::class, 'edit'])->name('admin.surveys.edit');
-    Route::put('admin/surveys/{survey}', [SurveyController::class, 'update'])->name('admin.surveys.update');
-    Route::delete('admin/surveys/{survey}', [SurveyController::class, 'destroy'])->name('admin.surveys.destroy');
-
-		
-
-    //Admin User All Route
+    // Admin Users Management
     Route::controller(AdminController::class)->group(function () {
         Route::get('/all/admin', 'allAdmin')->name('all.admin');
         Route::get('/add/admin', 'addAdmin')->name('add.admin');
@@ -83,16 +91,16 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/active/admin/user/{id}', 'activeAdminUser')->name('active.admin.user');
     });
 
-// News Route
+   // News Route
     Route::controller(NewsController::class)->group(function () {
-        Route::get('/all/news/post', 'allNewsPost')->name('all.news.post');
-        Route::get('/add/news/post', 'addNewsPost')->name('add.news.post');
-        Route::post('/store/news/post', 'storeNewsPost')->name('store.news.post');
-        Route::get('/edit/news/post/{id}', 'editNewsPost')->name('edit.news.post');
-        Route::post('/update/news/post', 'updateNewsPost')->name('update.news.post');
-        Route::get('/delete/news/post/{id}', 'deleteNewsPost')->name('delete.news.post');
-        Route::get('/inactive/news/post/{id}', 'inactiveNewsPost')->name('inactive.news.post');
-        Route::get('/active/news/post/{id}', 'activeNewsPost')->name('active.news.post');
+        Route::get('/all/news', 'allNews')->name('all.news');
+        Route::get('/add/news', 'addNews')->name('add.news');
+        Route::post('/store/news', 'storeNews')->name('store.news');
+        Route::get('/edit/news/{news}', 'editNews')->name('edit.news');
+        Route::put('/update/news/{news}', 'updateNews')->name('update.news');
+        Route::delete('/delete/news/{news}', 'deleteNews')->name('delete.news');
+        Route::get('/inactive/news/{id}', 'inactiveNews')->name('inactive.news');
+        Route::get('/active/news/{id}', 'activeNews')->name('active.news');
     });
 
     // Video
@@ -101,8 +109,9 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/add/video', 'addVideo')->name('add.video');
         Route::post('/store/video', 'storeVideo')->name('store.video');
         Route::get('/edit/video/{id}', 'editVideo')->name('edit.video');
-        Route::post('/update/video', 'updateVideo')->name('update.video');
-        Route::get('/delete/video/{id}', 'deleteVideo')->name('delete.video');
+        Route::post('/update/video/{video}', 'updateVideo')->name('update.video');
+        Route::get('/delete/video/{video}', 'deleteVideo')->name('delete.video');
+
     });
 
     // Links
@@ -110,22 +119,25 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/all/links', 'index')->name('all.links');
         Route::get('/add/links', 'create')->name('add.links');
         Route::post('/store/links', 'store')->name('store.links');
-        Route::get('/edit/links/{id}', 'edit')->name('edit.links');
-        Route::post('/update/links', 'update')->name('update.links');
-        Route::get('/delete/links/{id}', 'delete')->name('delete.links');
+        Route::get('/edit/links/{link}', 'edit')->name('edit.links');
+        Route::put('/update/links/{link}', 'update')->name('update.links');
+        Route::delete('/delete/links/{id}', 'delete')->name('delete.links');
     });
 
-    // GALLERY WITH IMAGES
-    Route::get('/gallery', [GalleryController::class, 'index'])->name('all.gallery');
-    Route::get('/gallery/create', [GalleryController::class, 'create'])->name('add.gallery');
-    Route::post('/gallery/create', [GalleryController::class, 'store'])->name('store.gallery');
-    Route::get('/gallery/edit/{id}', [GalleryController::class, 'edit'])->name('edit.gallery');
-    Route::put('/gallery/update/{id}', [GalleryController::class, 'update'])->name('update.gallery');
-    Route::get('/gallery/delete/{id}', [GalleryController::class, 'destroy'])->name('delete.gallery');
-    // Delete cover image AND Delete images from the gallery
-    Route::delete('/deleteimage/{id}', [GalleryController::class, 'deleteImage']);
-    Route::delete('/deletecover/{id}', [GalleryController::class, 'deletecover']);
-
+    // Gallery Routes
+    Route::prefix('gallery')->controller(GalleryController::class)->group(function () {
+        Route::get('/', 'index')->name('all.gallery');
+        Route::get('/create', 'create')->name('add.gallery');
+        Route::post('/create', 'store')->name('store.gallery');
+        Route::get('/edit/{id}', 'edit')->name('edit.gallery');
+        Route::put('/update/{id}', 'update')->name('update.gallery');
+        Route::get('/delete/{id}', 'destroy')->name('delete.gallery');
+    });
+    // Gallery Images Management
+    Route::controller(GalleryController::class)->group(function () {
+        Route::delete('/deleteimage/{id}', 'deleteImage');
+        Route::delete('/deletecover/{id}', 'deletecover');
+    });
 
     // Permissions
     Route::controller(RoleController::class)->group(function () {
@@ -137,7 +149,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/delete/permission/{id}', 'deletePermission')->name('delete.permission');
     });
 
-    // Roles
+    // Roles Management
     Route::controller(RoleController::class)->group(function () {
         Route::get('/all/roles', 'allRole')->name('all.roles');
         Route::get('/add/roles', 'addRole')->name('add.roles');
@@ -145,14 +157,16 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/add/roles/{id}', 'editRole')->name('edit.roles');
         Route::post('/update/roles', 'updateRole')->name('update.roles');
         Route::get('/delete/roles/{id}', 'deleteRole')->name('delete.roles');
+    });
 
+    // Roles & Permissions Management
+    Route::controller(RoleController::class)->group(function () {
         Route::get('/create/roles/permission', 'addRolePermission')->name('add.roles.permission');
         Route::post('/role/permission/store', 'rolePermissionStore')->name('role.permission.store');
         Route::get('/all/role/permission', 'allRolePermission')->name('all.roles.permission');
         Route::get('/admin/edit/roles/{id}', 'adminEditRoles')->name('admin.edit.roles');
         Route::get('/admin/delete/roles/{id}', 'adminDeleteRoles')->name('admin.delete.roles');
         Route::post('/role/permission/update/{id}', 'rolePermissionUpdate')->name('role.permission.update');
-        Route::get('/admin/delete/roles/{id}', 'adminDeleteRoles')->name('admin.delete.roles');
     });
 
     // ALL PAGES IN ADMINISTRATOR
@@ -177,21 +191,61 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/admin/submenu/update-status', 'updateStatus');
     });
 
-
-    // SETTINGS SITE
+    // Site Settings
     Route::controller(SettingController::class)->group(function () {
-        Route::get('site/setting', 'siteIndex')->name('siteIndex');
+        Route::get('/site/setting', 'siteIndex')->name('siteIndex');
         Route::post('/setting/update', 'siteUpdate')->name('update');
     });
+
+    // PRESIDENTS ROUTES
+    Route::controller(PresidentController::class)->group(function () {
+        Route::get('/all/presidents', 'index')->name('all.presidents');
+        Route::get('/add/presidents', 'create')->name('add.presidents');
+        Route::post('/store/presidents', 'store')->name('store.presidents');
+        Route::get('/edit/presidents/{id}', 'edit')->name('edit.presidents');
+        Route::post('/update/presidents', 'update')->name('update.presidents');
+        Route::get('/delete/presidents/{id}', 'delete')->name('delete.presidents');
+    });
+
+    // PROJECTS ROUTES
+    Route::controller(ProjectController::class)->group(function () {
+        Route::get('/all/projects', 'index')->name('all.projects');
+        Route::get('/add/projects', 'create')->name('add.projects');
+        Route::post('/store/projects', 'store')->name('store.projects');
+        Route::get('/edit/projects/{id}', 'edit')->name('edit.projects');
+        Route::post('/update/projects', 'update')->name('update.projects');
+        Route::get('/delete/projects/{id}', 'delete')->name('delete.projects');
+    });
+
+    // TASKS ROUTES
+    Route::controller(TaskController::class)->group(function () {
+        Route::get('/all/tasks', 'index')->name('all.tasks');
+        Route::get('/add/tasks', 'create')->name('add.tasks');
+        Route::post('/store/tasks', 'store')->name('store.tasks');
+        Route::get('/edit/tasks/{id}', 'edit')->name('edit.tasks');
+        Route::post('/update/tasks', 'update')->name('update.tasks');
+        Route::get('/delete/tasks/{id}', 'delete')->name('delete.tasks');
+    });
+
+    // SERVICES ROUTES
+    Route::controller(ServiceController::class)->group(function () {
+        Route::get('/all/services', 'index')->name('all.services');
+        Route::get('/add/services', 'create')->name('add.services');
+        Route::post('/store/services', 'store')->name('store.services');
+        Route::get('/edit/services/{id}', 'edit')->name('edit.services');
+        Route::post('/update/services', 'update')->name('update.services');
+        Route::get('/delete/services/{id}', 'delete')->name('delete.services');
+    });
+
+    Route::controller(ServiceRequestAdminController::class)->group(function () {
+        Route::get('/admin/service-requests', 'index')->name('all.service.requests');
+        Route::get('/admin/service-requests/delete/{id}', 'delete')->name('delete.service.request');
+    });
+
+
 });
 
 Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
-
-Route::fallback(function () {    return view('frontend.errors.404');});
-
-
-
-
 
