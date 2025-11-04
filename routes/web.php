@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Frontend\ServiceRequestController;
+use App\Http\Controllers\Backend\MediaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -101,6 +102,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::delete('/delete/news/{news}', 'deleteNews')->name('delete.news');
         Route::get('/inactive/news/{id}', 'inactiveNews')->name('inactive.news');
         Route::get('/active/news/{id}', 'activeNews')->name('active.news');
+        Route::delete('/delete/gallery-image/{id}', 'deleteGalleryImage')->name('delete.gallery.image');
     });
 
     // Video
@@ -193,9 +195,10 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
     // Site Settings
     Route::controller(SettingController::class)->group(function () {
-        Route::get('/site/setting', 'siteIndex')->name('siteIndex');
-        Route::post('/setting/update', 'siteUpdate')->name('update');
+        Route::get('/site/setting', 'siteIndex')->name('setting.index');
+        Route::post('/setting/update', 'siteUpdate')->name('setting.update');
     });
+
 
     // PRESIDENTS ROUTES
     Route::controller(PresidentController::class)->group(function () {
@@ -242,10 +245,12 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/admin/service-requests/delete/{id}', 'delete')->name('delete.service.request');
     });
 
+    Route::controller(MediaController::class)->prefix('admin/media')->group(function () {
+        Route::get('/', 'index')->name('media.index');
+        Route::post('/upload', 'upload')->name('media.upload');
+        Route::post('/create-folder', 'createFolder')->name('media.createFolder');
+        Route::delete('/delete', 'delete')->name('media.delete');
+        Route::post('/rename', 'rename')->name('media.rename'); // ← новое
+    });
 
 });
-
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-    \UniSharp\LaravelFilemanager\Lfm::routes();
-});
-

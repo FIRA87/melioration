@@ -1,45 +1,41 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\News;
+use App\Models\NewsImage;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\NewsRequest;
 
 class NewsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function allNews(){
+    public function allNews()
+    {
         $allNews = News::orderBy('publish_date', 'desc')->get();
         return view('backend.news.index', compact('allNews'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function addNews(){
+    public function addNews()
+    {
         $categories = Category::all();
+        $tasks = Task::where('status', 1)->orderBy('sort', 'asc')->get();
         $adminUser = User::where('role', 'admin')->latest()->get();
-        return view('backend.news.create', compact('categories',  'adminUser'));
+        return view('backend.news.create', compact('categories', 'tasks', 'adminUser'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    /**
-     * Сохранение новости
-     */
     public function storeNews(NewsRequest $request)
     {
         $data = $request->validated();
         $imagePath = $this->handleImageUpload($request);
-         News::create([
+
+        $news = News::create([
             'category_id' => $data['category_id'],
             'user_id' => Auth::id(),
             'title_ru' => $data['title_ru'],
@@ -49,7 +45,8 @@ class NewsController extends Controller
             'news_details_ru' => $data['news_details_ru'] ?? null,
             'news_details_tj' => $data['news_details_tj'] ?? null,
             'news_details_en' => $data['news_details_en'] ?? null,
-            'top_slider' => $data['top_slider'] ?? 0,
+            'top_slider' => $request->has('top_slider') ? 1 : 0,
+            'home_page' => $request->has('home_page') ? 1 : 0,
             'publish_date' => $data['publish_date'],
             'image' => $imagePath,
             'views' => 0,
@@ -57,36 +54,49 @@ class NewsController extends Controller
             'created_at' => now(),
         ]);
 
+        // Привязка задач (если выбраны)
+        if ($request->has('tasks') && is_array($request->tasks)) {
+            $news->tasks()->attach($request->tasks);
+        }
+
+        // Загрузка дополнительных изображений (если есть)
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $index => $image) {
+                $name = now()->format('Ymd_His') . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $imagePath = public_path('upload/news/gallery');
+
+                if (!File::exists($imagePath)) {
+                    File::makeDirectory($imagePath, 0777, true, true);
+                }
+
+                Image::make($image)->resize(800, 600)->save($imagePath . '/' . $name);
+
+                NewsImage::create([
+                    'news_id' => $news->id,
+                    'image' => 'upload/news/gallery/' . $name,
+                    'sort' => $index,
+                ]);
+            }
+        }
+
         return redirect()
             ->route('all.news')
             ->with('message', 'Новость успешно добавлена')
             ->with('alert-type', 'success');
     }
 
-
-     /**
-     * Show the form for editing the specified resource.
-     */
-    public function editNews(string $id){
+    public function editNews($id)
+    {
         $categories = Category::latest()->get();
+        $tasks = Task::where('status', 1)->orderBy('sort', 'asc')->get();
         $adminUser = User::where('role', 'admin')->latest()->get();
-        $news = News::findOrFail($id);
-        return view('backend.news.edit', compact('categories',  'adminUser', 'news'));
+        $news = News::with(['tasks', 'images'])->findOrFail($id);
+        return view('backend.news.edit', compact('categories', 'tasks', 'adminUser', 'news'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    /**
-     * Обновление новости — используем $news из route-model binding
-     */
-    public function updateNews(NewsRequest $request, News $news)
+    public function updateNews(NewsRequest $request, $id)
     {
-        // Защита: если binding не сработал
-        if (!$news->exists) {
-            abort(404);
-        }
-
+        $news = News::findOrFail($id);
         $data = $request->validated();
 
         $updateData = [
@@ -98,11 +108,13 @@ class NewsController extends Controller
             'news_details_ru' => $data['news_details_ru'] ?? null,
             'news_details_tj' => $data['news_details_tj'] ?? null,
             'news_details_en' => $data['news_details_en'] ?? null,
-            'top_slider' => $data['top_slider'] ?? 0,
+            'top_slider' => $request->has('top_slider') ? 1 : 0,
+            'home_page' => $request->has('home_page') ? 1 : 0,
             'publish_date' => $data['publish_date'],
             'status' => $data['status'] ?? 1,
         ];
 
+        // Обновление главного изображения
         if ($request->hasFile('image')) {
             if ($news->image && $news->image !== 'upload/no-image.jpg') {
                 $oldPath = public_path($news->image);
@@ -113,24 +125,78 @@ class NewsController extends Controller
 
         $news->update($updateData);
 
+        // Обновление задач
+        if ($request->has('tasks') && is_array($request->tasks)) {
+            $news->tasks()->sync($request->tasks);
+        } else {
+            $news->tasks()->detach();
+        }
+
+        // Загрузка новых изображений галереи
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $index => $image) {
+                $name = now()->format('Ymd_His') . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $imagePath = public_path('upload/news/gallery');
+
+                if (!File::exists($imagePath)) {
+                    File::makeDirectory($imagePath, 0777, true, true);
+                }
+
+                Image::make($image)->resize(800, 600)->save($imagePath . '/' . $name);
+
+                NewsImage::create([
+                    'news_id' => $news->id,
+                    'image' => 'upload/news/gallery/' . $name,
+                    'sort' => $news->images()->count() + $index,
+                ]);
+            }
+        }
+
         return redirect()->route('all.news')->with([
             'message' => 'Новость обновлена',
             'alert-type' => 'success'
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function deleteNews(News $news)
+    public function deleteNews($id)
     {
-        if ($news->image && $news->image !== 'upload/no-image.jpg') {
+        $news = News::findOrFail($id);
+
+        // Удаление главного изображения
+        if ($news->image && $news->image !== 'upload/no-image.jpg' && $news->image !== '404.jpg') {
             $imagePath = public_path($news->image);
+
             if (file_exists($imagePath)) {
-                unlink($imagePath);
+                try {
+                    unlink($imagePath);
+                    \Log::info("Главное изображение удалено: " . $imagePath);
+                } catch (\Exception $e) {
+                    \Log::error("Ошибка при удалении главного изображения: " . $e->getMessage());
+                }
+            } else {
+                \Log::warning("Файл не найден: " . $imagePath);
             }
         }
 
+        // Удаление изображений галереи
+        if ($news->images && $news->images->count() > 0) {
+            foreach ($news->images as $image) {
+                $galleryPath = public_path($image->image);
+
+                if (file_exists($galleryPath)) {
+                    try {
+                        unlink($galleryPath);
+                      //  \Log::info("Изображение галереи удалено: " . $galleryPath);
+                    } catch (\Exception $e) {
+                        \Log::error("Ошибка при удалении изображения галереи: " . $e->getMessage());
+                    }
+                } else {
+                    \Log::warning("Файл галереи не найден: " . $galleryPath);
+                }
+            }
+        }
+
+        // Удаление записи из БД (каскадное удаление удалит связи с tasks и images)
         $news->delete();
 
         return back()->with([
@@ -139,35 +205,64 @@ class NewsController extends Controller
         ]);
     }
 
+    public function deleteGalleryImage($id)
+    {
+        try {
+            $image = NewsImage::findOrFail($id);
+            $imagePath = public_path($image->image);
 
-    public function inactiveNews($id){
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+              //  \Log::info("Изображение удалено: " . $imagePath);
+            } else {
+                // \Log::warning("Файл не найден: " . $imagePath);
+            }
+
+            $image->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Изображение удалено'
+            ]);
+        } catch (\Exception $e) {
+           // \Log::error("Ошибка при удалении изображения: " . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Ошибка при удалении изображения'
+            ], 500);
+        }
+    }
+
+    public function inactiveNews($id)
+    {
         News::findOrFail($id)->update(['status' => 0]);
-        $notification = array(
-            'message' =>'Неактивные новости',
-            'alert-type'=> 'success'
-        );
-        return redirect()->back()->with($notification);
-    }// END METHOD
+        return redirect()->back()->with([
+            'message' => 'Неактивные новости',
+            'alert-type' => 'success'
+        ]);
+    }
 
-    public function activeNews($id){
+    public function activeNews($id)
+    {
         News::findOrFail($id)->update(['status' => 1]);
-        $notification = array(
-            'message' =>'Ативные новости',
-            'alert-type'=> 'success'
-        );
-        return redirect()->back()->with($notification);
-    }// END METHOD
-
-
-
-    // В NewsController
+        return redirect()->back()->with([
+            'message' => 'Активные новости',
+            'alert-type' => 'success'
+        ]);
+    }
 
     private function handleImageUpload($request): string
     {
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $name = date('Y-m-d') . '.' . $image->getClientOriginalName();
-            Image::make($image)->resize(800, 600)->save(public_path('upload/news/' . $name));
+            $name = date('Y-m-d') . '_' . time() . '_' . $image->getClientOriginalName();
+            $imagePath = public_path('upload/news');
+
+            if (!File::exists($imagePath)) {
+                File::makeDirectory($imagePath, 0777, true, true);
+            }
+
+            Image::make($image)->resize(800, 600)->save($imagePath . '/' . $name);
             return 'upload/news/' . $name;
         }
 
@@ -188,6 +283,4 @@ class NewsController extends Controller
 
         return $slug;
     }
-
-
 }

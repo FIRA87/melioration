@@ -34,10 +34,11 @@ return new class extends Migration
             $table->text('news_details_en');
 
             // Флаги
-            $table->boolean('top_slider')->default(false); // в топ-слайдер
-            $table->date('publish_date')->nullable();     // дата публикации
+            $table->boolean('top_slider')->default(false);
+            $table->date('publish_date')->nullable();
             $table->boolean('status')->default(true);     // 1 = опубликовано
-            $table->unsignedBigInteger('views')->default(0); // счётчик просмотров
+            $table->boolean('home_page')->default(false);
+            $table->unsignedBigInteger('views')->default(0);
             $table->timestamps();
 
             // Индексы для ускорения поиска

@@ -9,7 +9,7 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('add.roles') }}" class="btn btn-blue waves-effect waves-light">Добавить роль</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('add.roles') }}" class="btn btn-blue waves-effect waves-light text-white">Добавить </a></li>
                             </ol>
                         </div>
                         <h4 class="page-title">Роли пользователей</h4>

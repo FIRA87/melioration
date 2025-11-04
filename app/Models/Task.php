@@ -22,4 +22,17 @@ class Task extends Model
         'status',
         'sort',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(TaskItem::class);
+    }
+
+    // Связь с новостями
+    public function news()
+    {
+        return $this->belongsToMany(News::class, 'news_tasks', 'task_id', 'news_id')->withTimestamps();
+    }
+
+
 }

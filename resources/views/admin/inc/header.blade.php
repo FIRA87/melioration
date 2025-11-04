@@ -11,88 +11,88 @@
     <div class="container-fluid">
         <ul class="list-unstyled topnav-menu float-end mb-0">
 
-            <li class="d-none d-lg-block">
-                <form class="app-search">
-                    <div class="app-search-box dropdown">
-                        <div class="dropdown-menu dropdown-lg" id="search-dropdown">
-                                               <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                <i class="fe-home me-1"></i>
-                                <span>Analytics Report</span>
-                            </a>
+{{--            <li class="d-none d-lg-block">--}}
+{{--                <form class="app-search">--}}
+{{--                    <div class="app-search-box dropdown">--}}
+{{--                        <div class="dropdown-menu dropdown-lg" id="search-dropdown">--}}
+{{--                                               <!-- item-->--}}
+{{--                            <a href="javascript:void(0);" class="dropdown-item notify-item">--}}
+{{--                                <i class="fe-home me-1"></i>--}}
+{{--                                <span>Analytics Report</span>--}}
+{{--                            </a>--}}
 
 
-                            <!-- item-->
-                            <div class="dropdown-header noti-title">
-                                <h6 class="text-overflow mb-2 text-uppercase">Пользователи</h6>
-                            </div>
+{{--                            <!-- item-->--}}
+{{--                            <div class="dropdown-header noti-title">--}}
+{{--                                <h6 class="text-overflow mb-2 text-uppercase">Пользователи</h6>--}}
+{{--                            </div>--}}
 
-                            <div class="notification-list">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                                    <div class="d-flex align-items-start">
-                                        <img class="d-flex me-2 rounded-circle" src="{{ asset('backend/assets/images/users/user-2.jpg') }}" alt="Generic placeholder image" height="32">
-                                        <div class="w-100">
-                                            <h5 class="m-0 font-14">Erwin E. Brown</h5>
-                                            <span class="font-12 mb-0">UI Designer</span>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
-            </li>
-
-            <li class="dropdown notification-list topbar-dropdown">
-                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <i class="fe-bell noti-icon"></i>
-                    <span class="badge bg-danger rounded-circle noti-icon-badge">{{ $reviewCount }}</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-lg">
-
-                    <!-- item-->
-                    <div class="dropdown-item noti-title">
-                        <h5 class="m-0">
-                            <span class="float-end">
-                                <a href="" class="text-dark">
-                                    <small>Очистить все</small>
-                                </a>
-                            </span>Уведомление
-                        </h5>
-                    </div>
-
-                    <div class="noti-scroll" data-simplebar>
+{{--                            <div class="notification-list">--}}
+{{--                                <!-- item-->--}}
+{{--                                <a href="javascript:void(0);" class="dropdown-item notify-item">--}}
+{{--                                    <div class="d-flex align-items-start">--}}
+{{--                                        <img class="d-flex me-2 rounded-circle" src="{{ asset('backend/assets/images/users/user-2.jpg') }}" alt="Generic placeholder image" height="32">--}}
+{{--                                        <div class="w-100">--}}
+{{--                                            <h5 class="m-0 font-14">Erwin E. Brown</h5>--}}
+{{--                                            <span class="font-12 mb-0">UI Designer</span>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </a>--}}
 
 
+{{--                            </div>--}}
 
-                        @forelse($user->notifications as $notification)
-                        <!-- item-->
-                        <a href="{{ route('pending.review')}}" class="dropdown-item notify-item active">
-                            <div class="notify-icon">
-                                <img src="{{ asset('backend/assets/images/users/user-1.jpg') }}" class="img-fluid rounded-circle" alt="" /> </div>
-                            <p class="notify-details">{{ $notification->data['message'] }}</p>
-                            <p class="text-muted mb-0 user-msg">
-                                <small>{{ Carbon\Carbon::parse( $notification->created_at)->diffForHumans() }}</small>
-                            </p>
-                        </a>
-                        @empty
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </form>--}}
+{{--            </li>--}}
 
-                        @endforelse
+{{--            <li class="dropdown notification-list topbar-dropdown">--}}
+{{--                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">--}}
+{{--                    <i class="fe-bell noti-icon"></i>--}}
+{{--                    <span class="badge bg-danger rounded-circle noti-icon-badge">{{ $reviewCount }}</span>--}}
+{{--                </a>--}}
+{{--                <div class="dropdown-menu dropdown-menu-end dropdown-lg">--}}
 
-                    </div>
+{{--                    <!-- item-->--}}
+{{--                    <div class="dropdown-item noti-title">--}}
+{{--                        <h5 class="m-0">--}}
+{{--                            <span class="float-end">--}}
+{{--                                <a href="" class="text-dark">--}}
+{{--                                    <small>Очистить все</small>--}}
+{{--                                </a>--}}
+{{--                            </span>Уведомление--}}
+{{--                        </h5>--}}
+{{--                    </div>--}}
 
-                    <!-- All-->
-                    <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
-                        Посмотреть все
-                        <i class="fe-arrow-right"></i>
-                    </a>
+{{--                    <div class="noti-scroll" data-simplebar>--}}
 
-                </div>
-            </li>
+
+
+{{--                        @forelse($user->notifications as $notification)--}}
+{{--                        <!-- item-->--}}
+{{--                        <a href="{{ route('pending.review')}}" class="dropdown-item notify-item active">--}}
+{{--                            <div class="notify-icon">--}}
+{{--                                <img src="{{ asset('backend/assets/images/users/user-1.jpg') }}" class="img-fluid rounded-circle" alt="" /> </div>--}}
+{{--                            <p class="notify-details">{{ $notification->data['message'] }}</p>--}}
+{{--                            <p class="text-muted mb-0 user-msg">--}}
+{{--                                <small>{{ Carbon\Carbon::parse( $notification->created_at)->diffForHumans() }}</small>--}}
+{{--                            </p>--}}
+{{--                        </a>--}}
+{{--                        @empty--}}
+
+{{--                        @endforelse--}}
+
+{{--                    </div>--}}
+
+{{--                    <!-- All-->--}}
+{{--                    <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">--}}
+{{--                        Посмотреть все--}}
+{{--                        <i class="fe-arrow-right"></i>--}}
+{{--                    </a>--}}
+
+{{--                </div>--}}
+{{--            </li>--}}
 
 
 

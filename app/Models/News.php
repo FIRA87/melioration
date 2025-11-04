@@ -20,4 +20,16 @@ class News extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    // Связь с задачами (многие-ко-многим)
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'news_tasks', 'news_id', 'task_id')->withTimestamps();
+    }
+
+    // Связь с дополнительными изображениями
+    public function images()
+    {
+        return $this->hasMany(NewsImage::class);
+    }
+
 }

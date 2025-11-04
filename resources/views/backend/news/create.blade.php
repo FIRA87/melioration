@@ -81,6 +81,31 @@
                                             <option value="0">Неактивный</option>
                                         </select>
                                     </div>
+
+
+                                    <!-- Задачи -->
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Задачи (необязательно)</label>
+                                            <select class="form-select" name="tasks[]" multiple size="5">
+                                                @foreach ($tasks as $task)
+                                                    <option value="{{ $task->id }}">{{ $task->title_ru }}</option>
+                                                @endforeach
+                                            </select>
+                                            <small class="text-muted">Удерживайте Ctrl для выбора нескольких задач</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Множественные изображения -->
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-3">
+                                            <label for="gallery" class="form-label">Дополнительные изображения (необязательно)</label>
+                                            <input type="file" class="form-control" name="gallery[]" id="gallery" multiple accept="image/*">
+                                            <small class="text-muted">Можно выбрать несколько изображений</small>
+                                        </div>
+                                        <div id="gallery-preview" class="row mt-2"></div>
+                                    </div>
+
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
                                             <ul class="nav nav-tabs nav-bordered" role="tablist">
@@ -131,16 +156,51 @@
 
                                             <div class="form-group col-md-1">
                                                 <label for="showImage" class="form-label"></label>
-                                                <img src="{{ '/upload/no-image.png' }}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
+                                                <img src="{{ '/upload/no-image.jpg' }}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
                                             </div>
 
                                             <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
-                                                    <input class="form-check-input" type="checkbox" name="top_slider"
-                                                           value=1" id="customckeck_2">
+                                                    <input class="form-check-input" type="checkbox" name="top_slider" value="1" id="customckeck_2">
                                                     <label class="form-check-label" for="customckeck_2">Слайдер</label>
+
                                                 </div>
                                             </div>
+
+
+                                            <div class="col-md-1">
+                                                <div class="form-check mb-2 form-check-primary">
+                                                    <input class="form-check-input" type="checkbox" name="home_page" value="1" id="home_page_check">
+                                                    <label class="form-check-label" for="home_page_check">На главной</label>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group mb-3">
+                                                <label>Медиабиблиотека</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="mediaInput" name="image" class="form-control" placeholder="Выберите файл...">
+                                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#mediaModal">Выбрать из медиа</button>
+                                                </div>
+                                            </div>
+
+                                            <!-- Модальное окно -->
+                                            <div class="modal fade" id="mediaModal" tabindex="-1">
+                                                <div class="modal-dialog modal-xl">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Выбор файла</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body p-0" style="height:80vh;">
+                                                            <iframe src="{{ route('media.index') }}" width="100%" height="100%" frameborder="0"></iframe>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
                                         </div>
 
                                         <div class="text-end">
@@ -243,6 +303,24 @@
             });
         })
     </script>
+
+        <script>
+            document.getElementById('gallery').addEventListener('change', function(e) {
+                const preview = document.getElementById('gallery-preview');
+                preview.innerHTML = '';
+
+                Array.from(e.target.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-2 mb-2';
+                        col.innerHTML = `<img src="${event.target.result}" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">`;
+                        preview.appendChild(col);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        </script>
 
 
 @endsection

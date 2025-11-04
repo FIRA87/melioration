@@ -1,5 +1,5 @@
 @extends('admin.admin_dashboard')
-@section('heading', 'Ссылка')
+@section('heading', 'Задача')
 
 @section('admin')
 
@@ -104,6 +104,33 @@
                                     </div>
 
 
+
+                                    <div class="col-md-12 mt-4">
+                                        <h5 class="card-header">Элементы списка задач</h5>
+                                        <div id="items-container">
+                                            <div class="item-row mb-3 p-3 border rounded">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Текст RU</label>
+                                                        <textarea name="items[0][text_ru]" class="form-control" rows="2"></textarea>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Текст TJ</label>
+                                                        <textarea name="items[0][text_tj]" class="form-control" rows="2"></textarea>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Текст EN</label>
+                                                        <textarea name="items[0][text_en]" class="form-control" rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-success mt-2" id="add-item">
+                                            <i class="fa fa-plus"></i> Добавить элемент
+                                        </button>
+                                    </div>
+
+
                                 </div>
                             </div>
 
@@ -159,6 +186,47 @@
                 unhighlight: function(element, errorClass, validClass) {
                     $(element).removeClass('is-invalid');
                 },
+            });
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let itemIndex = 1;
+
+            document.getElementById('add-item').addEventListener('click', function() {
+                const container = document.getElementById('items-container');
+                const newItem = `
+            <div class="item-row mb-3 p-3 border rounded position-relative">
+                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 remove-item">
+                    <i class="fa fa-trash"></i>
+                </button>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Текст RU</label>
+                        <textarea name="items[${itemIndex}][text_ru]" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Текст TJ</label>
+                        <textarea name="items[${itemIndex}][text_tj]" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Текст EN</label>
+                        <textarea name="items[${itemIndex}][text_en]" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+        `;
+                container.insertAdjacentHTML('beforeend', newItem);
+                itemIndex++;
+            });
+
+            // Удаление элемента
+            document.getElementById('items-container').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-item')) {
+                    e.target.closest('.item-row').remove();
+                }
             });
         });
     </script>

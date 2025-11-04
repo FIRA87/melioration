@@ -7,41 +7,84 @@ use App\Mail\Websitemail;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Requests\SettingRequest;
+use Illuminate\Support\Facades\File;
 
 class SettingController extends Controller
 {
 
     public function siteIndex()
     {
-        $settings = Setting::find(1);
+        $settings = Setting::first();
+
+        if (!$settings) {
+            // Если таблица пустая — создаём запись по умолчанию
+            $settings =Setting::create([
+                'street_ru' => '',
+                'street_tj' => '',
+                'street_en' => '',
+                'phone' => '',
+                'email' => '',
+                'facebook' => '',
+                'twitter' => '',
+                'telegram' => '',
+                'instagram' => '',
+                'youtube' => '',
+                'contact_title' => '',
+                'contact_detail' => '',
+                'contact_map' => '',
+                'logo' => '',
+            ]);
+        }
         return view('backend.settings.data', compact('settings'));
     }
 
-    public function siteUpdate(SettingRequest $request)
+    public function siteUpdate(Request $request)
     {
-        $data = $request->validated();
-        $setting_id = $request->id;
-       Setting::findOrFail($setting_id)->update([
-            'street_ru' => $data['street_ru'] ?? null,
-            'street_tj' => $data['street_tj'] ?? null,
-            'street_en' => $data['street_en'] ?? null,
-            'phone' => $data['phone'] ?? null,
-            'email' => $data['email'] ?? null,
-            'facebook' => $data['facebook'] ?? null,
-            'twitter' => $data['twitter'] ?? null,
-            'telegram' => $data['telegram'] ?? null,
-            'instagram' => $data['instagram'] ?? null,
-            'youtube' => $data['youtube'] ?? null,
-            'contact_title' => $data['contact_title'],
-            'contact_detail' => $data['contact_detail'] ?? null,
-            'contact_map' => $data['contact_map'] ?? null,
+        $setting = Setting::firstOrFail();
+
+        $data = $request->validate([
+            'street_ru' => 'nullable|string|max:255',
+            'street_tj' => 'nullable|string|max:255',
+            'street_en' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:50',
+            'email' => 'nullable|email|max:255',
+            'facebook' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
+            'telegram' => 'nullable|string|max:255',
+            'instagram' => 'nullable|string|max:255',
+            'youtube' => 'nullable|string|max:255',
+            'contact_title' => 'nullable|string|max:255',
+            'contact_detail' => 'nullable|string|max:255',
+            'contact_map' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
-        $notification = array(
-            'message' =>'Настройка успешно обновлена',
-            'alert-type'=> 'success'
-        );
-        return redirect()->back()->with($notification);
+
+        // обработка логотипа
+        if ($request->hasFile('logo')) {
+            // удалить старый логотип если он есть
+            if ($setting->logo && File::exists(public_path($setting->logo))) {
+                File::delete(public_path($setting->logo));
+            }
+
+            $file = $request->file('logo');
+            $filename = 'logo_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = 'upload/logo/';
+            $file->move(public_path($path), $filename);
+
+            $data['logo'] = $path . $filename;
+        }
+
+        $setting->update($data);
+
+        return redirect()->back()->with([
+            'message' => 'Настройки успешно обновлены',
+            'alert-type' => 'success',
+        ]);
     }
+
+
+
+
 
   //=============ADMIN CONTROLLER CONTACT======================//
     public function contact() {

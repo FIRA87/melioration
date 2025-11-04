@@ -18,11 +18,12 @@ return new class extends Migration
             $table->string('street_en')->nullable();
             $table->string('phone');
             $table->string('email');
-            $table->string('facebook');
-            $table->string('twitter');
-            $table->string('telegram');
-            $table->string('instagram');
-            $table->string('youtube');
+            $table->string('logo')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('telegram')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('youtube')->nullable();
             $table->timestamps();
         });
     }

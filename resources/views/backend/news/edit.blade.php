@@ -32,9 +32,10 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Редактировать новости</h4>
-                            <form id="myForm" method="POST" action="{{ route('update.news', $news->id) }}" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
+                                <form method="POST" action="{{ route('update.news', $news->id) }}" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+
                                 <input type="hidden" name="id" value="{{ $news->id }}">
 
                                 <div class="row">
@@ -72,7 +73,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group mb-3" style="display: none">
+                                  {{--      <div class="form-group mb-3" style="display: none">
                                             <label for="subcategory_id" class="form-label">Подкатегория</label>
                                             <select class="form-select" id="subcategory_id" name="subcategory_id">
                                                 <option value="">Выберите подкатегорию</option>
@@ -88,7 +89,7 @@
                                                     @endforeach
                                                 @endif
                                             </select>
-                                        </div>
+                                        </div>--}}
 
                                       <div class="form-group mb-3">
                                             <!-- Поле для выбора даты -->
@@ -110,9 +111,56 @@
                                                 <label class="form-check-label" for="customckeck_2">Слайдер</label>
                                             </div>
                                         </div>
-
-
                                     </div> <!-- end col -->
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2 form-check-primary">
+                                            <input class="form-check-input" type="checkbox" name="home_page" value="1" id="home_page_check" {{ $news->home_page == 1 ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="home_page_check">На главной</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Задачи -->
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Задачи (необязательно)</label>
+                                            <select class="form-select" name="tasks[]" multiple size="5">
+                                                @foreach ($tasks as $task)
+                                                    <option value="{{ $task->id }}" {{ $news->tasks->contains($task->id) ? 'selected' : '' }}>
+                                                        {{ $task->title_ru }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <small class="text-muted">Удерживайте Ctrl для выбора нескольких задач</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Существующие изображения галереи -->
+                                    @if($news->images->count() > 0)
+                                        <div class="col-md-12 mt-3">
+                                            <h5>Существующие изображения галереи</h5>
+                                            <div class="row">
+                                                @foreach($news->images as $img)
+                                                    <div class="col-md-2 mb-2 position-relative" id="gallery-image-{{ $img->id }}">
+                                                        <img src="{{ asset($img->image) }}" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+                                                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" onclick="deleteGalleryImage({{ $img->id }})">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <!-- Новые изображения галереи -->
+                                    <div class="col-md-12 mt-3">
+                                        <div class="form-group mb-3">
+                                            <label for="gallery" class="form-label">Добавить изображения в галерею (необязательно)</label>
+                                            <input type="file" class="form-control" name="gallery[]" id="gallery" multiple accept="image/*">
+                                        </div>
+                                        <div id="gallery-preview" class="row mt-2"></div>
+                                    </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
@@ -251,6 +299,44 @@
     </script>
 
 
+    <script>
+        // Превью новых изображений
+        document.getElementById('gallery').addEventListener('change', function(e) {
+            const preview = document.getElementById('gallery-preview');
+            preview.innerHTML = '';
 
+            Array.from(e.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-2 mb-2';
+                    col.innerHTML = `<img src="${event.target.result}" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">`;
+                    preview.appendChild(col);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Удаление изображения из галереи
+        function deleteGalleryImage(id) {
+            if (!confirm('Удалить это изображение?')) return;
+
+            fetch(`/delete/gallery-image/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`gallery-image-${id}`).remove();
+                        alert('Изображение удалено');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 
 @endsection

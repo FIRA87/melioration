@@ -25,12 +25,7 @@
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="media">
-                            <ul class="nav-second-level">
-                                <li style="margin-left: -20px">
-                                    <a href="{{ url('laravel-filemanager/demo') }}"><i class="mdi mdi-animation"></i>
-                                        Все </a>
-                                </li>
-
+                            <ul class="nav-second-level"> <li style="margin-left: -20px"> <a href="{{ route('media.index') }}"><i class="mdi mdi-animation"></i> Все </a></li>
                             </ul>
                         </div>
                     </li>
@@ -45,16 +40,8 @@
                         </a>
                         <div class="collapse" id="page">
                             <ul class="nav-second-level">
-                                <li>
-                                    <a href="{{ route('all.pages') }}">
-                                        <i class="mdi mdi-animation"></i> Все
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('add.pages') }}">
-                                        <i class="mdi mdi-database-plus"></i> Добавить
-                                    </a>
-                                </li>
+                                <li> <a href="{{ route('all.pages') }}"> <i class="mdi mdi-animation"></i> Все</a></li>
+                                <li> <a href="{{ route('add.pages') }}"> <i class="mdi mdi-database-plus"></i> Добавить</a> </li>
                             </ul>
                         </div>
                     </li>
@@ -294,7 +281,7 @@
                         <div class="collapse" id="setting">
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
-                                    <a href={{ route('siteIndex') }}><i class="mdi mdi-cog"></i>
+                                    <a href={{ route('setting.index') }}><i class="mdi mdi-cog"></i>
                                         Настройка</a>
                                 </li>
 

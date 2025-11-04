@@ -27,23 +27,42 @@
                             <hr class="my-0">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group mb-3 ">
                                             <label for="title_ru" class="form-label">Название RU</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
                                                 value="{{ $task->title_ru }}">
                                         </div>
 
+                                    </div>
+
+                                    <div class="col-md-4">
                                         <div class="form-group mb-3 ">
                                             <label for="title_tj" class="form-label">Название TJ</label>
                                             <input type="text" id="title_tj" class="form-control" name="title_tj"
-                                                value="{{ $task->title_tj }}">
+                                                   value="{{ $task->title_tj }}">
                                         </div>
 
+
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
                                             <input type="text" id="title_en" class="form-control" name="title_en"
-                                                value="{{ $task->title_en }}">
+                                                   value="{{ $task->title_en }}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="mb-3 ">
+                                            <label for="sort" class="form-label">Позиция</label>
+                                            <input class="form-control" type="text" id="sort" name="sort" autofocus="" value="{{ $task->sort }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-3">
+                                            <label for="slug" class="form-label">Slug (URL) <span class="text-danger">*</span></label>
+                                            <input type="text" id="slug" name="slug" class="form-control" value="{{ $task->slug }}" >
                                         </div>
                                     </div>
 
@@ -67,19 +86,6 @@
                 {{ $task->status == 1 ? 'Активный' : 'Неактивный' }}
             </span>
                                             </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="mb-3 ">
-                                            <label for="sort" class="form-label">Позиция</label>
-                                            <input class="form-control" type="text" id="sort" name="sort" autofocus="" value="{{ $task->sort }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group mb-3">
-                                            <label for="slug" class="form-label">Slug (URL) <span class="text-danger">*</span></label>
-                                            <input type="text" id="slug" name="slug" class="form-control" value="{{ $task->slug }}" >
                                         </div>
                                     </div>
 
@@ -121,6 +127,37 @@
                                     </div>
 
 
+                                    <div class="col-md-12 mt-4">
+                                        <h5 class="card-header">Элементы списка задач</h5>
+                                        <div id="items-container">
+                                            @foreach($task->items as $index => $item)
+                                                <div class="item-row mb-3 p-3 border rounded position-relative">
+                                                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 remove-item">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Текст RU</label>
+                                                            <textarea name="items[{{ $index }}][text_ru]" class="form-control" rows="2">{{ $item->text_ru }}</textarea>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Текст TJ</label>
+                                                            <textarea name="items[{{ $index }}][text_tj]" class="form-control" rows="2">{{ $item->text_tj }}</textarea>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label class="form-label">Текст EN</label>
+                                                            <textarea name="items[{{ $index }}][text_en]" class="form-control" rows="2">{{ $item->text_en }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <button type="button" class="btn btn-success mt-2" id="add-item">
+                                            <i class="fa fa-plus"></i> Добавить элемент
+                                        </button>
+                                    </div>
+
+
                                 </div>
                             </div>
 
@@ -150,6 +187,45 @@
                     label.textContent = 'Неактивный';
                     label.classList.remove('text-success', 'fw-bold');
                     label.classList.add('text-muted');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let itemIndex = {{ $task->items->count() }};
+
+            document.getElementById('add-item').addEventListener('click', function() {
+                const container = document.getElementById('items-container');
+                const newItem = `
+            <div class="item-row mb-3 p-3 border rounded position-relative">
+                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 remove-item">
+                    <i class="fa fa-trash"></i>
+                </button>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Текст RU</label>
+                        <textarea name="items[${itemIndex}][text_ru]" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Текст TJ</label>
+                        <textarea name="items[${itemIndex}][text_tj]" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Текст EN</label>
+                        <textarea name="items[${itemIndex}][text_en]" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+        `;
+                container.insertAdjacentHTML('beforeend', newItem);
+                itemIndex++;
+            });
+
+            document.getElementById('items-container').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-item')) {
+                    e.target.closest('.item-row').remove();
                 }
             });
         });
