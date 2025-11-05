@@ -32,7 +32,8 @@
                                     <th>Изображение</th>
                                     <th>Заголовок </th>
                                     <th>Категория</th>
-                                    <th>Пользователь</th>
+                                    <th>На главной</th>
+                                    <th>Слайдер</th>
                                     <th>Дата</th>
                                     <th>Статус</th>
                                     <th>Действия</th>
@@ -51,14 +52,27 @@
                                         </td>
                                         <td title="{{ $item->title_ru }}">{{ Str::limit($item->title_ru, 30) }}</td>
                                         <td>{{ $item->category->title_ru  }}</td>
-                                        <td> {{ $item->user->name  }}</td>
+                                        <td>
+                                            @if($item->home_page == 1)
+                                                <span class="badge bg-success ">Да</span>
+                                            @else
+                                                <span class="badge bg-danger ">Нет</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($item->top_slider == 1)
+                                                <span class="badge bg-success ">Да</span>
+                                            @else
+                                                <span class="badge bg-danger ">Нет</span>
+                                            @endif
+                                        </td>
                                         <td> {{ $item->publish_date }}</td>
 
                                         <td>
                                             @if($item->status == 1)
-                                                <span class="btn btn-success rounded-pill waves-effect waves-light">Активный</span>
+                                                <span class="badge bg-success ">Активный</span>
                                             @else
-                                                <span class="btn btn-danger waves-effect waves-light">Неактивный</span>
+                                                <span class="badge bg-danger ">Неактивный</span>
                                             @endif
                                         </td>
                                         <td>

@@ -96,8 +96,24 @@
                                         </div>
                                     </div>
 
+
+                                    <div class="col-md-4 mt-3">
+                                        <div class="form-group">
+                                            <label for="image" class="form-label">Изображение</label>
+                                            <input type="file" class="form-control" name="image" id="image">
+                                        </div>
+                                    </div>
+
+                                 <div class="col-md-1 mt-3">
+                                     <div class="form-group">
+                                         <label for="showImage" class="form-label"></label>
+                                         <img src="{{ '/upload/no-image.jpg' }}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
+                                     </div>
+                                 </div>
+
+
                                     <!-- Множественные изображения -->
-                                    <div class="col-md-12 mt-3">
+                                    <div class="col-md-4 mt-3">
                                         <div class="form-group mb-3">
                                             <label for="gallery" class="form-label">Дополнительные изображения (необязательно)</label>
                                             <input type="file" class="form-control" name="gallery[]" id="gallery" multiple accept="image/*">
@@ -105,6 +121,8 @@
                                         </div>
                                         <div id="gallery-preview" class="row mt-2"></div>
                                     </div>
+
+
 
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
@@ -147,26 +165,12 @@
                                     <div class="col-md-12">
                                         <div class="row">
 
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="image" class="form-label">Изображение</label>
-                                                    <input type="file" class="form-control" name="image" id="image">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-md-1">
-                                                <label for="showImage" class="form-label"></label>
-                                                <img src="{{ '/upload/no-image.jpg' }}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
-                                            </div>
-
                                             <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
                                                     <input class="form-check-input" type="checkbox" name="top_slider" value="1" id="customckeck_2">
                                                     <label class="form-check-label" for="customckeck_2">Слайдер</label>
-
                                                 </div>
                                             </div>
-
 
                                             <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
@@ -174,31 +178,6 @@
                                                     <label class="form-check-label" for="home_page_check">На главной</label>
                                                 </div>
                                             </div>
-
-
-                                            <div class="form-group mb-3">
-                                                <label>Медиабиблиотека</label>
-                                                <div class="input-group">
-                                                    <input type="text" id="mediaInput" name="image" class="form-control" placeholder="Выберите файл...">
-                                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#mediaModal">Выбрать из медиа</button>
-                                                </div>
-                                            </div>
-
-                                            <!-- Модальное окно -->
-                                            <div class="modal fade" id="mediaModal" tabindex="-1">
-                                                <div class="modal-dialog modal-xl">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Выбор файла</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body p-0" style="height:80vh;">
-                                                            <iframe src="{{ route('media.index') }}" width="100%" height="100%" frameborder="0"></iframe>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
 
 
                                         </div>
@@ -321,6 +300,10 @@
                 });
             });
         </script>
+
+
+
+
 
 
 @endsection

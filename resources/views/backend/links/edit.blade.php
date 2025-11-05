@@ -14,11 +14,9 @@
                 </div>
             </div>
 
-
-{{--            <form method="POST" action="{{ route('update.links') }}" enctype="multipart/form-data">--}}
             <form method="POST" action="{{ route('update.links', $link->id) }}" enctype="multipart/form-data">
                 @csrf
-                @method('PUT') <!-- ОБЯЗАТЕЛЬНО для update через POST -->
+                @method('PUT')
 
 
                 <input type="hidden" name="id" value="{{ $link->id }}">

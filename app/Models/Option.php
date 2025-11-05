@@ -9,12 +9,15 @@ class Option extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'question_id', 'text_ru', 'text_tj', 'text_en'
-    ];
+    protected $guarded = [];
 
     public function question()
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
     }
 }

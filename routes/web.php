@@ -1,29 +1,34 @@
 <?php
 
-use App\Http\Controllers\Backend\ServiceRequestAdminController;
-use App\Http\Controllers\Backend\SurveyController;
-use App\Http\Controllers\Backend\AdminController;
-use App\Http\Controllers\Backend\CategoryController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Backend\LinkController;
 use App\Http\Controllers\Backend\NewsController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\RoleController;
-use App\Http\Controllers\Backend\SettingController;
-use App\Http\Controllers\Backend\VideoController;
-use App\Http\Controllers\Backend\GalleryController;
-use App\Http\Controllers\Backend\SubMenuController;
-use App\Http\Controllers\Backend\PresidentController;
-use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\TaskController;
-use App\Http\Controllers\Backend\ServiceController;
-use App\Http\Controllers\Frontend\IndexController;
-use App\Http\Controllers\Frontend\LanguageController;
-use App\Http\Controllers\Frontend\ServiceRequestController;
-use App\Http\Controllers\Backend\MediaController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
 use App\Http\Middleware\RedirectIfAuthenticated;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\MediaController;
+use App\Http\Controllers\Backend\VideoController;
+use App\Http\Controllers\Backend\LeaderController;
+use App\Http\Controllers\Backend\OptionController;
+use App\Http\Controllers\Backend\SurveyController;
+use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Backend\ContactController;
+use App\Http\Controllers\Backend\GalleryController;
+use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\ServiceController;
+use App\Http\Controllers\Backend\SettingController;
+use App\Http\Controllers\Backend\SubMenuController;
+use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\QuestionController;
+use App\Http\Controllers\Backend\PresidentController;
+use App\Http\Controllers\Frontend\LanguageController;
+use App\Http\Controllers\Frontend\SurveyVoteController;
+use App\Http\Controllers\Frontend\ServiceRequestController;
+use App\Http\Controllers\Backend\ServiceRequestAdminController;
 
 
 /// Access FOR ALL
@@ -31,6 +36,14 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/lang/en', [LanguageController::class, 'enLang'])->name('en.lang');
 Route::get('/lang/ru', [LanguageController::class, 'ruLang'])->name('ru.lang');
 Route::get('/lang/tj', [LanguageController::class, 'tjLang'])->name('tj.lang');
+
+// Frontend show & voting
+Route::get('survey/{survey}', function(\App\Models\Survey $survey){
+    $survey->load('questions.options');
+    return view('frontend.survey.show', compact('survey'));
+})->name('survey.show');
+
+Route::post('survey/{surveyId}/vote', [SurveyVoteController::class,'vote'])->name('survey.vote');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -72,12 +85,9 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     });
     // Surveys Routes
     Route::prefix('admin')->group(function () {
-        Route::get('surveys', [SurveyController::class, 'index'])->name('admin.surveys.index');
-        Route::post('surveys', [SurveyController::class, 'store'])->name('admin.surveys.store');
-        Route::get('surveys/{survey}', [SurveyController::class, 'show'])->name('admin.surveys.show');
-        Route::get('surveys/{survey}/edit', [SurveyController::class, 'edit'])->name('admin.surveys.edit');
-        Route::put('surveys/{survey}', [SurveyController::class, 'update'])->name('admin.surveys.update');
-        Route::delete('surveys/{survey}', [SurveyController::class, 'destroy'])->name('admin.surveys.destroy');
+        Route::resource('surveys', SurveyController::class);
+        //Route::resource('questions', QuestionController::class)->except(['show']);
+        //Route::resource('options', OptionController::class)->except(['show']);
     });
 
     // Admin Users Management
@@ -199,7 +209,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/setting/update', 'siteUpdate')->name('setting.update');
     });
 
-
     // PRESIDENTS ROUTES
     Route::controller(PresidentController::class)->group(function () {
         Route::get('/all/presidents', 'index')->name('all.presidents');
@@ -245,12 +254,34 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/admin/service-requests/delete/{id}', 'delete')->name('delete.service.request');
     });
 
-    Route::controller(MediaController::class)->prefix('admin/media')->group(function () {
-        Route::get('/', 'index')->name('media.index');
-        Route::post('/upload', 'upload')->name('media.upload');
-        Route::post('/create-folder', 'createFolder')->name('media.createFolder');
-        Route::delete('/delete', 'delete')->name('media.delete');
-        Route::post('/rename', 'rename')->name('media.rename'); // ← новое
+    Route::get('/admin/media', [MediaController::class, 'index'])->name('media.index');
+    Route::post('/admin/media/upload', [MediaController::class, 'upload'])->name('media.upload');
+    Route::post('/admin/media/create-folder', [MediaController::class, 'createFolder'])->name('media.createFolder');
+    Route::post('/admin/media/delete', [MediaController::class, 'delete'])->name('media.delete');
+    Route::post('/admin/media/rename', [MediaController::class, 'rename'])->name('media.rename');
+
+
+    Route::controller(LeaderController::class)->group(function () {
+        Route::get('admin/leaders', 'index')->name('leader.index');
+        Route::get('admin/leaders/create', 'create')->name('leader.create');
+        Route::post('admin/leaders', 'store')->name('leader.store');
+        Route::get('admin/leaders/{id}/edit', 'edit')->name('leader.edit');
+        Route::post('admin/leaders/{id}', 'update')->name('leader.update');
+        Route::delete('admin/leaders/{id}', 'destroy')->name('leader.destroy');
     });
+
+
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
+
+
+
+
+
+
+
+
 
 });

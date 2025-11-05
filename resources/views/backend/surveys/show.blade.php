@@ -1,40 +1,31 @@
 @extends('admin.admin_dashboard')
 @section('admin')
+    <div class="container py-4">
+        <h3>Статистика: {{ $survey->title_ru }}</h3>
+        <p>{{ $survey->description_ru }}</p>
 
+        @foreach ($survey->questions as $q)
+            <div class="card mb-3 p-3">
+                <h5>{{ $q->text_ru }}</h5>
+                @php $total = $q->answers->count(); @endphp
+                <p>Всего голосов: <strong>{{ $total }}</strong></p>
 
-<div class="container mt-4">
-    <h3>Опрос: {{ $survey->title }}</h3>
+                <ul class="list-group">
+                    @foreach ($q->options as $opt)
+                        @php
+                            $count = $opt->answers->count();
+                            $percent = $total ? round(($count / $total) * 100, 1) : 0;
+                        @endphp
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>{{ $opt->text_ru }}</div>
+                            <div><span class="badge bg-primary">{{ $count }}</span>
+                                <small>{{ $percent }}%</small></div>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endforeach
 
-    <p>
-        Статус: 
-        @if($survey->is_active)
-            <span class="badge bg-success">Активен</span>
-        @else
-            <span class="badge bg-secondary">Неактивен</span>
-        @endif
-    </p>
-
-    <hr>
-
-    <h5>Вопросы:</h5>
-
-    @if($survey->questions->count())
-        <ul class="list-group">
-            @foreach($survey->questions as $question)
-                <li class="list-group-item">
-                    <strong>{{ $question->text }}</strong>
-                    <ul>
-                        @foreach($question->options as $opt)
-                            <li>{{ $opt->text }}</li>
-                        @endforeach
-                    </ul>
-                </li>
-            @endforeach
-        </ul>
-    @else
-        <p>Пока нет вопросов.</p>
-    @endif
-
-    <a href="{{ route('admin.surveys.index') }}" class="btn btn-secondary mt-3">Назад</a>
-</div>
+        <a href="{{ route('surveys.index') }}" class="btn btn-secondary">Назад</a>
+    </div>
 @endsection

@@ -58,7 +58,7 @@ class PresidentController extends Controller
         ]);
 
         return redirect()->route('all.presidents')->with([
-            'message' => 'Президент успешно добавлен',
+            'message' => 'Добавлен',
             'alert-type' => 'success'
         ]);
     }
@@ -112,7 +112,7 @@ class PresidentController extends Controller
         ]);
 
         return redirect()->route('all.presidents')->with([
-            'message' => 'Президент успешно обновлен',
+            'message' => 'Данные обновлены',
             'alert-type' => 'success'
         ]);
     }
@@ -128,7 +128,7 @@ class PresidentController extends Controller
         $president->delete();
 
         return redirect()->back()->with([
-            'message' => 'Президент успешно удален',
+            'message' => 'Удален',
             'alert-type' => 'success'
         ]);
     }

@@ -25,7 +25,9 @@
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="media">
-                            <ul class="nav-second-level"> <li style="margin-left: -20px"> <a href="{{ route('media.index') }}"><i class="mdi mdi-animation"></i> Все </a></li>
+                            <ul class="nav-second-level">
+                                <li style="margin-left: -20px"> <a href="{{ route('media.index') }}"><i
+                                            class="mdi mdi-animation"></i> Все </a></li>
                             </ul>
                         </div>
                     </li>
@@ -41,7 +43,8 @@
                         <div class="collapse" id="page">
                             <ul class="nav-second-level">
                                 <li> <a href="{{ route('all.pages') }}"> <i class="mdi mdi-animation"></i> Все</a></li>
-                                <li> <a href="{{ route('add.pages') }}"> <i class="mdi mdi-database-plus"></i> Добавить</a> </li>
+                                <li> <a href="{{ route('add.pages') }}"> <i class="mdi mdi-database-plus"></i>
+                                        Добавить</a> </li>
                             </ul>
                         </div>
                     </li>
@@ -57,7 +60,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.submenu') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('add.submenu') }}"><i class="mdi mdi-database-plus"></i>
@@ -68,7 +71,26 @@
                         </div>
                     </li>
 
-
+                    <li>
+                        <a href="#sidebarEcommerce" data-bs-toggle="collapse">
+                            <i class="mdi mdi-tag-multiple"></i>
+                            <span> Руководство </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarEcommerce">
+                            <ul class="nav-second-level">
+                                <li style="margin-left: -20px">
+                                    <a href="{{ route('leader.index') }}"><i class="mdi mdi-animation"></i> Все
+                                    </a>
+                                </li>
+                                <li style="margin-left: -20px">
+                                    <a href="{{ route('leader.create') }}"><i class="mdi mdi-database-plus"></i>
+                                        Добавить
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
 
 
 
@@ -82,7 +104,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.category') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('add.category') }}"><i class="mdi mdi-database-plus"></i> Добавить
@@ -91,7 +113,6 @@
                             </ul>
                         </div>
                     </li>
-
 
 
                     <li>
@@ -128,7 +149,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.news') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('add.news') }}"><i class="mdi mdi-database-plus"></i>
@@ -171,7 +192,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.gallery') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
 
                                 <li style="margin-left: -20px">
@@ -194,7 +215,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.presidents') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('add.presidents') }}"><i class="mdi mdi-database-plus"></i>
@@ -214,7 +235,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.projects') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('add.projects') }}"><i class="mdi mdi-database-plus"></i>
@@ -234,7 +255,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.tasks') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('add.tasks') }}"><i class="mdi mdi-database-plus"></i> Добавить
@@ -254,7 +275,7 @@
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.services') }}"><i class="mdi mdi-animation"></i> Все
-                                        </a>
+                                    </a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('add.services') }}"><i class="mdi mdi-database-plus"></i>
@@ -262,8 +283,50 @@
                                 </li>
 
                                 <li style="margin-left: -20px">
-                                    <a href="{{ route('all.service.requests') }}"><i class="mdi mdi-animation"></i> Заявки на услуги  </a>
+                                    <a href="{{ route('all.service.requests') }}"><i class="mdi mdi-animation"></i>
+                                        Заявки на услуги </a>
                                 </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <a href="#sidebarPool" data-bs-toggle="collapse">
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                            <span>Голосования </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarPool">
+                            <ul class="nav-second-level">
+                                <li style="margin-left: -20px"><a href="{{ route('surveys.index') }}"><i
+                                            class="mdi mdi-animation"></i> Все </a></li>
+                                <li style="margin-left: -20px"><a href="{{ route('surveys.create') }}"><i
+                                            class="mdi mdi-database-plus"></i>Добавить </a></li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+
+
+
+                    <li>
+                        <a href="#sidebarContact" data-bs-toggle="collapse">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>Формы обратной связи </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarContact">
+                            <ul class="nav-second-level">
+                                <li style="margin-left: -20px">
+                                    <a href="{{ route('contacts.index') }}"><i class="mdi mdi-animation"></i> Все
+                                    </a>
+                                </li>
+
+
 
 
                             </ul>

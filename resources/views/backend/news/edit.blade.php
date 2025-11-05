@@ -73,23 +73,7 @@
                                             </select>
                                         </div>
 
-                                  {{--      <div class="form-group mb-3" style="display: none">
-                                            <label for="subcategory_id" class="form-label">Подкатегория</label>
-                                            <select class="form-select" id="subcategory_id" name="subcategory_id">
-                                                <option value="">Выберите подкатегорию</option>
 
-                                                @if($news->subcategory_id == NULL)
-                                                @else
-                                                    <option value="">Выберите подкатегорию</option>
-                                                    @foreach($subcategories as $sub_cat)
-                                                        <option value="{{ $sub_cat->id }}"
-                                                            {{ $sub_cat->id == $news->subcategory_id ? 'selected': 'Без категорий' }}  >
-                                                            {{ $sub_cat->title_ru }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>--}}
 
                                       <div class="form-group mb-3">
                                             <!-- Поле для выбора даты -->
@@ -143,7 +127,7 @@
                                             <div class="row">
                                                 @foreach($news->images as $img)
                                                     <div class="col-md-2 mb-2 position-relative" id="gallery-image-{{ $img->id }}">
-                                                        <img src="{{ asset($img->image) }}" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">
+                                                        <img src="{{ asset($img->image) }}" class="img-thumbnail" style="height: 100px; object-fit: cover;">
                                                         <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" onclick="deleteGalleryImage({{ $img->id }})">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
