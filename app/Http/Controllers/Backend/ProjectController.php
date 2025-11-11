@@ -42,27 +42,43 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        // Обработка статуса
         $status = $request->has('status') ? 1 : 0;
 
-        // Обработка изображения
+        // основной путь
+        $imagePathBase = public_path('upload/projects');
+        if (!File::exists($imagePathBase)) {
+            File::makeDirectory($imagePathBase, 0777, true, true);
+        }
+
+        // Сохранение основного изображения
         $save_url = null;
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $name_gen = now()->format('Ymd_His') . '_' . $image->getClientOriginalName();
-            $imagePath = public_path('upload/projects');
-            if (!File::exists($imagePath)) {
-                File::makeDirectory($imagePath, 0777, true, true);
-            }
-            Image::make($image)->resize(800, 600)->save($imagePath . '/' . $name_gen);
+            $name_gen = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $image->getClientOriginalName());
+            Image::make($image)->resize(800, 600)->save($imagePathBase . '/' . $name_gen);
             $save_url = 'upload/projects/' . $name_gen;
         }
 
-        // Генерация slug
+        // Сохранение галереи
+        $galleryPaths = null;
+        if ($request->hasFile('gallery')) {
+            $galleryPathBase = $imagePathBase . '/gallery';
+            if (!File::exists($galleryPathBase)) {
+                File::makeDirectory($galleryPathBase, 0777, true, true);
+            }
+            $galleryPaths = [];
+            foreach ($request->file('gallery') as $file) {
+                $name = now()->format('Ymd_His') . '_' . uniqid() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+                Image::make($file)->resize(1200, 800)->save($galleryPathBase . '/' . $name);
+                $galleryPaths[] = 'upload/projects/gallery/' . $name;
+            }
+        }
+
+        // slug
         $titleForSlug = $data['title_en'] ?? $data['title_tj'] ?? $data['title_ru'] ?? 'project';
         $slug = $data['slug'] ?? \Illuminate\Support\Str::slug($titleForSlug, '-');
 
-        Project::create([
+        $project = Project::create([
             'title_ru' => $data['title_ru'] ?? null,
             'title_tj' => $data['title_tj'],
             'title_en' => $data['title_en'] ?? null,
@@ -73,6 +89,9 @@ class ProjectController extends Controller
             'text_en' => $data['text_en'] ?? null,
             'status' => $status,
             'sort' => $data['sort'] ?? 0,
+            'start_date' => $data['start_date'] ?? null,
+            'end_date' => $data['end_date'] ?? null,
+            'gallery' => $galleryPaths,
         ]);
 
         return redirect()->route('all.projects')->with([
@@ -104,27 +123,40 @@ class ProjectController extends Controller
         $data = $request->validated();
         $project = Project::findOrFail($request->id);
 
-        // Обработка статуса
         $status = $request->has('status') ? 1 : 0;
 
-        // Обработка нового изображения
+        $imagePathBase = public_path('upload/projects');
+        if (!File::exists($imagePathBase)) {
+            File::makeDirectory($imagePathBase, 0777, true, true);
+        }
+
+        // Обновление основного изображения
         $save_url = $project->image;
         if ($request->hasFile('image')) {
             if ($project->image && File::exists(public_path($project->image))) {
                 File::delete(public_path($project->image));
             }
-
             $image = $request->file('image');
-            $name_gen = now()->format('Ymd_His') . '_' . $image->getClientOriginalName();
-            $imagePath = public_path('upload/projects');
-            if (!File::exists($imagePath)) {
-                File::makeDirectory($imagePath, 0777, true, true);
-            }
-            Image::make($image)->resize(800, 600)->save($imagePath . '/' . $name_gen);
+            $name_gen = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $image->getClientOriginalName());
+            Image::make($image)->resize(800, 600)->save($imagePathBase . '/' . $name_gen);
             $save_url = 'upload/projects/' . $name_gen;
         }
 
-        // Генерация slug
+        // Обработка добавления в галерею (сохранение уже существующих + новых)
+        $galleryPaths = $project->gallery ?? [];
+        if ($request->hasFile('gallery')) {
+            $galleryPathBase = $imagePathBase . '/gallery';
+            if (!File::exists($galleryPathBase)) {
+                File::makeDirectory($galleryPathBase, 0777, true, true);
+            }
+            foreach ($request->file('gallery') as $file) {
+                $name = now()->format('Ymd_His') . '_' . uniqid() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+                Image::make($file)->resize(1200, 800)->save($galleryPathBase . '/' . $name);
+                $galleryPaths[] = 'upload/projects/gallery/' . $name;
+            }
+        }
+
+        // slug
         $titleForSlug = $data['title_en'] ?? $data['title_tj'] ?? $data['title_ru'] ?? 'project';
         $slug = $data['slug'] ?? \Illuminate\Support\Str::slug($titleForSlug, '-');
 
@@ -139,6 +171,9 @@ class ProjectController extends Controller
             'text_en' => $data['text_en'] ?? null,
             'status' => $status,
             'sort' => $data['sort'] ?? 0,
+            'start_date' => $data['start_date'] ?? null,
+            'end_date' => $data['end_date'] ?? null,
+            'gallery' => $galleryPaths,
         ]);
 
         return redirect()->route('all.projects')->with([
@@ -146,6 +181,7 @@ class ProjectController extends Controller
             'alert-type' => 'success'
         ]);
     }
+
 
     /**
      * Удаляет проект из базы данных.
@@ -157,9 +193,18 @@ class ProjectController extends Controller
     {
         $project = Project::findOrFail($id);
 
-        // Удаление изображения
-        if (File::exists(public_path($project->image))) {
+        // Удаляем основное изображение
+        if ($project->image && File::exists(public_path($project->image))) {
             File::delete(public_path($project->image));
+        }
+
+        // Удаляем файлы галереи
+        if ($project->gallery && is_array($project->gallery)) {
+            foreach ($project->gallery as $img) {
+                if ($img && File::exists(public_path($img))) {
+                    File::delete(public_path($img));
+                }
+            }
         }
 
         $project->delete();
@@ -170,5 +215,72 @@ class ProjectController extends Controller
         );
         return redirect()->back()->with($notification);
     }
+
+
+
+
+ /**
+     * Удаляет одно изображение из галереи проекта по AJAX.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteGalleryImage(Request $request)
+    {
+        // 1. Валидация входных данных
+        $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'image_path' => 'required|string',
+        ]);
+
+        $projectId = $request->project_id;
+        $imagePath = $request->image_path;
+
+        try {
+            $project = Project::findOrFail($projectId);
+
+            // 2. Получение галереи. Поскольку настроен кастинг, $project->gallery уже массив.
+            $gallery = $project->gallery ?? [];
+
+            // Запасной вариант на случай, если кастинг не сработал (хотя это маловероятно)
+            if (is_string($gallery)) {
+                 $gallery = json_decode($gallery, true) ?? [];
+            }
+
+            // 3. Удаление пути из массива галереи
+            // array_filter сохраняет только те элементы, для которых функция возвращает true
+            $gallery = array_filter($gallery, function ($path) use ($imagePath) {
+                return $path !== $imagePath;
+            });
+
+            // 4. Обновление записи в базе данных
+            // array_values() сбрасывает ключи, чтобы JSON-список был корректным.
+            // Laravel автоматически преобразует массив обратно в JSON-строку при сохранении.
+            $project->gallery = empty($gallery) ? null : array_values($gallery);
+            $project->save();
+
+            // 5. Удаление файла с диска
+            // File::exists импортирован в начале файла, поэтому используем его напрямую.
+            if (File::exists(public_path($imagePath))) {
+                File::delete(public_path($imagePath));
+            }
+
+            // 6. Возврат успешного JSON-ответа
+            return response()->json([
+                'success' => true,
+                'message' => 'Изображение галереи успешно удалено.'
+            ]);
+
+        } catch (\Exception $e) {
+            // 7. Возврат JSON-ответа с ошибкой
+            return response()->json([
+                'success' => false,
+                'message' => 'Ошибка при удалении: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
 }
 

@@ -8,7 +8,7 @@ class SurveyRequest extends FormRequest
 {
     /**
      * Определяет, авторизован ли пользователь для выполнения этого запроса.
-     * 
+     *
      * @return bool
      */
     public function authorize(): bool
@@ -19,7 +19,7 @@ class SurveyRequest extends FormRequest
     /**
      * Правила валидации для полей опроса.
      * Работает как для создания, так и для обновления опроса.
-     * 
+     *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -32,12 +32,14 @@ class SurveyRequest extends FormRequest
             'description_tj' => 'nullable|string',
             'description_en' => 'nullable|string',
             'is_active' => 'nullable|boolean',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
         ];
     }
 
     /**
      * Кастомные сообщения об ошибках валидации на русском языке.
-     * 
+     *
      * @return array<string, string>
      */
     public function messages(): array
@@ -52,6 +54,9 @@ class SurveyRequest extends FormRequest
             'title_en.required' => 'Введите название опроса на английском языке.',
             'title_en.string' => 'Название опроса на английском должно быть строкой.',
             'title_en.max' => 'Название опроса на английском не должно превышать 255 символов.',
+            'start_date.date' => 'Дата начала должна быть корректной датой.',
+            'end_date.date' => 'Дата окончания должна быть корректной датой.',
+            'end_date.after_or_equal' => 'Дата окончания должна быть позже или равна дате начала.',
             'description_ru.string' => 'Описание опроса на русском должно быть строкой.',
             'description_tj.string' => 'Описание опроса на таджикском должно быть строкой.',
             'description_en.string' => 'Описание опроса на английском должно быть строкой.',

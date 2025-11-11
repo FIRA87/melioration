@@ -21,6 +21,9 @@ return new class extends Migration
             $table->text('text_ru')->nullable();
             $table->text('text_tj');
             $table->text('text_en')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->json('gallery')->nullable();
             $table->unsignedInteger('views')->default(0);
             $table->boolean('status')->default(true);
             $table->unsignedInteger('sort')->default(0);

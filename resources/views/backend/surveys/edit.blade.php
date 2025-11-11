@@ -27,6 +27,31 @@
                 <label>Описание (RU)</label>
                 <textarea name="description_ru" class="form-control">{{ old('description_ru', $survey->description_ru) }}</textarea>
             </div>
+            <div class="mb-3">
+                <label>Описание (TJ)</label>
+                <textarea name="description_tj" class="form-control">{{ old('description_tj', $survey->description_tj) }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label>Описание (EN)</label>
+                <textarea name="description_en" class="form-control">{{ old('description_en', $survey->description_en) }}</textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="start_date" class="form-label">Дата начала</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control"
+                        value="{{ old('start_date', isset($survey->start_date) ? \Carbon\Carbon::parse($survey->start_date)->format('Y-m-d') : '') }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="end_date" class="form-label">Дата окончания</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control"
+                        value="{{ old('end_date', isset($survey->end_date) ? \Carbon\Carbon::parse($survey->end_date)->format('Y-m-d') : '') }}">
+                </div>
+            </div>
+
+
+
 
             <div>
                 <h5>Вопросы и варианты</h5>
@@ -50,7 +75,8 @@
                                 <label>Тип: </label>
                                 <select name="questions[{{ $i }}][type]"
                                     class="form-select w-auto d-inline-block">
-                                    <option value="radio" {{ $question->type == 'radio' ? 'selected' : '' }}>radio</option>
+                                    <option value="radio" {{ $question->type == 'radio' ? 'selected' : '' }}>radio
+                                    </option>
                                     <option value="checkbox" {{ $question->type == 'checkbox' ? 'selected' : '' }}>checkbox
                                     </option>
                                     <option value="text" {{ $question->type == 'text' ? 'selected' : '' }}>text</option>

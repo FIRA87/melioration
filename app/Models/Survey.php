@@ -12,11 +12,17 @@ class Survey extends Model
 	  protected $fillable = [
 			'title_ru', 'title_tj', 'title_en',
 			'description_ru', 'description_tj', 'description_en',
-			'is_active',
+			'is_active', 'start_date', 'end_date',
 	];
 
-		public function questions()
-		{
-				return $this->hasMany(Question::class);
-		}
+    protected $casts = [
+        'is_active' => 'boolean',
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
+    public function questions()
+    {
+            return $this->hasMany(Question::class);
+    }
 }

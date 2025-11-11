@@ -43,7 +43,9 @@ class SurveyController extends Controller
             'description_ru'=>$data['description_ru'] ?? null,
             'description_tj'=>$request->description_tj ?? null,
             'description_en'=>$request->description_en ?? null,
-            'is_active' => isset($data['is_active']) ? (bool)$data['is_active'] : true
+            'is_active' => isset($data['is_active']) ? (bool)$data['is_active'] : true,
+            'start_date' => $data['start_date'] ?? null,
+            'end_date' => $data['end_date'] ?? null,
         ]);
 
         if (!empty($data['questions'])) {
@@ -86,6 +88,8 @@ class SurveyController extends Controller
             'title_en'=>'required|string|max:255',
             'description_ru'=>'nullable|string',
             'is_active'=>'nullable|boolean',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
             'questions'=>'nullable|array',
             'questions.*.id'=>'nullable|exists:questions,id',
             'questions.*.text_ru'=>'required_with:questions|string',
@@ -102,7 +106,9 @@ class SurveyController extends Controller
             'description_ru'=>$data['description_ru'] ?? null,
             'description_tj'=>$request->description_tj ?? null,
             'description_en'=>$request->description_en ?? null,
-            'is_active' => isset($data['is_active']) ? (bool)$data['is_active'] : false
+            'is_active' => isset($data['is_active']) ? (bool)$data['is_active'] : false,
+            'start_date' => $data['start_date'] ?? null,
+            'end_date' => $data['end_date'] ?? null,
         ]);
 
         // Sync questions

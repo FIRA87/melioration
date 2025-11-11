@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Backend\JobController;
 use App\Http\Controllers\Backend\LinkController;
 use App\Http\Controllers\Backend\NewsController;
 use App\Http\Controllers\Backend\PageController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\TaskController;
-use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\MediaController;
 use App\Http\Controllers\Backend\VideoController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\Backend\ServiceController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Backend\SubMenuController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\DocumentController;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\PresidentController;
 use App\Http\Controllers\Frontend\LanguageController;
@@ -227,6 +229,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/edit/projects/{id}', 'edit')->name('edit.projects');
         Route::post('/update/projects', 'update')->name('update.projects');
         Route::get('/delete/projects/{id}', 'delete')->name('delete.projects');
+        Route::post('/delete/projects/gallery/image', 'deleteGalleryImage')->name('delete.projects.gallery.image');
     });
 
     // TASKS ROUTES
@@ -238,6 +241,17 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/update/tasks', 'update')->name('update.tasks');
         Route::get('/delete/tasks/{id}', 'delete')->name('delete.tasks');
     });
+
+    Route::prefix('documents')->name('documents.')->controller(DocumentController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{document}/edit', 'edit')->name('edit');
+        Route::put('/{document}', 'update')->name('update');
+        Route::delete('/{document}', 'destroy')->name('destroy');
+        Route::get('/{document}/download', 'download')->name('download');
+    });
+
 
     // SERVICES ROUTES
     Route::controller(ServiceController::class)->group(function () {
@@ -269,6 +283,24 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('admin/leaders/{id}', 'update')->name('leader.update');
         Route::delete('admin/leaders/{id}', 'destroy')->name('leader.destroy');
     });
+
+
+    Route::prefix('jobs')->name('jobs.')->controller(JobController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{job}/edit', 'edit')->name('edit');
+        Route::put('/{job}', 'update')->name('update');
+        Route::delete('/{job}', 'destroy')->name('destroy');
+        Route::get('/{job}/attachment/{index}', 'downloadAttachment')->name('download.attachment');
+    });
+
+    Route::post('/jobs/{job}/delete-attachment', [JobController::class, 'deleteAttachment'])->name('jobs.delete.attachment');
+
+
+
+
+
 
 
     Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');

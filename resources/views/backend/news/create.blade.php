@@ -11,7 +11,8 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('all.news') }}" class="btn btn-primary text-white">Назад</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('all.news') }}"
+                                        class="btn btn-primary text-white">Назад</a></li>
                             </ol>
                         </div>
                         <h4 class="page-title">НОВОСТНАЯ СТАТЬЯ</h4>
@@ -19,7 +20,7 @@
                 </div>
 
                 @error('publish_date')
-                <span class="text-danger">{{ $message }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                 @enderror
 
 
@@ -70,7 +71,8 @@
                                     <div class="form-group mb-3 col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="publish_date" class="form-label">Дата публикации</label>
-                                            <input type="date" id="publish_date" class="form-control" name="publish_date" value="{{ old('publish_date', today()->format('Y-m-d')) }}">
+                                            <input type="date" id="publish_date" class="form-control" name="publish_date"
+                                                value="{{ old('publish_date', today()->format('Y-m-d')) }}">
                                         </div>
                                     </div>
 
@@ -104,19 +106,23 @@
                                         </div>
                                     </div>
 
-                                 <div class="col-md-1 mt-3">
-                                     <div class="form-group">
-                                         <label for="showImage" class="form-label"></label>
-                                         <img src="{{ '/upload/no-image.jpg' }}" class="rounded-circle avatar-lg img-thumbnail" alt="profile-image" id="showImage">
-                                     </div>
-                                 </div>
+                                    <div class="col-md-1 mt-3">
+                                        <div class="form-group">
+                                            <label for="showImage" class="form-label"></label>
+                                            <img src="{{ '/upload/no-image.jpg' }}"
+                                                class="rounded-circle avatar-lg img-thumbnail" alt="profile-image"
+                                                id="showImage">
+                                        </div>
+                                    </div>
 
 
                                     <!-- Множественные изображения -->
                                     <div class="col-md-4 mt-3">
                                         <div class="form-group mb-3">
-                                            <label for="gallery" class="form-label">Дополнительные изображения (необязательно)</label>
-                                            <input type="file" class="form-control" name="gallery[]" id="gallery" multiple accept="image/*">
+                                            <label for="gallery" class="form-label">Дополнительные изображения
+                                                (необязательно)</label>
+                                            <input type="file" class="form-control" name="gallery[]" id="gallery"
+                                                multiple accept="image/*">
                                             <small class="text-muted">Можно выбрать несколько изображений</small>
                                         </div>
                                         <div id="gallery-preview" class="row mt-2"></div>
@@ -148,15 +154,18 @@
                                                     </a>
                                                 </li>
                                             </ul>
-                                  <div class="tab-content">
+                                            <div class="tab-content">
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
-                                                    <textarea id="summernote" name="news_details_ru" id="home-b1" cols="107" rows="10" class="form-control my-editor">Текст RU</textarea>
+                                                    <textarea id="summernote" name="news_details_ru" id="home-b1" cols="107" rows="10"
+                                                        class="form-control my-editor">Текст RU</textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
-                                                    <textarea id="summernote2" name="news_details_tj" id="profile-b1" cols="107" rows="10" class="form-control my-editor">Текст TJ</textarea>
+                                                    <textarea id="summernote2" name="news_details_tj" id="profile-b1" cols="107" rows="10"
+                                                        class="form-control my-editor">Текст TJ</textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
-                                                    <textarea id="summernote3" name="news_details_en" id="messages-b1" cols="107" rows="10" class="form-control my-editor">Текст EN</textarea>
+                                                    <textarea id="summernote3" name="news_details_en" id="messages-b1" cols="107" rows="10"
+                                                        class="form-control my-editor">Текст EN</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -167,15 +176,18 @@
 
                                             <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
-                                                    <input class="form-check-input" type="checkbox" name="top_slider" value="1" id="customckeck_2">
+                                                    <input class="form-check-input" type="checkbox" name="top_slider"
+                                                        value="1" id="customckeck_2">
                                                     <label class="form-check-label" for="customckeck_2">Слайдер</label>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
-                                                    <input class="form-check-input" type="checkbox" name="home_page" value="1" id="home_page_check">
-                                                    <label class="form-check-label" for="home_page_check">На главной</label>
+                                                    <input class="form-check-input" type="checkbox" name="home_page"
+                                                        value="1" id="home_page_check">
+                                                    <label class="form-check-label" for="home_page_check">На
+                                                        главной</label>
                                                 </div>
                                             </div>
 
@@ -190,98 +202,98 @@
                                     </div>
                                     <!-- end row-->
 
-                        </div> <!-- end card-body -->
+                                </div> <!-- end card-body -->
                             </form>
-                    </div> <!-- end card -->
-                </div><!-- end col -->
-            </div>
-            <!-- end row -->
+                        </div> <!-- end card -->
+                    </div><!-- end col -->
+                </div>
+                <!-- end row -->
 
 
 
 
-        </div> <!-- container -->
+            </div> <!-- container -->
 
-    </div> <!-- content -->
+        </div> <!-- content -->
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#myForm').validate({
-                rules: {
-                    title_ru: {
-                        required: true,
-                    },
-
-                    title_tj: {
-                        required: true,
-                    },
-
-                    title_en: {
-                        required: true,
-                    },
-
-                },
-                messages: {
-                    title_ru: {
-                        required: 'Пожалуйста, введите заголовок RU',
-                    },
-                    title_tj: {
-                        required: 'Пожалуйста, введите заголовок TJ',
-                    },
-                    title_en: {
-                        required: 'Пожалуйста, введите заголовок EN',
-                    },
-                },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-            });
-
-            $('#image').change(function(e) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#showImage').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(e.target.files['0'])
-            })
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('select[name="category_id"]').on('change', function() {
-                let category_id = $(this).val();
-
-                if (category_id) {
-                    $.ajax({
-                        url: "{{ url('/subcategory/ajax') }}/" + category_id,
-                        type: "GET",
-                        dataType: "JSON",
-                        success: function(data) {
-                            $('select[name="subcategory_id"]').html('');
-                            let d = $('select[name="subcategory_id"]').empty();
-                            $.each(data, function(key, value) {
-                                $('select[name="subcategory_id"]').append(
-                                    '<option value=" ' + value.id + ' "> ' + value
-                                    .title_ru + '</option>');
-                            });
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#myForm').validate({
+                    rules: {
+                        title_ru: {
+                            required: true,
                         },
-                    });
-                } else {
-                    alert('Пожалуйста выберите');
-                }
 
+                        title_tj: {
+                            required: true,
+                        },
+
+                        title_en: {
+                            required: true,
+                        },
+
+                    },
+                    messages: {
+                        title_ru: {
+                            required: 'Пожалуйста, введите заголовок RU',
+                        },
+                        title_tj: {
+                            required: 'Пожалуйста, введите заголовок TJ',
+                        },
+                        title_en: {
+                            required: 'Пожалуйста, введите заголовок EN',
+                        },
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                });
+
+                $('#image').change(function(e) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#showImage').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(e.target.files['0'])
+                })
             });
-        })
-    </script>
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('select[name="category_id"]').on('change', function() {
+                    let category_id = $(this).val();
+
+                    if (category_id) {
+                        $.ajax({
+                            url: "{{ url('/subcategory/ajax') }}/" + category_id,
+                            type: "GET",
+                            dataType: "JSON",
+                            success: function(data) {
+                                $('select[name="subcategory_id"]').html('');
+                                let d = $('select[name="subcategory_id"]').empty();
+                                $.each(data, function(key, value) {
+                                    $('select[name="subcategory_id"]').append(
+                                        '<option value=" ' + value.id + ' "> ' + value
+                                        .title_ru + '</option>');
+                                });
+                            },
+                        });
+                    } else {
+                        alert('Пожалуйста выберите');
+                    }
+
+                });
+            })
+        </script>
 
         <script>
             document.getElementById('gallery').addEventListener('change', function(e) {
@@ -293,17 +305,12 @@
                     reader.onload = function(event) {
                         const col = document.createElement('div');
                         col.className = 'col-md-2 mb-2';
-                        col.innerHTML = `<img src="${event.target.result}" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">`;
+                        col.innerHTML =
+                            `<img src="${event.target.result}" class="img-thumbnail" style="width: 100%; height: 100px; object-fit: cover;">`;
                         preview.appendChild(col);
                     };
                     reader.readAsDataURL(file);
                 });
             });
         </script>
-
-
-
-
-
-
-@endsection
+    @endsection

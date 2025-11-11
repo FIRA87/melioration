@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->text('description_ru')->nullable();
             $table->text('description_tj')->nullable();
             $table->text('description_en')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

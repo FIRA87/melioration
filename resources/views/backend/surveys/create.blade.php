@@ -27,6 +27,14 @@
                 <label>Описание (RU)</label>
                 <textarea name="description_ru" class="form-control">{{ old('description_ru') }}</textarea>
             </div>
+            <div class="mb-3">
+                <label>Описание (TJ)</label>
+                <textarea name="description_tj" class="form-control">{{ old('description_tj') }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label>Описание (EN)</label>
+                <textarea name="description_en" class="form-control">{{ old('description_en') }}</textarea>
+            </div>
 
             <div>
                 <h5>Вопросы и варианты</h5>

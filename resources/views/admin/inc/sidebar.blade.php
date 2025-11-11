@@ -118,7 +118,7 @@
                     <li>
                         <a href="#Link" data-bs-toggle="collapse">
                             <i class="mdi mdi-link"></i>
-                            <span>Ссылки </span>
+                            <span>Партнёры </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="Link">
@@ -316,7 +316,7 @@
                     <li>
                         <a href="#sidebarContact" data-bs-toggle="collapse">
                             <i class="fa-solid fa-envelope"></i>
-                            <span>Формы обратной связи </span>
+                            <span>Форма обратной связи </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="sidebarContact">
@@ -325,13 +325,45 @@
                                     <a href="{{ route('contacts.index') }}"><i class="mdi mdi-animation"></i> Все
                                     </a>
                                 </li>
-
-
-
-
                             </ul>
                         </div>
                     </li>
+
+
+                    <li>
+                        <a href="#sidebarJob" data-bs-toggle="collapse">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>Вакансия </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarJob">
+                            <ul class="nav-second-level">
+                                <li style="margin-left: -20px">
+                                    <a href="{{ route('jobs.index') }}"><i class="mdi mdi-animation"></i> Все
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <a href="#sidebarDocument" data-bs-toggle="collapse">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>Документы </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarDocument">
+                            <ul class="nav-second-level">
+                                <li style="margin-left: -20px">
+                                    <a href="{{ route('documents.index') }}"><i class="mdi mdi-animation"></i> Все
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+
 
                     <li class="menu-title mt-2">Настройка</li>
 
