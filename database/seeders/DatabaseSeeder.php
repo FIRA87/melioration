@@ -13,12 +13,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       // $this->call(UsersTableSeeder::class);
-        //\App\Models\User::factory(5)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            RoleHasPermissionSeeder::class,
+            UserSeeder::class,
+            SettingSeeder::class,
+            CategorySeeder::class,
+            PageSeeder::class,
+            SubPageSeeder::class,
+            TaskSeeder::class,
+            NewsSeeder::class,
+            NewsImageSeeder::class,
+            GallerySeeder::class,
+            ImageSeeder::class,
+            VideoSeeder::class,
+            LinkSeeder::class,
+            PresidentSeeder::class,
+            ProjectSeeder::class,
+            ServiceSeeder::class,
+            LeaderSeeder::class,
+            DocumentSeeder::class,
+            JobSeeder::class,
+            SurveySeeder::class,
+            QuestionSeeder::class,
+            OptionSeeder::class,
+            AnswerSeeder::class,
+        ]);
     }
 }

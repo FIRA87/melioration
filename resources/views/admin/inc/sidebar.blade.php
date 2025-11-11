@@ -73,7 +73,7 @@
 
                     <li>
                         <a href="#sidebarEcommerce" data-bs-toggle="collapse">
-                            <i class="mdi mdi-tag-multiple"></i>
+                            <i class="fa-solid fa-folder-tree"></i>
                             <span> Руководство </span>
                             <span class="menu-arrow"></span>
                         </a>
@@ -315,7 +315,7 @@
 
                     <li>
                         <a href="#sidebarContact" data-bs-toggle="collapse">
-                            <i class="fa-solid fa-envelope"></i>
+                            <i class="fa-solid fa-paper-plane"></i>
                             <span>Форма обратной связи </span>
                             <span class="menu-arrow"></span>
                         </a>
@@ -332,7 +332,7 @@
 
                     <li>
                         <a href="#sidebarJob" data-bs-toggle="collapse">
-                            <i class="fa-solid fa-envelope"></i>
+                            <i class="fa-solid fa-briefcase"></i>
                             <span>Вакансия </span>
                             <span class="menu-arrow"></span>
                         </a>
@@ -349,7 +349,7 @@
 
                     <li>
                         <a href="#sidebarDocument" data-bs-toggle="collapse">
-                            <i class="fa-solid fa-envelope"></i>
+                            <i class="fa-solid fa-folder"></i>
                             <span>Документы </span>
                             <span class="menu-arrow"></span>
                         </a>
