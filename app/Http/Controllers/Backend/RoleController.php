@@ -3,197 +3,256 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
+use DB;
 
 class RoleController extends Controller
 {
+    public function AllPermission(){
 
-    public function allPermission() {
-        $permission = Permission::all();
-        return view('backend.permission.index', compact('permission'));
-    } // END METHOD
+        $permissions = Permission::all();
+        return view('backend.permission.all_permission',compact('permissions'));
 
-    public function addPermission(){
-        return view('backend.permission.create');
-    }// END METHOD
+    } // End Method
 
-    public function storePermission(Request $request){
 
-  /*   $role = Permission::create( [
-         'name' => $request->name,
-        'group_name' => $request->group_name,
-    ]);*/
+    public function AddPermission(){
+        return view('backend.permission.add_permission');
+    }// End Method
 
-        $role = DB::table('permissions')->insert([
+
+    public function StorePermission(Request $request){
+
+        $role = Permission::create([
             'name' => $request->name,
             'group_name' => $request->group_name,
+
         ]);
 
-
         $notification = array(
-            'message' =>'Разрешение добавлено успешно',
-            'alert-type'=> 'success'
+            'message' => 'Permission Inserted Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->route('all.permission')->with($notification);
-    }// END METHOD
 
-    public function editPermission($id){
-        $permission = Permission::findOrFail($id);
-        return view('backend.permission.edit', compact('permission'));
-    }// END METHOD
+    }// End Method
 
-    public function updatePermission(Request $request){
+
+    public function EditPermission($id){
+
+       $permission = Permission::findOrFail($id);
+       return view('backend.permission.edit_permission',compact('permission'));
+
+    }// End Method
+
+
+
+    public function UpdatePermission(Request $request){
         $per_id = $request->id;
+
+
          Permission::findOrFail($per_id)->update([
             'name' => $request->name,
             'group_name' => $request->group_name,
+
         ]);
+
         $notification = array(
-            'message' =>'Разрешение успешно обновлено',
-            'alert-type'=> 'success'
+            'message' => 'Permission Updated Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->route('all.permission')->with($notification);
-    } // END METHOD
 
-    public function deletePermission($id){
-       // Permission::findOrFail($id)->delete();
-        DB::table('permissions')->where('id', $id)->delete();
-        $notification = array(
-            'message' =>'Разрешение успешно удалено',
-            'alert-type'=> 'success'
+
+    }// End Method
+
+
+    public function DeletePermission($id){
+
+         Permission::findOrFail($id)->delete();
+
+         $notification = array(
+            'message' => 'Permission Deleted Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->back()->with($notification);
+    }// End Method
 
-    } // END METHOD
+ ///////////////////// All Roles ////////////////////
 
-//*============================================= ROLE ===============================================================**/
-    public function allRole() {
-       $roles = Role::all();
-        return view('backend.roles.index', compact('roles'));
-    } // END METHOD
 
-    public function addRole(){
-        return view('backend.roles.create');
-    }// END METHOD
 
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function storeRole(Request $request){
+   public function AllRoles(){
+
+        $roles = Role::all();
+        return view('backend.roles.all_roles',compact('roles'));
+
+    } // End Method
+
+
+
+    public function AddRoles(){
+        return view('backend.roles.add_roles');
+    }// End Method
+
+
+    public function StoreRoles(Request $request){
+
         $role = Role::create([
             'name' => $request->name,
+
         ]);
 
         $notification = array(
-            'message' =>'Роль добавлена успешно',
-            'alert-type'=> 'success'
+            'message' => 'Roles Inserted Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->route('all.roles')->with($notification);
-    }// END METHOD
 
-    public function editRole($id){
+
+    }// End Method
+
+
+    public function EditRoles($id){
         $roles = Role::findOrFail($id);
-        return view('backend.roles.edit', compact('roles'));
-    }// END METHOD
+        return view('backend.roles.edit_roles',compact('roles'));
+    }// End Method
 
-    public function updateRole(Request $request){
+
+    public function UpdateRoles(Request $request){
+
         $role_id = $request->id;
+
         Role::findOrFail($role_id)->update([
             'name' => $request->name,
+
         ]);
 
         $notification = array(
-            'message' =>'Роль успешно обновлена',
-            'alert-type'=> 'success'
+            'message' => 'Roles Updated Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->route('all.roles')->with($notification);
-    } // END METHOD
 
-    public function deleteRole($id){
-        DB::table('roles')->where('id', $id)->delete();
+    }// End Method
 
-        //Role::findOrFail($id)->delete();
-        $notification = array(
-            'message' =>'Роль успешно удалена',
-            'alert-type'=> 'success'
+
+    public function DeleteRoles($id){
+
+     Role::findOrFail($id)->delete();
+       $notification = array(
+            'message' => 'Roles Deleted Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->back()->with($notification);
-    } // END METHOD
+    }// End Method
 
-///==================================ADD ROLE FOR PERMISSION===============================///
 
-    public function addRolePermission(){
-        $roles = Role::all();
-        $permission = Permission::all();
-        $permission_groups = User::getpermissionGroups();
-        return view('backend.roles.add_roles_permission', compact('roles', 'permission', 'permission_groups'));
-    } // END METHOD
 
-    public function rolePermissionStore(Request $request){
+
+    ///////////////// Add role Permission all method ///////////////
+
+
+    public function AddRolesPermission(){
+         $roles = Role::all();
+         $permissions = Permission::all();
+         $permission_groups = User::getpermissionGroups();
+         return view('backend.roles.add_roles_permission',compact('roles','permissions','permission_groups'));
+    }// End Method
+
+
+
+    public function RolePermissionStore(Request $request){
+
         $data = array();
         $permissions = $request->permission;
 
-        foreach($permissions as $key => $item) {
-                $data['role_id'] = $request->role_id;
-                $data['permission_id'] = $item;
-                DB::table('role_has_permissions')->insert($data);
+        foreach($permissions as $key => $item){
+            $data['role_id'] = $request->role_id;
+            $data['permission_id'] = $item;
+
+            DB::table('role_has_permissions')->insert($data);
         }
-        $notification = array(
-            'message' =>'Разрешение роли успешно добавлено',
-            'alert-type'=> 'success'
+
+         $notification = array(
+            'message' => 'Role Permission Added Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->route('all.roles.permission')->with($notification);
-    }// END METHOD
 
-    public function allRolePermission(){
+    }// End Method
+
+
+
+
+   public function AllRolesPermission(){
+
         $roles = Role::all();
-        return view('backend.roles.all_roles_permissions', compact('roles'));
-    }// END METHOD
+        return view('backend.roles.all_roles_permission',compact('roles'));
+
+    } // End Method
 
 
-    public function adminEditRoles($id){
+
+    public function AdminRolesEdit($id){
+
         $role = Role::findOrFail($id);
         $permissions = Permission::all();
         $permission_groups = User::getpermissionGroups();
-        return view('backend.roles.role_permission_edit', compact('role', 'permissions', 'permission_groups'));
+        return view('backend.roles.role_permission_edit',compact('role','permissions','permission_groups'));
+    } // End Method
 
-    }// END METHOD
 
 
-    public function rolePermissionUpdate(Request $request, $id){
+    public function AdminRolesUpdate(Request $request,$id){
         $role = Role::findOrFail($id);
         $permissions = $request->permission;
 
-        if(!empty($permissions)) {
-            $role->syncPermissions($permissions);
+        if (!empty($permissions)) {
+           $role->syncPermissions($permissions);
         }
-        $notification = array(
-            'message' =>'Разрешение роли успешно обновлено',
-            'alert-type'=> 'success'
+
+         $notification = array(
+            'message' => 'Role Permission Updated Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->route('all.roles.permission')->with($notification);
 
-    } // END METHOD
+    }// End Method
 
 
-    public function adminDeleteRoles($id){
-        $role =  DB::table('roles')->where('id', $id)->first();
-        //Role::findOrFail($id);
-        if(!is_null($role)) {
-            DB::table('roles')->where('id', $id)->delete();
+    public function AdminRolesDelete($id){
+
+        $role = Role::findOrFail($id);
+        if (!is_null($role)) {
+            $role->delete();
         }
 
-        $notification = array(
-            'message' =>'Роль успешно удалена',
-            'alert-type'=> 'success'
+         $notification = array(
+            'message' => 'Role Permission Deleted Successfully',
+            'alert-type' => 'success'
         );
+
         return redirect()->back()->with($notification);
-    } // END METHOD
+
+    }// End Method
+
+
+
+
+
+
+
 
 }

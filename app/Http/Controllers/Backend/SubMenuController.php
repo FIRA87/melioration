@@ -8,6 +8,7 @@ use App\Models\Page;
 use App\Models\SubPage;
 use Illuminate\Http\Request;
 use App\Http\Requests\SubMenuRequest;
+use Illuminate\Support\Str;
 
 class SubMenuController extends Controller
 {
@@ -37,19 +38,17 @@ class SubMenuController extends Controller
     {
         $data = $request->validated();
 
-        SubPage::insert([
+        SubPage::create([
             'title_ru' => $data['title_ru'],
             'title_tj' => $data['title_tj'] ?? null,
             'title_en' => $data['title_en'],
-            'url' => strtolower(str_replace(' ', '-', $data['title_en'])),
+            'url' => Str::slug($data['title_en']),
             'text_ru' => $data['text_ru'] ?? null,
             'text_tj' => $data['text_tj'] ?? null,
             'text_en' => $data['text_en'] ?? null,
             'status' => $data['status'],
             'page_id' => $data['page_id'],
             'sort' => $data['sort'] ?? null,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         $notification = array(
@@ -89,7 +88,7 @@ class SubMenuController extends Controller
             'title_ru' => $data['title_ru'],
             'title_tj' => $data['title_tj'] ?? null,
             'title_en' => $data['title_en'],
-            'url' => strtolower(str_replace(' ', '-', $data['title_en'])),
+            'url' => Str::slug($data['title_en']),
             'text_ru' => $data['text_ru'] ?? null,
             'text_tj' => $data['text_tj'] ?? null,
             'text_en' => $data['text_en'] ?? null,
@@ -109,7 +108,7 @@ class SubMenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(SubPage $subMenuItem, $id)
+    public function delete($id)
     {
         SubPage::findOrFail($id)->delete();
         $notification = array(

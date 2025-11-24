@@ -417,17 +417,15 @@
                         </a>
                         <div class="collapse" id="sidebarRole">
                             <ul class="nav-second-level">
-                                <li style="margin-left: -20px">
-                                    <a href="{{ route('all.permission') }}"><i class="mdi mdi-account"></i> Все
-                                        разрешения</a>
-                                </li>
+                                <li style="margin-left: -20px"><a href="{{ route('all.permission') }}"><i
+                                            class="mdi mdi-account"></i> Все разрешения</a></li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.roles') }}"><i class="mdi mdi-account-key"></i> Роли
                                         пользователей</a>
                                 </li>
                                 <li style="margin-left: -20px">
-                                    <a href="{{ route('add.roles.permission') }}"><i class="mdi mdi-account-key"></i>
-                                        Добавить разрешение для роли</a>
+                                    <a href="{{ route('add.roles.permission') }}"><i
+                                            class="mdi mdi-account-key"></i>Добавить разрешение для роли</a>
                                 </li>
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('all.roles.permission') }}"><i

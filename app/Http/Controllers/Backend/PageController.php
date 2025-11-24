@@ -6,6 +6,7 @@ use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PageRequest;
+use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
@@ -34,19 +35,17 @@ class PageController extends Controller
 				$data = $request->validated();
 		
 				
-				Page::insert([
-						'title_ru' => $data['title_ru'],
-						'title_tj' => $data['title_tj'] ?? '',
-						'title_en' => $data['title_en'],
-						'text_ru' => $data['text_ru'] ?? '',
-						'text_tj' => $data['text_tj'] ?? '',
-						'text_en' => $data['text_en'] ?? '',
-						'status' => $data['status'],
-						'sort' => $data['sort'] ?? 0,
-						'created_at' => now(),
-						'updated_at' => now(),
-						'url' => strtolower(str_replace(' ', '-', $data['title_en'])),
-				]);
+        Page::create([
+            'title_ru' => $data['title_ru'],
+            'title_tj' => $data['title_tj'] ?? '',
+            'title_en' => $data['title_en'],
+            'text_ru' => $data['text_ru'] ?? '',
+            'text_tj' => $data['text_tj'] ?? '',
+            'text_en' => $data['text_en'] ?? '',
+            'status' => $data['status'],
+            'sort' => $data['sort'] ?? 0,
+            'url' => Str::slug($data['title_en']),
+        ]);
 		
 				return redirect()->route('all.pages')->with([
 						'message' => 'Страница успешно добавлена',
@@ -89,7 +88,7 @@ class PageController extends Controller
 						'status' => $data['status'],
 						'sort' => $data['sort'] ?? 0,
 						'updated_at' => now(),
-						'url' => strtolower(str_replace(' ', '-', $data['title_en'])),
+            'url' => Str::slug($data['title_en']),
 				]);
 		
 				return redirect()->route('all.pages')->with([
@@ -101,7 +100,7 @@ class PageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Page $page, $id)
+    public function delete($id)
     {
         Page::findOrFail($id)->delete();
         $notification = array(
