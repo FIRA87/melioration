@@ -8,6 +8,9 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Requests\SettingRequest;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Contact;
 
 class SettingController extends Controller
 {
@@ -22,6 +25,9 @@ class SettingController extends Controller
                 'street_ru' => '',
                 'street_tj' => '',
                 'street_en' => '',
+                'title_ru' => '',
+                'title_tj' => '',
+                'title_en' => '',
                 'phone' => '',
                 'email' => '',
                 'facebook' => '',
@@ -46,6 +52,9 @@ class SettingController extends Controller
             'street_ru' => 'nullable|string|max:255',
             'street_tj' => 'nullable|string|max:255',
             'street_en' => 'nullable|string|max:255',
+            'title_tj' => 'nullable|string|max:255',
+            'title_ru' => 'nullable|string|max:255',
+            'title_en' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:50',
             'email' => 'nullable|email|max:255',
             'facebook' => 'nullable|string|max:255',
@@ -56,7 +65,7 @@ class SettingController extends Controller
             'contact_title' => 'nullable|string|max:255',
             'contact_detail' => 'nullable|string|max:255',
             'contact_map' => 'nullable|string',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
         ]);
 
         // обработка логотипа
@@ -83,7 +92,12 @@ class SettingController extends Controller
     }
 
 
-
+    // Например, в контроллере админки
+    public function contacts()
+    {
+        $contacts = Contact::latest()->paginate(20);
+        return view('backend.contacts.index', compact('contacts'));
+    }
 
 
   //=============ADMIN CONTROLLER CONTACT======================//
@@ -111,48 +125,78 @@ class SettingController extends Controller
         return view('frontend.news.contact');
     }
 
-    public function send_email(Request $request){
-        $validator = \Validator::make($request->all(),[
-            'name'=>'required',
-            'email' => 'required|email',
-            'message' => 'required'
-        ],[
-            'name.required' => 'ERROR_NAME_REQUIRED',
-            'email.required' => 'ERROR_EMAIL_REQUIRED',
-            'email.email' => 'ERROR_EMAIL_VALID',
-            'message.required' => 'ERROR_MESSAGE_REQUIRED'
+  public function send_email(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'    => 'required|string|max:255',
+            'phone'   => 'required|string|max:50',
+            'email'   => 'required|email',
+            'message' => 'required|string',
+        ], [
+            'name.required'    => 'Укажите Ф.И.О.',
+            'phone.required'   => 'Укажите телефон',
+            'email.required'   => 'Укажите email',
+            'email.email'      => 'Неверный формат email',
+            'message.required' => 'Напишите сообщение',
         ]);
-        if(!$validator->passes())
-        {
-            $notification = array(
-                'message' =>'Ошибка!!! Не удалось отправить письмо',
-                'alert-type'=> 'warning'
-            );
-            return redirect()->back()->with($notification);
-           // return response()->json(['code'=>0,'error_message'=>$validator->errors()->toArray()]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('message', 'Пожалуйста, исправьте ошибки в форме')
+                ->with('alert-type', 'warning');
         }
-        else
-        {
-            // Send email
-            $admin_data = Setting::where('id',1)->first();
-            $subject = 'Contact Form Email';
-            $message = '<p style="text-align: center; ">Новое Письмо:</p>';
-            $message .='<table cellpadding="0" cellspacing="0" border="1" width="500">';
-            $message .= '<tr><th>Имя посетителя: </th>'.'<td>'.$request->name.'</td></tr>';
-            $message .= '<tr><th>Email: </th>'.'<td>'.$request->email.'</td></tr>';
-            $message .= '<tr><th>Сообщение посетителя: </th>'.'<td>'.$request->message.'</td></tr>';
-            $message .= '</table>';
-            \Mail::to($admin_data->email)->send(new Websitemail($subject,$message));
 
-            $notification = array(
-                'message' =>'Письмо отправлено',
-                'alert-type'=> 'success'
-            );
+        // Определяем язык
+        $locale = session('locale', 'ru');
 
-            return redirect()->back()->with($notification);
-           // return response()->json(['code'=>1,'success_message'=>'SUCCESS_CONTACT']);
+        // Сохраняем в базу
+        Contact::create([
+            'name'          => $request->name,
+            'email'         => $request->email,
+            'phone'         => $request->phone,
+            'message_ru'    => $locale == 'ru' ? $request->message : null,
+            'message_tj'    => $locale == 'tj' ? $request->message : null,
+            'message_en'    => $locale == 'en' ? $request->message : null,
+            'title_ru'      => 'Обращение от ' . $request->name,
+            'title_tj'      => 'Муроҷиат аз ' . $request->name,
+            'title_en'      => 'Message from ' . $request->name,
+            'status'        => true,
+        ]);
 
-        }
+        // Отправка письма админу (оставляем как есть)
+        $admin = Setting::first();
+        $subject = 'Новое обращение с сайта';
+        $mailMessage = '<p>Новое обращение:</p>
+            <table border="1" cellpadding="10" style="border-collapse: collapse;">
+                <tr><th>Имя</th><td>'.$request->name.'</td></tr>
+                <tr><th>Телефон</th><td>'.$request->phone.'</td></tr>
+                <tr><th>Email</th><td>'.$request->email.'</td></tr>
+                <tr><th>Сообщение</th><td>'.nl2br(e($request->message)).'</td></tr>
+                <tr><th>Дата</th><td>'.now()->format('d.m.Y H:i').'</td></tr>
+            </table>';
+
+        Mail::to($admin->email)->send(new Websitemail($subject, $mailMessage));
+
+ 
+        $notification = [
+            'message' => 'Ваше сообщение успешно отправлено! Спасибо за обращение.',
+            'alert-type' => 'success'
+        ];
+
+        // логируем, чтобы убедиться, что flash сохранился
+        \Log::info('Contact form: flash message set', $notification);
+
+        // редирект на именованный роут главной (если есть)
+        // либо redirect('/') — оба работают, но именованный надёжнее
+        return redirect()->route('index')->with($notification);
+
+
+
+        // return redirect()->back()
+        //     ->with('message', 'Ваше сообщение успешно отправлено! Спасибо за обращение.')
+        //     ->with('alert-type', 'success');
     }
 //==================END FRONT CONTROLLER======================//
 

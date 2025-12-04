@@ -9,6 +9,16 @@
 
             <div class="card">
                 <div class="card-body">
+                    <h4 class="header-title">Добавить руководителя</h4>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form method="POST" action="{{ route('leader.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
@@ -25,62 +35,62 @@
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label>ФИО [RU]</label>
-                                        <input type="text" name="title_ru" class="form-control" required>
+                                        <input type="text" name="title_ru" class="form-control" value="{{ old('title_ru') }}" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label>ФИО [TJ]</label>
-                                        <input type="text" name="title_tj" class="form-control">
+                                        <input type="text" name="title_tj" class="form-control" value="{{ old('title_tj') }}">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label>ФИО [EN]</label>
-                                        <input type="text" name="title_en" class="form-control">
+                                        <input type="text" name="title_en" class="form-control" value="{{ old('title_en') }}">
                                     </div>
 
                                     <div class="col-md-4 mb-3">
                                         <label>Должность [RU]</label>
-                                        <input type="text" name="position_ru" class="form-control" required>
+                                        <input type="text" name="position_ru" class="form-control" value="{{ old('position_ru') }}" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label>Должность [TJ]</label>
-                                        <input type="text" name="position_tj" class="form-control">
+                                        <input type="text" name="position_tj" class="form-control" value="{{ old('position_tj') }}">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label>Должность [EN]</label>
-                                        <input type="text" name="position_en" class="form-control">
+                                        <input type="text" name="position_en" class="form-control" value="{{ old('position_en') }}">
                                     </div>
 
                                     <div class="col-md-4 mb-3">
                                         <label>Email</label>
-                                        <input type="email" name="email" class="form-control">
+                                        <input type="email" name="email" class="form-control" value="{{ old('email') }}">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label>Телефон</label>
-                                        <input type="text" name="phone" class="form-control">
+                                        <input type="text" name="phone" class="form-control" value="{{ old('phone') }}">
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label>Рабочие дни</label>
                                         <input type="text" name="working_days" class="form-control"
-                                            placeholder="Пн–Пт, 09:00–17:00">
+                                            placeholder="Пн–Пт, 09:00–17:00" value="{{ old('working_days') }}">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label for="subscriber_send_option" class="form-label">Статус </label>
                                         <select class="form-select" id="subscriber_send_option" name="status">
-                                            <option value="1">Активный</option>
-                                            <option value="0">Неактивный</option>
+                                            <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Активный</option>
+                                            <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Неактивный</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-4 ">
                                         <label for="sort" class="form-label">Позиция</label>
                                         <input class="form-control" type="number" id="sort" name="sort"
-                                            autofocus="">
+                                            autofocus="" value="{{ old('sort') }}">
                                     </div>
 
                                     <div class="col-md-4">
                                         <label for="slug" class="form-label">URL(адрес) </label>
                                         <input class="form-control" type="text" id="slug" name="slug"
-                                            autofocus="">
+                                            autofocus="" value="{{ old('slug') }}">
                                     </div>
                                 </div>
                             </div>
@@ -103,15 +113,15 @@
                                     <div class="tab-content">
                                         <div class="tab-pane" id="home-b1" role="tabpanel">
                                             <textarea id="summernote" name="text_ru" id="home-b1" cols="107" rows="10"
-                                                class="form-control my-editor">Текст RU</textarea>
+                                                class="form-control my-editor">{{ old('text_ru', 'Текст RU') }}</textarea>
                                         </div>
                                         <div class="tab-pane show" id="profile-b1" role="tabpanel">
                                             <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10"
-                                                class="form-control my-editor">Текст TJ</textarea>
+                                                class="form-control my-editor">{{ old('text_tj', 'Текст TJ') }}</textarea>
                                         </div>
                                         <div class="tab-pane active" id="messages-b1" role="tabpanel">
                                             <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10"
-                                                class="form-control my-editor">Текст EN</textarea>
+                                                class="form-control my-editor">{{ old('text_en', 'Текст EN') }}</textarea>
                                         </div>
                                     </div>
                                 </div>

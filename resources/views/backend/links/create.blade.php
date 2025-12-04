@@ -6,6 +6,15 @@
     <div class="content-fluid">
         <div class="container-fluid flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Добавить ссылку</span> </h4>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form method="POST" action="{{ route('store.links') }}" enctype="multipart/form-data" id="myForm">
                 @csrf
                 <div class="row">
@@ -20,19 +29,19 @@
                                         <div class="form-group mb-3 ">
                                             <label for="title_ru" class="form-label">Название RU *</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
-                                                required>
+                                                required value="{{ old('title_ru') }}">
                                         </div>
 
                                         <div class="form-group mb-3 ">
                                             <label for="title_tj" class="form-label">Название TJ *</label>
                                             <input type="text" id="title_tj" class="form-control" name="title_tj"
-                                                required>
+                                                required value="{{ old('title_tj') }}">
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN *</label>
                                             <input type="text" id="title_en" class="form-control" name="title_en"
-                                                required>
+                                                required value="{{ old('title_en') }}">
                                         </div>
                                     </div>
 
@@ -40,7 +49,7 @@
                                         <div class="mb-3">
                                             <label for="url" class="form-label">Адрес ссылки *</label>
                                             <input class="form-control" type="text" id="url" name="url"
-                                                autofocus="">
+                                                autofocus="" value="{{ old('url') }}">
                                         </div>
 
                                         <div class="mb-3 ">
@@ -52,7 +61,7 @@
                                         <div class="mb-3 ">
                                             <label for="sort" class="form-label">Позиция</label>
                                             <input class="form-control" type="number" id="sort" name="sort"
-                                                autofocus="">
+                                                autofocus="" value="{{ old('sort') }}">
                                         </div>
 
                                     </div>
@@ -61,8 +70,8 @@
                                             <label for="status" class="form-label">Статус</label>
                                             <select class="form-select" name="status" aria-invalid="false"
                                                 style="display: block" id="status">
-                                                <option value="1" selected>Активный</option>
-                                                <option value="No">Неактивный</option>
+                                                <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Активный</option>
+                                                <option value="No" {{ old('status') == 'No' ? 'selected' : '' }}>Неактивный</option>
 
                                             </select>
                                         </div>

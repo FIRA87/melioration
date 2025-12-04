@@ -26,22 +26,31 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title">Добавить пользователя</h4>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form id="myForm" method="POST" action="{{ route('store.admin') }}">
                     @csrf
                     <div class="row">
                         <div class="col-lg-6">
                                 <div class="form-group mb-3">
                                     <label for="name" class="form-label">ФИО</label>
-                                    <input type="text" id="name" class="form-control" name="name">
+                                    <input type="text" id="name" class="form-control" name="name" value="{{ old('name') }}">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="email" class="form-label">E-mail</label>
-                                    <input type="text" id="email" name="email" class="form-control" >
+                                    <input type="text" id="email" name="email" class="form-control" value="{{ old('email') }}">
                                 </div>
 
                             <div class="form-group mb-3">
                                 <label for="phone" class="form-label">Телефон</label>
-                                <input type="text" id="phone" name="phone" class="form-control" >
+                                <input type="text" id="phone" name="phone" class="form-control" value="{{ old('phone') }}">
                             </div>
 
                         </div> <!-- end col -->
@@ -50,7 +59,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="username" class="form-label">Имя пользователя</label>
-                                <input type="text" id="username" name="username" class="form-control" >
+                                <input type="text" id="username" name="username" class="form-control" value="{{ old('username') }}">
                             </div>
 
 

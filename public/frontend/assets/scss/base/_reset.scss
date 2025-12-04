@@ -1,0 +1,177 @@
+/* ==== 
+ --------- (2.1) reset styles start ---------
+ ==== */
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+
+    &::-moz-selection {
+        color: #ffffff;
+        background-color: #1770c8;
+    }
+
+    &::selection {
+        color: #ffffff;
+        background-color: #1770c8;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: $font-primary;
+    font-size: $font-size;
+    line-height: 0;
+    font-weight: 400;
+    color: $content-color;
+    background-color: $theme-primary-bg;
+    overflow-x: hidden;
+
+    // scrollbar
+    &::-webkit-scrollbar {
+        width: .4vw;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #cae6f7;
+
+    }
+
+    &::-webkit-scrollbar-button,
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary-color;
+        border-radius: 5px;
+        box-shadow: inset 2px 2px 2px hsl(0deg 0% 100% / 25%), inset -2px -2px 2px rgb(0 0 0 / 25%);
+    }
+}
+
+section, footer{
+    overflow-x: hidden;
+}
+
+a,
+button {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 0px;
+    outline: 0;
+    transition: $transition;
+    letter-spacing: 1px;
+
+    i {
+        transition: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        color: inherit;
+    }
+
+    &:hover {
+        text-decoration: none;
+        border: 0px;
+        outline: 0px;
+    }
+}
+
+button {
+    cursor: pointer;
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+ul,
+ol {
+    list-style-type: none;
+    list-style-position: inside;
+    margin: 0px;
+    padding: 0px;
+}
+
+input,
+textarea {
+    border: 0px;
+    outline: 0px;
+
+    &::placeholder {
+        color: $placeholder !important;
+        opacity: 1;
+        font-size: $font-size;
+    }
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+input {
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0px;
+    }
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="checkbox"] {
+    width: initial;
+    height: initial;
+}
+
+textarea {
+    min-height: 150px;
+    resize: none;
+}
+
+.form-select:focus {
+    border-color: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+iframe {
+    border: 0;
+    width: 100%;
+}
+
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+ol,
+ul,
+li,
+table,
+tr,
+th,
+td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* ==== 
+ --------- (2.1) reset styles end ---------
+ ==== */

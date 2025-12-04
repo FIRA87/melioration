@@ -1,0 +1,108 @@
+/* ==== 
+ --------- (3.4) faq styles start ---------
+ ==== */
+
+// js class
+.accordion_bg{
+    background: white !important;
+}
+// faq calss
+.accordion {
+    --bs-accordion-bg: $neutral-n-40;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .accordion-item {
+        padding: 12px 20px;
+        --bs-accordion-border-width: 0;
+        border-radius: 16px;
+        border: 1px solid $neutral-n-40;
+        background: $theme-quaternary-bg;
+        .accordion-body{
+            padding: 0;
+            color: $neutral-n-700;
+            padding-top: 12px;
+            margin-top: 12px;
+            p{
+                font-size: 14px;
+                color: $neutral-n-700;
+            }
+        }
+        .show .accordion-body{
+            position: relative;
+            &:before{
+                content: "";
+                position: absolute;
+                border-top: 1px dotted $neutral-n-50;
+                width: 100%;
+                top: 0;
+                opacity: 1;
+            }
+        }
+    }
+
+    .accordion-button {
+        --bs-accordion-btn-bg: $tertiary-color;
+        --bs-accordion-btn-color: $head-color;
+        padding: 0;
+        position: relative;
+        --bs-accordion-btn-bg: $tertiary-color;
+        gap: 6px;
+        font-size: 18px;
+        font-weight: 500;
+        &::after {
+            --arrow: "\F4FE";
+            content: var(--arrow); 
+            font-family: "bootstrap-icons";
+            font-weight: normal;
+            font-size: 24px;
+            @include box(40px);
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            --bs-accordion-btn-icon-width: 1.75rem;
+            // --icon-bg: #414E6F;
+            background: $primary-color;
+            color: white;
+            border-radius: 50%;
+            opacity: 1;
+            transition: $transition;
+
+        }
+        &:not(.collapsed) {
+            --bs-accordion-active-color: $head-color;
+            --bs-accordion-active-bg:$tertiary-color;
+            --bs-accordion-btn-icon-transform: rotate(180deg);
+
+            &::after {
+                --arrow: '\F2EA';
+                font-family: "bootstrap-icons";
+                font-weight: normal;
+                background: $secondary-color;
+            }
+        }
+
+        &:focus {
+            border-color: transparent;
+            box-shadow: unset;
+        }
+    }
+}
+ 
+
+@media (max-width: 767px) {
+    .accordion .accordion-button{
+        font-size: $font-size;
+        &::after{
+            width: 30px;
+            min-width: 30px;
+            height: 30px;
+        }
+    }
+}

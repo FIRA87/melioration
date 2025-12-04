@@ -2,6 +2,15 @@
 @section('admin')
     <div class="container py-4">
         <h3>Редактировать документ</h3>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <form action="{{ route('documents.update', $document) }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -60,7 +69,7 @@
                 <div class="col-md-3 d-flex align-items-end">
                     <div class="form-check form-switch">
                         <input type="checkbox" name="is_active" value="1" class="form-check-input"
-                            {{ $document->is_active ? 'checked' : '' }}>
+                            {{ old('is_active', $document->is_active) ? 'checked' : '' }}>
                         <label class="form-check-label">Активен</label>
                     </div>
                 </div>

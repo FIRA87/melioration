@@ -31,7 +31,7 @@ class NewsController extends Controller
     }
 
     public function storeNews(NewsRequest $request)
-    {
+    {        
         $data = $request->validated();
         $imagePath = $this->handleImageUpload($request);
 

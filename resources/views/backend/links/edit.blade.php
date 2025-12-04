@@ -14,6 +14,15 @@
                 </div>
             </div>
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form method="POST" action="{{ route('update.links', $link->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -32,19 +41,19 @@
                                         <div class="form-group mb-3 ">
                                             <label for="title_ru" class="form-label">Название RU</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
-                                                value="{{ $link->title_ru }}">
+                                                value="{{ old('title_ru', $link->title_ru) }}">
                                         </div>
 
                                         <div class="form-group mb-3 ">
                                             <label for="title_tj" class="form-label">Название TJ</label>
                                             <input type="text" id="title_tj" class="form-control" name="title_tj"
-                                                value="{{ $link->title_tj }}">
+                                                value="{{ old('title_tj', $link->title_tj) }}">
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
                                             <input type="text" id="title_en" class="form-control" name="title_en"
-                                                value="{{ $link->title_en }}">
+                                                value="{{ old('title_en', $link->title_en) }}">
                                         </div>
                                     </div>
 
@@ -53,7 +62,7 @@
                                         <div class="mb-3">
                                             <label for="url" class="form-label">Адрес ссылки *</label>
                                             <input class="form-control" type="text" id="url" name="url"
-                                                autofocus="" value="{{ $link->url }}">
+                                                autofocus="" value="{{ old('url', $link->url) }}">
                                         </div>
 
                                         <div class="mb-3 ">
@@ -74,9 +83,9 @@
 
                                         <label for="status" class="form-label">Статус</label>
                                         <select class="form-select" name="status" aria-invalid="false">
-                                            <option value="1" @if ($link->status == '1') selected @endif>
+                                            <option value="1" @if (old('status', $link->status) == '1') selected @endif>
                                                 Активный</option>
-                                            <option value="0" @if ($link->status == '0') selected @endif>
+                                            <option value="0" @if (old('status', $link->status) == '0') selected @endif>
                                                 Неактивный</option>
                                         </select>
                                     </div>
@@ -84,7 +93,7 @@
                                         <div class="mb-3 ">
                                             <label for="sort" class="form-label">Позиция</label>
                                             <input class="form-control" type="text" id="sort" name="sort"
-                                                autofocus="" value="{{ $link->sort }}">
+                                                autofocus="" value="{{ old('sort', $link->sort) }}">
                                         </div>
                                     </div>
                                 </div>

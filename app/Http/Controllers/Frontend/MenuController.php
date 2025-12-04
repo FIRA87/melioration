@@ -20,9 +20,11 @@ class MenuController extends Controller
     public function menuShow(Page $menu)
     {
         // Получаем все подменю текущего меню
-        $all_submenus = $menu->submenus()->with('subSubmenus')->orderBy('sort', 'asc')->get();
+       // $all_submenus = $menu->submenus()->with('subSubmenus')->orderBy('sort', 'asc')->get();
+        $all_submenus = $menu->submenus()->orderBy('sort', 'asc')->get();
 
-        return view('frontend.news.page_details', [
+        return view('frontend.pages.page_details', [
+            
             'menu' => $menu,
             'all_submenus' => $all_submenus, // Все подменю и их подменю
             'currentMenu' => $menu, // Текущее меню
@@ -34,11 +36,11 @@ class MenuController extends Controller
         $menu = $submenu->page; // Получаем родительское меню
 
         // Получаем все подменю текущего меню
-        $all_submenus = $menu->submenus()->with('subSubmenus')->where('status', '1')->get();
+       // $all_submenus = $menu->submenus()->with('subSubmenus')->where('status', '1')->get();
+         $all_submenus = $menu->submenus()->where('status', '1')->get();
 
 
-
-        return view('frontend.news.sub_page_details', [
+        return view('frontend.pages.sub_page_details', [
             'submenu' => $submenu,
             'menu' => $menu,
             'all_submenus' => $all_submenus, // Все подменю и их подменю
@@ -54,7 +56,7 @@ class MenuController extends Controller
         // Получаем все подменю текущего меню
         $all_submenus = $menu->submenus()->with('subSubmenus')->orderBy('sort', 'asc')->where('status', '1')->get();
 
-        return view('frontend.news.sub_sub_page_details', [
+        return view('frontend.pages.sub_sub_page_details', [
             'sub_submenu' => $sub_submenu,
             'submenu' => $submenu,
             'menu' => $menu,

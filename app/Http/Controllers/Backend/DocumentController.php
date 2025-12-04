@@ -21,73 +21,100 @@ class DocumentController extends Controller
         return view('backend.documents.create');
     }
 
-    public function store(DocumentRequest $request)
-    {
-        $data = $request->validated();
+public function store(DocumentRequest $request)
+{
+    $data = $request->validated();
+    $filePath = null;
+    $fileType = null;
 
-        // Загрузка файла
-        $filePath = null;
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $name = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $dest = public_path('upload/documents');
-            if (!File::exists($dest)) File::makeDirectory($dest, 0777, true, true);
-            $file->move($dest, $name);
-            $filePath = 'upload/documents/' . $name;
-        }
+    // Загрузка файла
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
 
-        Document::create([
-            'title_tj' => $data['title_tj'],
-            'title_ru' => $data['title_ru'] ?? null,
-            'title_en' => $data['title_en'] ?? null,
-            'description_tj' => $data['description_tj'] ?? null,
-            'description_ru' => $data['description_ru'] ?? null,
-            'description_en' => $data['description_en'] ?? null,
-            'file_path' => $filePath,
-            'published_at' => $data['published_at'] ?? null,
-            'is_active' => $request->has('is_active') ? 1 : 0,
-        ]);
+        // Определяем тип файла (расширение)
+        $fileType = strtolower($file->getClientOriginalExtension());
 
-        return redirect()->route('documents.index')->with('success', 'Документ добавлен');
+        // Генерация имени файла
+        $name = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+
+        // Папка
+        $dest = public_path('upload/documents');
+        if (!File::exists($dest)) File::makeDirectory($dest, 0777, true, true);
+
+        // Перемещение
+        $file->move($dest, $name);
+
+        $filePath = 'upload/documents/' . $name;
     }
+
+    Document::create([
+        'title_tj' => $data['title_tj'],
+        'title_ru' => $data['title_ru'] ?? null,
+        'title_en' => $data['title_en'] ?? null,
+        'description_tj' => $data['description_tj'] ?? null,
+        'description_ru' => $data['description_ru'] ?? null,
+        'description_en' => $data['description_en'] ?? null,
+        'file_path' => $filePath,
+        'file_type' => $fileType, // <-- ДОБАВЛЕНО
+        'published_at' => $data['published_at'] ?? null,
+        'is_active' => $request->has('is_active') ? 1 : 0,
+    ]);
+
+    return redirect()->route('documents.index')->with('success', 'Документ добавлен');
+}
+
 
     public function edit(Document $document)
     {
         return view('backend.documents.edit', compact('document'));
     }
 
-    public function update(DocumentRequest $request, Document $document)
-    {
-        $data = $request->validated();
+public function update(DocumentRequest $request, Document $document)
+{
+    $data = $request->validated();
 
-        // Загрузка нового файла
-        if ($request->hasFile('file')) {
-            if ($document->file_path && File::exists(public_path($document->file_path))) {
-                File::delete(public_path($document->file_path));
-            }
-            $file = $request->file('file');
-            $name = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
-            $dest = public_path('upload/documents');
-            if (!File::exists($dest)) File::makeDirectory($dest, 0777, true, true);
-            $file->move($dest, $name);
-            $document->file_path = 'upload/documents/' . $name;
+    // Если загружается новый файл
+    if ($request->hasFile('file')) {
+
+        // Удаляем старый
+        if ($document->file_path && File::exists(public_path($document->file_path))) {
+            File::delete(public_path($document->file_path));
         }
 
-        $document->update([
-            'title_tj' => $data['title_tj'],
-            'title_ru' => $data['title_ru'] ?? null,
-            'title_en' => $data['title_en'] ?? null,
-            'description_tj' => $data['description_tj'] ?? null,
-            'description_ru' => $data['description_ru'] ?? null,
-            'description_en' => $data['description_en'] ?? null,
-            'published_at' => $data['published_at'] ?? null,
-            'is_active' => $request->has('is_active') ? 1 : 0,
-        ]);
+        $file = $request->file('file');
 
-        $document->save();
+        // Новый тип файла
+        $fileType = strtolower($file->getClientOriginalExtension());
 
-        return redirect()->route('documents.index')->with('success', 'Документ обновлен');
+        // Новое имя
+        $name = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+
+        $dest = public_path('upload/documents');
+        if (!File::exists($dest)) File::makeDirectory($dest, 0777, true, true);
+
+        $file->move($dest, $name);
+
+        // Обновляем путь и тип файла
+        $document->file_path = 'upload/documents/' . $name;
+        $document->file_type = $fileType; // <-- ДОБАВЛЕНО
     }
+
+    $document->update([
+        'title_tj' => $data['title_tj'],
+        'title_ru' => $data['title_ru'] ?? null,
+        'title_en' => $data['title_en'] ?? null,
+        'description_tj' => $data['description_tj'] ?? null,
+        'description_ru' => $data['description_ru'] ?? null,
+        'description_en' => $data['description_en'] ?? null,
+        'published_at' => $data['published_at'] ?? null,
+        'is_active' => $request->has('is_active') ? 1 : 0,
+    ]);
+
+    $document->save();
+
+    return redirect()->route('documents.index')->with('success', 'Документ обновлен');
+}
+
 
     public function destroy(Document $document)
     {

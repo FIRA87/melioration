@@ -35,14 +35,14 @@
                                 <div class="auth-logo">
                                     <a href="index.html" class="logo logo-dark text-center">
                                         <span class="logo-lg">
-                                            <img src="{{ asset('backend/assets/images/logo.png') }}" alt=""
+                                            <img src="{{ asset('frontend/img/logo.png') }}" alt=""
                                                 height="70">
                                         </span>
                                     </a>
 
                                     <a href="index.html" class="logo logo-light text-center">
                                         <span class="logo-lg">
-                                            <img src="{{ asset('backend/assets/images/logo.png') }}" alt=""
+                                            <img src="{{ asset('frontend/img/logo.png') }}" alt=""
                                                 height="70">
                                         </span>
                                     </a>

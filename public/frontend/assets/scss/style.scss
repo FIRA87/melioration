@@ -1,0 +1,65 @@
+/* ==============
+ ========= css documentation =========
+
+ * Template Name: FINVIEW 
+ * Version: 1.0
+ * Author: pixelaxis
+ * Author URI: https://themeforest.net/user/pixelaxis
+ * Description: Financial Loan Review and Comparison Website Template
+ 
+ 01. abstracts
+     1.1 --> mixins
+     1.2 --> variables
+    
+ 02. base
+     2.1 --> reset
+     2.2 --> typography
+     2.3 --> global
+
+ 03. components
+     3.1 --> buttons
+     3.2 --> forms
+     3.3 --> preloader
+     3.4 --> faq-section
+     3.5 --> custom-animation
+
+ 04. layout
+     4.1 --> header
+     4.2 --> banner
+     4.3 --> footer
+
+ 05. sections
+
+
+ 06. responsive
+
+    =========================
+============== */
+
+// abstract styles
+@import "./abstracts/mixins";
+@import "./abstracts/variables";
+
+// base styles
+@import "./base/reset";
+@import "./base/typography";
+@import "./base/global";
+
+// component styles
+@import "./components/buttons";
+@import "./components/forms";
+@import "./components/preloader";
+@import "./components/faq-accordion";
+@import "./components/custom-animation";
+
+// layout styles
+@import "./layout/header";
+@import "./layout/banner";
+@import "./layout/footer";
+@import "./layout/others";
+
+// section styles
+@import "./sections/all-sections";
+
+// responsive styles
+@import "./responsive";

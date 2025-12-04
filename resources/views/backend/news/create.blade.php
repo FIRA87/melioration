@@ -32,6 +32,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Добавить</h4>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <form id="myForm" method="POST" action="{{ route('store.news') }}"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -39,21 +48,30 @@
                                     <div class="col-lg-4">
                                         <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Заголовок RU</label>
-                                            <input type="text" id="title_ru" class="form-control" name="title_ru">
+                                            <input type="text" id="title_ru" class="form-control @error('title_ru') is-invalid @enderror" name="title_ru" value="{{ old('title_ru') }}">
+                                            @error('title_ru')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Заголовок TJ</label>
-                                            <input type="text" id="title_tj" class="form-control" name="title_tj">
+                                            <input type="text" id="title_tj" class="form-control @error('title_tj') is-invalid @enderror" name="title_tj" value="{{ old('title_tj') }}">
+                                            @error('title_tj')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Заголовок EN</label>
-                                            <input type="text" id="title_en" class="form-control" name="title_en">
+                                            <input type="text" id="title_en" class="form-control @error('title_en') is-invalid @enderror" name="title_en" value="{{ old('title_en') }}">
+                                            @error('title_en')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -62,9 +80,12 @@
                                             <label for="category_id" class="form-label">Категория</label>
                                             <select class="form-select" id="category_id" name="category_id">
                                                 @foreach ($categories as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->title_ru }}</option>
+                                                    <option value="{{ $item->id }}" {{ old('category_id') == $item->id ? 'selected' : '' }}>{{ $item->title_ru }}</option>
                                                 @endforeach
                                             </select>
+                                            @error('category_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -79,8 +100,8 @@
                                     <div class="form-group mb-3 col-md-4">
                                         <label for="subscriber_send_option" class="form-label">Статус </label>
                                         <select class="form-select" id="subscriber_send_option" name="status">
-                                            <option value="1">Активный</option>
-                                            <option value="0">Неактивный</option>
+                                            <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Активный</option>
+                                            <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Неактивный</option>
                                         </select>
                                     </div>
 
@@ -91,7 +112,7 @@
                                             <label class="form-label">Задачи (необязательно)</label>
                                             <select class="form-select" name="tasks[]" multiple size="5">
                                                 @foreach ($tasks as $task)
-                                                    <option value="{{ $task->id }}">{{ $task->title_ru }}</option>
+                                                    <option value="{{ $task->id }}" {{ (collect(old('tasks'))->contains($task->id)) ? 'selected' : '' }}>{{ $task->title_ru }}</option>
                                                 @endforeach
                                             </select>
                                             <small class="text-muted">Удерживайте Ctrl для выбора нескольких задач</small>
@@ -157,15 +178,15 @@
                                             <div class="tab-content">
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
                                                     <textarea id="summernote" name="news_details_ru" id="home-b1" cols="107" rows="10"
-                                                        class="form-control my-editor">Текст RU</textarea>
+                                                        class="form-control my-editor">{{ old('news_details_ru', 'Текст RU') }}</textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
                                                     <textarea id="summernote2" name="news_details_tj" id="profile-b1" cols="107" rows="10"
-                                                        class="form-control my-editor">Текст TJ</textarea>
+                                                        class="form-control my-editor">{{ old('news_details_tj', 'Текст TJ') }}</textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
                                                     <textarea id="summernote3" name="news_details_en" id="messages-b1" cols="107" rows="10"
-                                                        class="form-control my-editor">Текст EN</textarea>
+                                                        class="form-control my-editor">{{ old('news_details_en', 'Текст EN') }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -177,7 +198,7 @@
                                             <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
                                                     <input class="form-check-input" type="checkbox" name="top_slider"
-                                                        value="1" id="customckeck_2">
+                                                        value="1" id="customckeck_2" {{ old('top_slider') ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="customckeck_2">Слайдер</label>
                                                 </div>
                                             </div>
@@ -185,7 +206,7 @@
                                             <div class="col-md-1">
                                                 <div class="form-check mb-2 form-check-primary">
                                                     <input class="form-check-input" type="checkbox" name="home_page"
-                                                        value="1" id="home_page_check">
+                                                        value="1" id="home_page_check" {{ old('home_page') ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="home_page_check">На
                                                         главной</label>
                                                 </div>

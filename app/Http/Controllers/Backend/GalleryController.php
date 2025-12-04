@@ -183,10 +183,7 @@ class GalleryController extends Controller
     }
 
 
-    // FRONTEND
-    public function galleryDetails($id) {
-        $gallery = Gallery::with('images')->where('id',$id)->findOrFail($id);
-        return view('frontend.news.gallery_detail',compact('gallery'));
-    }// END METHOD
+   
+  
 
 }

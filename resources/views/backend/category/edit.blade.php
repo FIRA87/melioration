@@ -30,6 +30,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Редактировать категорию</h4>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
                             <form id="myForm" method="POST" action="{{ route('update.category') }}">
                                 @csrf
@@ -40,19 +49,19 @@
                                         <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Название RU</label>
                                             <input type="text" id="title_ru" name="title_ru" class="form-control"
-                                                value="{{ $category->title_ru }}">
+                                                value="{{ old('title_ru', $category->title_ru) }}">
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Название TJ</label>
                                             <input type="text" id="title_tj" name="title_tj" class="form-control"
-                                                value="{{ $category->title_tj }}">
+                                                value="{{ old('title_tj', $category->title_tj) }}">
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
                                             <input type="text" id="title_en" name="title_en" class="form-control"
-                                                value="{{ $category->title_en }}">
+                                                value="{{ old('title_en', $category->title_en) }}">
                                         </div>
                                     </div>
 
@@ -60,7 +69,7 @@
                                         <div class="form-group mb-3">
                                             <label for="position" class="form-label">Позиция</label>
                                             <input type="text" id="position" name="position" class="form-control"
-                                                value="{{ $category->position }}">
+                                                value="{{ old('position', $category->position) }}">
                                         </div>
 
                                         <div class="form-group mb-3">
@@ -68,9 +77,9 @@
                                                     class="text-danger">*</span></label>
                                             <select class="form-select" id="status" name="status" required
                                                 style="display: block !important;">
-                                                <option value="1" @if ($category->status == 1) selected @endif>
+                                                <option value="1" @if (old('status', $category->status) == 1) selected @endif>
                                                     Активный</option>
-                                                <option value="0" @if ($category->status == 0) selected @endif>
+                                                <option value="0" @if (old('status', $category->status) == 0) selected @endif>
                                                     Неактивный</option>
                                             </select>
 

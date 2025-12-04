@@ -26,6 +26,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Редактировать галерею</h4>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="row">
 
                                 <div class="col-lg-12 d-flex">
@@ -86,24 +95,38 @@
 
 
 
-                                        <div class="form-group mb-3">
+
+                                    </div> <!-- end col -->
+
+                                    <div class="row"> 
+                                           <div class="col-md-4"> 
+                                           <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Название RU</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
-                                                value="{{ $gallery->title_ru }}">
+                                                value="{{ old('title_ru', $gallery->title_ru) }}">
                                         </div>
-                                        <div class="form-group mb-3">
+                                     </div>  
+
+                                     <div class="col-md-4"> 
+                                          <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Название TJ</label>
                                             <input type="text" id="title_tj" name="title_tj" class="form-control"
-                                                value="{{ $gallery->title_tj }}">
+                                                value="{{ old('title_tj', $gallery->title_tj) }}">
                                         </div>
+                                     </div> 
 
+                                     <div class="col-md-4"> 
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
                                             <input type="text" id="title_en" name="title_en" class="form-control"
-                                                value="{{ $gallery->title_en }}">
+                                                value="{{ old('title_en', $gallery->title_en) }}">
                                         </div>
+                                     </div> 
+                                    </div>
+                                     
+                                      
 
-                                    </div> <!-- end col -->
+                                    
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
                                             <ul class="nav nav-tabs nav-bordered" role="tablist">
@@ -131,21 +154,21 @@
                                             <div class="tab-content">
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
                                                     <textarea id="summernote" name="text_ru" id="home-b1" cols="107" rows="10">
-                                                            {{ $gallery->text_ru }}
+                                                            {{ old('text_ru', $gallery->text_ru) }}
                                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
-                                                    <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10">   {{ $gallery->text_tj }} </textarea>
+                                                    <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10">   {{ old('text_tj', $gallery->text_tj) }} </textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
-                                                    <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10">   {{ $gallery->text_en }} </textarea>
+                                                    <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10">   {{ old('text_en', $gallery->text_en) }} </textarea>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i
-                                                class="mdi mdi-content-save"></i>Обновить</button>
+                                        <button type="submit" class="btn btn-success waves-effect waves-light mt-2">
+                                            <i class="mdi mdi-content-save"></i>Обновить</button>
                                     </div>
                                 </form>
                             </div>

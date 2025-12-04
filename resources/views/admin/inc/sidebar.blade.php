@@ -72,12 +72,12 @@
                     </li>
 
                     <li>
-                        <a href="#sidebarEcommerce" data-bs-toggle="collapse">
+                        <a href="#sidebarLeader" data-bs-toggle="collapse">
                             <i class="fa-solid fa-folder-tree"></i>
                             <span> Руководство </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="sidebarEcommerce">
+                        <div class="collapse" id="sidebarLeader">
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
                                     <a href="{{ route('leader.index') }}"><i class="mdi mdi-animation"></i> Все
@@ -339,9 +339,13 @@
                         <div class="collapse" id="sidebarJob">
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
-                                    <a href="{{ route('jobs.index') }}"><i class="mdi mdi-animation"></i> Все
-                                    </a>
+                                    <a href="{{ route('admin.jobs.index') }}"><i class="mdi mdi-animation"></i> Все    </a>
                                 </li>
+                                <li style="margin-left: -20px">
+                                    <a href="{{ route('backend.applications.index') }}"><i class="mdi mdi-animation"></i> Заявки на вакансии</a>
+                                </li>
+
+
                             </ul>
                         </div>
                     </li>

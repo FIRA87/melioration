@@ -3,7 +3,7 @@
     <div class="container py-4">
         <div class="d-flex justify-content-between mb-3">
             <h4>Вакансии</h4>
-            <a href="{{ route('jobs.create') }}" class="btn btn-primary">Добавить вакансию</a>
+            <a href="{{ route('admin.jobs.create') }}" class="btn btn-primary">Добавить вакансию</a>
         </div>
 
         @if (session('success'))
@@ -34,8 +34,8 @@
                         <td>{!! $job->is_active ? '<span class="badge bg-success">Да</span>' : '<span class="badge bg-danger">Нет</span>' !!}</td>
                         <td>{{ $job->sort }}</td>
                         <td>
-                            <a href="{{ route('jobs.edit', $job) }}" class="btn btn-sm btn-primary">Редакт</a>
-                            <form action="{{ route('jobs.destroy', $job) }}" method="POST" style="display:inline-block"
+                            <a href="{{ route('admin.jobs.edit', $job) }}" class="btn btn-sm btn-primary">Редакт</a>
+                            <form action="{{ route('admin.jobs.destroy', $job) }}" method="POST" style="display:inline-block"
                                 onsubmit="return confirm('Удалить?')">
                                 @csrf @method('DELETE')
                                 <button class="btn btn-sm btn-danger">Удалить</button>

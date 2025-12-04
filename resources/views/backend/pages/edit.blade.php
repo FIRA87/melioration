@@ -26,6 +26,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Редактировать страницу</h4>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <form id="myForm" method="POST" action="{{ route('update.pages') }}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $pages->id }}">
@@ -35,21 +44,21 @@
                                         <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Название RU</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
-                                                value="{{ $pages->title_ru }}">
+                                                value="{{ old('title_ru', $pages->title_ru) }}">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Название TJ</label>
                                             <input type="text" id="title_tj" name="title_tj" class="form-control"
-                                                value="{{ $pages->title_tj }}">
+                                                value="{{ old('title_tj', $pages->title_tj) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
                                             <input type="text" id="title_en" name="title_en" class="form-control"
-                                                value="{{ $pages->title_en }}">
+                                                value="{{ old('title_en', $pages->title_en) }}">
                                         </div>
                                     </div>
 
@@ -59,21 +68,21 @@
                                         <div class="form-group mb-3">
                                             <label for="meta_keywords_ru" class="form-label">Ключевые слова RU</label>
                                             <input type="text" id="meta_keywords_ru" class="form-control"
-                                                name="meta_keywords_ru" value="{{ $pages->meta_keywords_ru }}">
+                                                name="meta_keywords_ru" value="{{ old('meta_keywords_ru', $pages->meta_keywords_ru) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="meta_keywords_tj" class="form-label">Ключевые слова TJ</label>
                                             <input type="text" id="meta_keywords_tj" name="meta_keywords_tj"
-                                                class="form-control" value="{{ $pages->meta_keywords_tj }}">
+                                                class="form-control" value="{{ old('meta_keywords_tj', $pages->meta_keywords_tj) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="meta_keywords_en" class="form-label">Ключевые слова EN</label>
                                             <input type="text" id="meta_keywords_en" name="meta_keywords_en"
-                                                class="form-control" value="{{ $pages->meta_keywords_en }}">
+                                                class="form-control" value="{{ old('meta_keywords_en', $pages->meta_keywords_en) }}">
                                         </div>
                                     </div>
 
@@ -105,17 +114,17 @@
                                              <div class="tab-content">
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
                                                     <textarea id="summernote" name="text_ru" id="home-b1" cols="107" rows="10" class="form-control my-editor">
-                                            {!! $pages->text_ru !!}
+                                            {!! old('text_ru', $pages->text_ru) !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
                                                     <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10" class="form-control my-editor">
-                                              {!! $pages->text_tj !!}
+                                              {!! old('text_tj', $pages->text_tj) !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
                                                     <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10" class="form-control my-editor">
-                                              {!! $pages->text_en !!}
+                                              {!! old('text_en', $pages->text_en) !!}
                                         </textarea>
                                                 </div>
                                             </div>
@@ -126,9 +135,9 @@
                                         <div class="form-group mb-3">
                                             <label for="active" class="form-label">Статус</label>
                                             <select class="form-select" id="active" name="status">
-                                                <option value="1" @if ($pages->status == '1') selected @endif>
+                                                <option value="1" @if (old('status', $pages->status) == '1') selected @endif>
                                                     Активный</option>
-                                                <option value="0" @if ($pages->status == '0') selected @endif>
+                                                <option value="0" @if (old('status', $pages->status) == '0') selected @endif>
                                                     Неактивный</option>
                                             </select>
                                         </div>
@@ -139,7 +148,7 @@
                                         <div class="form-group mb-3">
                                             <label for="url" class="form-label">Адрес страницы</label>
                                             <input type="text" id="url" name="url" class="form-control"
-                                                value="{{ $pages->url }}">
+                                                value="{{ old('url', $pages->url) }}">
                                         </div>
 
                                     </div> <!-- end col -->

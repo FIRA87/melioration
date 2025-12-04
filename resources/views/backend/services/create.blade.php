@@ -6,6 +6,15 @@
     <div class="content-fluid">
         <div class="container-fluid flex-grow-1 container-p-y">
             <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Добавить</span> </h4>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form method="POST" action="{{ route('store.services') }}" enctype="multipart/form-data" id="myForm">
                 @csrf
                 <div class="row">
@@ -20,7 +29,7 @@
                                         <div class="form-group mb-3 ">
                                             <label for="title_ru" class="form-label">Название RU *</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
-                                                required>
+                                                required value="{{ old('title_ru') }}">
                                         </div>
                                     </div>
 
@@ -28,7 +37,7 @@
                                         <div class="form-group mb-3 ">
                                             <label for="title_tj" class="form-label">Название TJ *</label>
                                             <input type="text" id="title_tj" class="form-control" name="title_tj"
-                                                   required>
+                                                   required value="{{ old('title_tj') }}">
                                         </div>
                                     </div>
 
@@ -36,21 +45,21 @@
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN *</label>
                                             <input type="text" id="title_en" class="form-control" name="title_en"
-                                                   required>
+                                                   required value="{{ old('title_en') }}">
                                         </div>
                                     </div>
 
                                      <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="sort" class="form-label">Сортировка</label>
-                                            <input type="number" id="sort" name="sort" class="form-control" value="0" min="0">
+                                            <input type="number" id="sort" name="sort" class="form-control" value="{{ old('sort', 0) }}" min="0">
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label for="icon" class="form-label">Иконка</label>
-                                            <input class="form-control" type="text" id="icon" name="icon" >
+                                            <input class="form-control" type="text" id="icon" name="icon" value="{{ old('icon') }}">
                                         </div>
                                     </div>
 
@@ -91,13 +100,13 @@
                                             </ul>
                                             <div class="tab-content">
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
-                                                    <textarea id="summernote" name="text_ru" id="home-b1" cols="107" rows="10" class="form-control my-editor">Текст RU</textarea>
+                                                    <textarea id="summernote" name="text_ru" id="home-b1" cols="107" rows="10" class="form-control my-editor">{{ old('text_ru', 'Текст RU') }}</textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
-                                                    <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10" class="form-control my-editor">Текст TJ</textarea>
+                                                    <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10" class="form-control my-editor">{{ old('text_tj', 'Текст TJ') }}</textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
-                                                    <textarea id="summernote3" name=text_en" id="messages-b1" cols="107" rows="10" class="form-control my-editor">Текст EN</textarea>
+                                                    <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10" class="form-control my-editor">{{ old('text_en', 'Текст EN') }}</textarea>
                                                 </div>
                                             </div>
                                         </div>

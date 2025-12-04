@@ -1,0 +1,72 @@
+// (1.2) variables
+
+// google font source
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap');
+
+// font family
+$font-primary: 'Jost', sans-serif;
+
+// theme default
+$line-height: 1.5;
+$heading-line-height: 1.2;
+$font-size: 16px;
+
+// theme
+$theme-primary-bg: #ffffff;
+$theme-secondary-bg: linear-gradient(90deg, #074C3E 0%, #FCB650 100%);
+$theme-secondary-bg-rev: linear-gradient(270deg, #074C3E 0%, #FCB650 100%);
+$theme-tertiary-bg: linear-gradient(90deg, rgba(7, 76, 62, 0.10) 0%, rgba(252, 182, 80, 0.10) 100%);
+$theme-quaternary-bg: rgba(7, 76, 62, 0.05);
+
+
+// color
+$white: #ffffff;
+$black: #000000;
+$neutral-n-0: #FFF;
+$neutral-n-10: #FAFAFB;
+$neutral-n-20: #F5F6F7;
+$neutral-n-30: #EBECEF;
+$neutral-n-40: #DFE0E4;
+$neutral-n-50: #C1C4CC;
+$neutral-n-60: #B2B6BF;
+$neutral-n-70: #A6AAB5;
+$neutral-n-80: #979CA8;
+$neutral-n-90: #888E9C;
+$neutral-n-100: #798090;
+$neutral-n-200: #6A7283;
+$neutral-n-300: #5B6477;
+$neutral-n-400: #4F586D;
+$neutral-n-500: #404A60;
+$neutral-n-600: #343E56;
+$neutral-n-700: #222E48;
+$neutral-n-800: #13203B;
+$neutral-n-900: #03211B;
+
+$primary-color: #074C3E;   
+$primary-n-10: #074c3e10;   
+$secondary-color: #FCB650;
+$tertiary-color: #2C6AC8;       
+$head-color: $neutral-n-700;
+$content-color: $neutral-n-500;
+$placeholder: $neutral-n-200;
+
+// footer
+$theme-footer-bg: $primary-color;
+
+// box-shadow
+$box-shadow: 0px 6px 30px 0px rgba(0, 0, 0, 0.04);
+$box-shadow-2: 0px 6px 30px 0px rgba(0, 0, 0, 0.08);
+// overlay
+$inner-banner-overlay: rgba(34, 34, 34, 0.8);
+$primary-overlay: rgba(1, 46, 115, 0.7);
+$secondary-overlay: rgba(3, 53, 131, 0.91);
+
+// transitions
+$transition: all 0.35s ease-in-out;
+
+// filter
+// $filter: blur(100px);
+// $filter-brightness: brightness(0) invert(1);
+
+// bootstrap
+// font-family: "bootstrap-icons";

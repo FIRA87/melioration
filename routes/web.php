@@ -16,7 +16,6 @@ use App\Http\Controllers\Backend\VideoController;
 use App\Http\Controllers\Backend\LeaderController;
 use App\Http\Controllers\Backend\OptionController;
 use App\Http\Controllers\Backend\SurveyController;
-use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Backend\ContactController;
 use App\Http\Controllers\Backend\GalleryController;
 use App\Http\Controllers\Backend\ProjectController;
@@ -27,17 +26,62 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\DocumentController;
 use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\PresidentController;
+use App\Http\Controllers\Backend\ServiceRequestAdminController;
+use App\Http\Controllers\Backend\JobApplicationBackendController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Frontend\SurveyVoteController;
 use App\Http\Controllers\Frontend\ServiceRequestController;
-use App\Http\Controllers\Backend\ServiceRequestAdminController;
+use App\Http\Controllers\Frontend\MenuController;
+use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Frontend\JobApplicationController;
 
 
-/// Access FOR ALL
-Route::get('/', [IndexController::class, 'index'])->name('index');
+Route::get('/page/6', function () { return redirect('/frontend/jobs'); });
+Route::get('/page/8', function () { return redirect('/news'); });
+Route::get('/submenu/1', function () { return redirect('/leaders'); });
+Route::get('/page/7', function () { return redirect('/frontend/documents'); });
+
+
+
+
+
 Route::get('/lang/en', [LanguageController::class, 'enLang'])->name('en.lang');
 Route::get('/lang/ru', [LanguageController::class, 'ruLang'])->name('ru.lang');
 Route::get('/lang/tj', [LanguageController::class, 'tjLang'])->name('tj.lang');
+
+/// Access FOR ALL
+Route::get('/', [IndexController::class, 'index'])->name('index');
+Route::get('/news', [IndexController::class, 'filterNews'])->name('frontend.news');
+Route::get('/news/details/{id}', [IndexController::class, 'newsDetails'])->name('news_details');
+
+Route::get('/news/category/{id}', [IndexController::class, 'catWiseNews']);
+Route::post('/news/search', [IndexController::class, 'newsSearch'])->name('news.search');
+Route::get('/gallery/details/{id}', [IndexController::class, 'galleryDetails'])->name('frontend.gallery.detail');
+Route::get('/projects', [IndexController::class, 'allProjects'])->name('frontend.projects');
+Route::get('/projects/{id}', [IndexController::class, 'projectDetail'])->name('frontend.project.detail');
+Route::get('/galleries', [IndexController::class, 'allGalleries'])->name('frontend.galleries');
+Route::get('/videos', [IndexController::class, 'allVideos'])->name('frontend.videos');
+Route::get('/reporter/{id}', [IndexController::class, 'reporterAllNews'])->name('reporter.all.news');
+Route::get('/page/{url}/{id}', [IndexController::class, 'pageDetails']);
+Route::get('/contact', [SettingController::class, 'contactIndex'])->name('contact');
+Route::post('/contact/send-email', [SettingController::class, 'send_email'])->name('contact_form_submit');
+Route::get('/page/{menu}', [MenuController::class, 'menuShow'])->name('menu.show');
+Route::get('/submenu/{submenu}',  [MenuController::class, 'subMenuShow'])->name('submenu.show');
+Route::get('/news/details/{id}', [IndexController::class, 'newsDetails'])->name('news_details');
+Route::get('/leaders', [IndexController::class, 'allLeader'])->name('frontend.leader');
+Route::get('/leaders/details/{id}', [IndexController::class, 'leaderDetail'])->name('frontend.leader.detail');
+Route::get('/prezident/detail/{id}', [IndexController::class, 'prezidentDetail'])->name('prezident_detail');
+Route::get('frontend/documents', [IndexController::class, 'documents'])->name('frontend.documents');
+Route::get('frontend/documents/download/{id}', [IndexController::class, 'documentDownload'])->name('frontend.documents.download');
+
+
+Route::get('frontend/jobs', [JobApplicationController::class, 'index'])->name('frontend.jobs.index');
+Route::get('frontend/jobs/{slug}', [JobApplicationController::class, 'show'])->name('frontend.jobs.show');
+Route::get('frontend/jobs/{slug}/apply', [JobApplicationController::class, 'apply'])->name('frontend.jobs.apply');
+Route::post('frontend/jobs/submit', [JobApplicationController::class, 'submitApplication'])->name('frontend.jobs.submit');
+Route::get('frontend/jobs/{job}/download/{index}', [JobController::class, 'downloadAttachment'])->name('frontend.jobs.download');
+
+
 
 // Frontend show & voting
 Route::get('survey/{survey}', function(\App\Models\Survey $survey){
@@ -284,7 +328,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     });
 
 
-    Route::prefix('jobs')->name('jobs.')->controller(JobController::class)->group(function () {
+    Route::prefix('jobs')->name('admin.jobs.')->controller(JobController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/', 'store')->name('store');
@@ -296,9 +340,13 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
     Route::post('/jobs/{job}/delete-attachment', [JobController::class, 'deleteAttachment'])->name('jobs.delete.attachment');
 
-
-
-
+    // Управление заявками на вакансии  
+    Route::get('/admin/applications', [JobApplicationBackendController::class, 'index'])->name('backend.applications.index');
+    Route::get('/admin/applications/{application}', [JobApplicationBackendController::class, 'show'])->name('backend.applications.show');
+    Route::patch('/admin/applications/{application}/status', [JobApplicationBackendController::class, 'updateStatus'])->name('backend.applications.status');
+    Route::delete('/admin/applications/{application}', [JobApplicationBackendController::class, 'destroy'])->name('backend.applications.destroy');
+    Route::get('/admin/applications/{application}/resume', [JobApplicationBackendController::class, 'downloadResume'])->name('backend.applications.resume');
+    Route::get('/admin/applications/{application}/attachment/{index}', [JobApplicationBackendController::class, 'downloadAttachment'])->name('backend.applications.attachment');
 
 
 
@@ -307,12 +355,17 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 
+});
 
+/**
+ * Route for clearing cache when uploading to Production Server
+ */
+Route::get('/clear-configuration', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('route:clear');
 
-
-
-
-
-
-
+    return "Everything is clear and system is ready to work.";
 });

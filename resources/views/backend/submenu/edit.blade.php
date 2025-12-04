@@ -26,6 +26,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title">Редактировать страницу</h4>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <form id="myForm" method="POST" action="{{ route('update.submenu') }}">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $submenu->id }}">
@@ -59,9 +68,9 @@
                                         <div class="form-group mb-3">
                                             <label for="active" class="form-label">Статус</label>
                                             <select class="form-select" id="active" name="status">
-                                                <option value="1" @if ($submenu->status == '1') selected @endif>
+                                                <option value="1" @if (old('status', $submenu->status) == '1') selected @endif>
                                                     Активный</option>
-                                                <option value="0" @if ($submenu->status == '0') selected @endif>
+                                                <option value="0" @if (old('status', $submenu->status) == '0') selected @endif>
                                                     Неактивный</option>
                                             </select>
                                         </div>
@@ -71,7 +80,7 @@
                                         <div class="form-group mb-3">
                                             <label for="url" class="form-label">Адрес страницы</label>
                                             <input type="text" id="url" name="url" class="form-control"
-                                                value="{{ $submenu->url }}">
+                                                value="{{ old('url', $submenu->url) }}">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-lg-3">
@@ -81,7 +90,7 @@
                                                 <option value="choose-category">Выберите меню</option>
                                                 @foreach ($menu as $item)
                                                     <option value="{{ $item->id }}"
-                                                        @if ($submenu->page_id == $item->id ? 'selected' : '') selected @endif>
+                                                        @if (old('page_id', $submenu->page_id) == $item->id ? 'selected' : '') selected @endif>
                                                         {{ $item->title_ru }}</option>
                                                 @endforeach
                                             </select>
@@ -91,7 +100,7 @@
                                         <div class="form-group mb-3">
                                             <label for="sort" class="form-label"> Сортировка</label>
                                             <input type="text" id="sort" name="sort" class="form-control"
-                                                value="{{ $submenu->sort }}">
+                                                value="{{ old('sort', $submenu->sort) }}">
                                         </div>
                                     </div> <!-- end col -->
 
@@ -125,19 +134,19 @@
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
                                                     <textarea id="summernote"name="text_ru" id="home-b1" cols="107" rows="10"
                                                         class="form-control my-editor">
-                                            {!! $submenu->text_ru !!}
+                                            {!! old('text_ru', $submenu->text_ru) !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
                                                     <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10"
                                                         class="form-control my-editor">
-                                              {!! $submenu->text_tj !!}
+                                              {!! old('text_tj', $submenu->text_tj) !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
                                                     <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10"
                                                         class="form-control my-editor">
-                                              {!! $submenu->text_en !!}
+                                              {!! old('text_en', $submenu->text_en) !!}
                                         </textarea>
                                                 </div>
 

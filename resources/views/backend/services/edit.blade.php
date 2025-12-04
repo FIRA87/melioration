@@ -15,6 +15,15 @@
             </div>
 
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form method="POST" action="{{ route('update.services') }}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" value="{{ $service->id }}">
@@ -31,7 +40,7 @@
                                         <div class="form-group mb-3 ">
                                             <label for="title_ru" class="form-label">Название RU</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
-                                                value="{{ $service->title_ru }}">
+                                                value="{{ old('title_ru', $service->title_ru) }}">
                                         </div>
                                     </div>
 
@@ -39,7 +48,7 @@
                                         <div class="form-group mb-3 ">
                                             <label for="title_tj" class="form-label">Название TJ</label>
                                             <input type="text" id="title_tj" class="form-control" name="title_tj"
-                                                   value="{{ $service->title_tj }}">
+                                                   value="{{ old('title_tj', $service->title_tj) }}">
                                         </div>
 
                                     </div>
@@ -49,7 +58,7 @@
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
                                             <input type="text" id="title_en" class="form-control" name="title_en"
-                                                   value="{{ $service->title_en }}">
+                                                   value="{{ old('title_en', $service->title_en) }}">
                                         </div>
                                     </div>
 
@@ -58,14 +67,14 @@
                                     <div class="col-md-4">
                                         <div class="mb-3 ">
                                             <label for="sort" class="form-label">Позиция</label>
-                                            <input class="form-control" type="text" id="sort" name="sort" autofocus="" value="{{ $service->sort }}">
+                                            <input class="form-control" type="text" id="sort" name="sort" autofocus="" value="{{ old('sort', $service->sort) }}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="mb-3 ">
                                             <label for="icon" class="form-label">Иконка</label>
-                                            <input class="form-control" type="text" id="icon" name="icon" autofocus="" value="{{ $service->icon }}">
+                                            <input class="form-control" type="text" id="icon" name="icon" autofocus="" value="{{ old('icon', $service->icon) }}">
                                         </div>
                                     </div>
 
@@ -73,7 +82,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="slug" class="form-label">Slug (URL) <span class="text-danger">*</span></label>
-                                            <input type="text" id="slug" name="slug" class="form-control" value="{{ $service->slug }}" >
+                                            <input type="text" id="slug" name="slug" class="form-control" value="{{ old('slug', $service->slug) }}" >
                                         </div>
                                     </div>
 
@@ -89,7 +98,7 @@
                                                            id="statusCheckbox"
                                                            name="status"
                                                            value="1"
-                                                           {{ $service->status == 1 ? 'checked' : '' }}
+                                                           {{ old('status', $service->status) == 1 ? 'checked' : '' }}
                                                            style="width: 2.5rem; height: 1.3rem; cursor: pointer;">
                                                 </div>
 
@@ -125,13 +134,13 @@
                                             </ul>
                                             <div class="tab-content">
                                                 <div class="tab-pane" id="text_ru" role="tabpanel">
-                                                    <textarea name="text_ru" id="summernote" cols="107" rows="10" class="form-control my-editor">{!! $service->text_ru !!}</textarea>
+                                                    <textarea name="text_ru" id="summernote" cols="107" rows="10" class="form-control my-editor">{!! old('text_ru', $service->text_ru) !!}</textarea>
                                                 </div>
                                                 <div class="tab-pane show active" id="text_tj" role="tabpanel">
-                                                    <textarea name="text_tj" id="summernote2" cols="107" rows="10" class="form-control my-editor">{!! $service->text_tj !!}</textarea>
+                                                    <textarea name="text_tj" id="summernote2" cols="107" rows="10" class="form-control my-editor">{!! old('text_tj', $service->text_tj) !!}</textarea>
                                                 </div>
                                                 <div class="tab-pane" id="text_en" role="tabpanel">
-                                                    <textarea name="text_en" id="summernote3" cols="107" rows="10" class="form-control my-editor">{!! $service->text_en !!}</textarea>
+                                                    <textarea name="text_en" id="summernote3" cols="107" rows="10" class="form-control my-editor">{!! old('text_en', $service->text_en) !!}</textarea>
                                                 </div>
                                             </div>
                                         </div>

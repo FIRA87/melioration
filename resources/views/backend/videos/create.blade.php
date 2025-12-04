@@ -15,6 +15,15 @@
                 </div>
             </div>
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form method="POST" action="{{ route('store.video') }}" enctype="multipart/form-data" id="myForm">
                 @csrf
                 <div class="card mb-4">
@@ -26,17 +35,17 @@
 
                                 <div class="form-group mb-3">
                                     <label for="title_ru" class="form-label">Название RU</label>
-                                    <input type="text" id="title_ru" class="form-control" name="title_ru" required>
+                                    <input type="text" id="title_ru" class="form-control" name="title_ru" required value="{{ old('title_ru') }}">
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label for="title_tj" class="form-label">Название TJ</label>
-                                    <input type="text" id="title_tj" class="form-control" name="title_tj" required>
+                                    <input type="text" id="title_tj" class="form-control" name="title_tj" required value="{{ old('title_tj') }}">
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label for="title_en" class="form-label">Название EN</label>
-                                    <input type="text" id="title_en" class="form-control" name="title_en" required>
+                                    <input type="text" id="title_en" class="form-control" name="title_en" required value="{{ old('title_en') }}">
                                 </div>
 
                             </div>
@@ -44,7 +53,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="video_url" class="form-label">Ссылка на видео *</label>
-                                    <input class="form-control" type="text" id="video_url" name="video_url" required>
+                                    <input class="form-control" type="text" id="video_url" name="video_url" required value="{{ old('video_url') }}">
                                 </div>
 
                                 <div class="mb-3">
@@ -54,7 +63,7 @@
 
                                 <div class="mb-3">
                                     <label for="position" class="form-label">Позиция</label>
-                                    <input class="form-control" type="number" id="position" name="position" min="0" value="0">
+                                    <input class="form-control" type="number" id="position" name="position" min="0" value="{{ old('position', 0) }}">
                                 </div>
                             </div>
 
@@ -62,8 +71,8 @@
                                 <div class="form-group mb-3">
                                     <label for="status" class="form-label">Статус</label>
                                     <select class="form-select" name="status" required>
-                                        <option value="1" selected>Активный</option>
-                                        <option value="0">Неактивный</option>
+                                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Активный</option>
+                                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Неактивный</option>
                                     </select>
                                 </div>
                             </div>

@@ -76,7 +76,7 @@ class JobController extends Controller
             'sort' => $data['sort'] ?? 0,
         ]);
 
-        return redirect()->route('jobs.index')->with('success', 'Вакансия добавлена');
+        return redirect()->route('admin.jobs.index')->with('success', 'Вакансия добавлена');
     }
 
     public function edit(Job $job)
@@ -146,7 +146,7 @@ class JobController extends Controller
             'sort' => $data['sort'] ?? 0,
         ]);
 
-        return redirect()->route('jobs.index')->with('success', 'Вакансия обновлена');
+        return redirect()->route('admin.jobs.index')->with('success', 'Вакансия обновлена');
     }
 
     public function destroy(Job $job)
@@ -160,7 +160,7 @@ class JobController extends Controller
 
         $job->delete();
 
-        return redirect()->route('jobs.index')->with('success', 'Вакансия удалена');
+        return redirect()->route('admin.jobs.index')->with('success', 'Вакансия удалена');
     }
 
     public function downloadAttachment(Job $job, $index)

@@ -9,7 +9,6 @@ class News extends Model
 {
     use HasFactory;
 
-    protected $table = 'news';
     protected $guarded = [];
 
     public function category(){
@@ -31,5 +30,21 @@ class News extends Model
     {
         return $this->hasMany(NewsImage::class);
     }
+	
+	
+	public function scopePublished($query)
+	{
+		return $query->where('status', 1)
+			->where(function($q) {
+				$q->whereNull('publish_date')
+				  ->orWhere('publish_date', '<=', now());
+			});
+	}
+
+	public function scopeActive($query)
+	{
+		return $query->where('status', 1);
+	}
+
 
 }

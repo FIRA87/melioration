@@ -3,8 +3,17 @@
 
     <div class="container py-4">
         <h3>Редактировать вакансию</h3>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <form action="{{ route('jobs.update', $job) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.jobs.update', $job) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -48,7 +57,7 @@
                             @foreach ($job->attachments as $i => $att)
                                 <div class="d-flex align-items-center mb-2" id="attachment-{{ $i }}"
                                     style="gap:10px;">
-                                    <a href="{{ route('jobs.download.attachment', ['job' => $job->id, 'index' => $i]) }}"
+                                    <a href="{{ route('admin.jobs.download.attachment', ['job' => $job->id, 'index' => $i]) }}"
                                         target="_blank">
                                         {{ basename($att) }}
                                     </a>
@@ -113,7 +122,7 @@
                 {{-- Кнопки --}}
                 <div class="col-12 mt-3">
                     <button class="btn btn-success">Сохранить</button>
-                    <a href="{{ route('jobs.index') }}" class="btn btn-secondary">Назад</a>
+                    <a href="{{ route('admin.jobs.index') }}" class="btn btn-secondary">Назад</a>
                 </div>
 
             </div>
@@ -127,7 +136,7 @@
     <script>
         (function($) {
             $(function() {
-                console.log('Delete attachment script initialized for job id: {{ $job->id }}');
+                console.log('Скрипт удаления вложения инициализирован для задания с id: {{ $job->id }}');
 
                 // Устанавливаем CSRF-заголовок на всякий случай
                 $.ajaxSetup({

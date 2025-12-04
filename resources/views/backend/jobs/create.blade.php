@@ -2,8 +2,17 @@
 @section('admin')
     <div class="container py-4">
         <h3>Добавить вакансию</h3>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <form action="{{ route('jobs.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.jobs.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <div class="row g-3">
@@ -103,7 +112,7 @@
 
                 <div class="col-md-2">
                     <label>Сорт</label>
-                    <input type="number" name="sort" class="form-control" value="0">
+                    <input type="number" name="sort" class="form-control" value="{{ old('sort', 0) }}">
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
                     <div class="form-check form-switch">
@@ -114,7 +123,7 @@
 
                 <div class="col-12 mt-3">
                     <button class="btn btn-success">Сохранить</button>
-                    <a href="{{ route('jobs.index') }}" class="btn btn-secondary">Назад</a>
+                    <a href="{{ route('admin.jobs.index') }}" class="btn btn-secondary">Назад</a>
                 </div>
             </div>
         </form>

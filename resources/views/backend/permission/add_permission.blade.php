@@ -29,6 +29,15 @@
 	<div class="card">
 		<div class="card-body">
 
+		@if ($errors->any())
+			<div class="alert alert-danger">
+				<ul>
+					@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
 		<form id="myForm" method="post" action="{{ route('store.permission') }}"  >
 			@csrf
 
@@ -37,7 +46,7 @@
 					<h6 class="mb-0">Имя разрешения</h6>
 				</div>
 				<div class="form-group col-sm-9 text-secondary">
-					<input type="text" name="name" class="form-control"   />
+					<input type="text" name="name" class="form-control" value="{{ old('name') }}" />
 				</div>
 			</div>
 

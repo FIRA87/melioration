@@ -30,34 +30,34 @@
 
                             <div class="col-md-4">
                                 <label class="form-label">Название TJ *</label>
-                                <input type="text" name="title_tj" class="form-control" value="{{ $project->title_tj }}"
+                                <input type="text" name="title_tj" class="form-control" value="{{ old('title_tj', $project->title_tj) }}"
                                     required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Название RU</label>
-                                <input type="text" name="title_ru" class="form-control" value="{{ $project->title_ru }}">
+                                <input type="text" name="title_ru" class="form-control" value="{{ old('title_ru', $project->title_ru) }}">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Название EN</label>
-                                <input type="text" name="title_en" class="form-control" value="{{ $project->title_en }}">
+                                <input type="text" name="title_en" class="form-control" value="{{ old('title_en', $project->title_en) }}">
                             </div>
 
 
                             <div class="col-md-4 mt-3">
                                 <label class="form-label">Slug (URL)</label>
-                                <input type="text" name="slug" class="form-control" value="{{ $project->slug }}">
+                                <input type="text" name="slug" class="form-control" value="{{ old('slug', $project->slug) }}">
                             </div>
 
 
                             <div class="col-md-4 mt-3">
                                 <label for="start_date" class="form-label">Дата начала</label>
                                 <input type="date" id="start_date" name="start_date" class="form-control"
-                                    value="{{ $project->start_date ?? '' }}">
+                                    value="{{ old('start_date', $project->start_date ?? '') }}">
                             </div>
                             <div class="col-md-4 mt-3">
                                 <label for="end_date" class="form-label">Дата окончания</label>
                                 <input type="date" id="end_date" name="end_date" class="form-control"
-                                    value="{{ $project->end_date ?? '' }}">
+                                    value="{{ old('end_date', $project->end_date ?? '') }}">
                             </div>
 
 
@@ -110,12 +110,12 @@
                             <div class="col-md-4 mt-3">
                                 <label class="form-label">Сортировка</label>
                                 <input type="number" name="sort" class="form-control"
-                                    value="{{ $project->sort ?? 0 }}">
+                                    value="{{ old('sort', $project->sort ?? 0) }}">
                             </div>
                             <div class="col-md-4 mt-3">
                                 <div class="form-check form-switch">
                                     <input type="checkbox" class="form-check-input" name="status" value="1"
-                                        {{ $project->status ? 'checked' : '' }}>
+                                        {{ old('status', $project->status) ? 'checked' : '' }}>
                                     <label
                                         class="form-check-label">{{ $project->status ? 'Активный' : 'Неактивный' }}</label>
                                 </div>
@@ -133,13 +133,13 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane show active" id="text_tj">
-                                        <textarea id="summernote" name="text_tj" class="form-control my-editor" rows="8" required>{!! $project->text_tj !!}</textarea>
+                                        <textarea id="summernote" name="text_tj" class="form-control my-editor" rows="8" required>{!! old('text_tj', $project->text_tj) !!}</textarea>
                                     </div>
                                     <div class="tab-pane" id="text_ru">
-                                        <textarea id="summernote2" name="text_ru" class="form-control my-editor" rows="8">{!! $project->text_ru !!}</textarea>
+                                        <textarea id="summernote2" name="text_ru" class="form-control my-editor" rows="8">{!! old('text_ru', $project->text_ru) !!}</textarea>
                                     </div>
                                     <div class="tab-pane" id="text_en">
-                                        <textarea id="summernote3" name="text_en" class="form-control my-editor" rows="8">{!! $project->text_en !!}</textarea>
+                                        <textarea id="summernote3" name="text_en" class="form-control my-editor" rows="8">{!! old('text_en', $project->text_en) !!}</textarea>
                                     </div>
                                 </div>
                             </div>
