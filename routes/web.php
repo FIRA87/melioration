@@ -232,10 +232,10 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::controller(PageController::class)->group(function () {
         Route::get('/all/pages', 'index')->name('all.pages');
         Route::get('/add/pages', 'create')->name('add.pages');
-        Route::post('/store/pages', 'store')->name('store.pages');
-        Route::get('/edit/pages/{id}', 'edit')->name('edit.pages');
-        Route::post('/update/pages', 'update')->name('update.pages');
-        Route::get('/delete/pages/{id}', 'delete')->name('delete.pages');
+        Route::post('/store/pages', 'store')->name('store.page');
+        Route::get('/edit/pages/{id}', 'edit')->name('edit.page');
+        Route::post('/update/pages', 'update')->name('update.page');
+        Route::get('/delete/pages/{id}', 'delete')->name('delete.page');
         Route::post('/admin/pages/update-status', 'updateStatus');
         Route::post('/admin/pages/delete-image', 'deleteImage')->name('pages.delete.image');
     });
@@ -344,7 +344,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
     Route::post('/jobs/{job}/delete-attachment', [JobController::class, 'deleteAttachment'])->name('jobs.delete.attachment');
 
-    // Управление заявками на вакансии  
+    // Управление заявками на вакансии
     Route::get('/admin/applications', [JobApplicationBackendController::class, 'index'])->name('backend.applications.index');
     Route::get('/admin/applications/{application}', [JobApplicationBackendController::class, 'show'])->name('backend.applications.show');
     Route::patch('/admin/applications/{application}/status', [JobApplicationBackendController::class, 'updateStatus'])->name('backend.applications.status');

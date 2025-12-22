@@ -2,6 +2,8 @@
 @section('admin')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
+
+
     <div class="content">
         <!-- Start Content-->
         <div class="container-fluid">
@@ -35,31 +37,31 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form id="myForm" method="POST" action="{{ route('update.pages') }}"
+                            <form id="myForm" method="POST" action="{{ route('update.page') }}"
                                 enctype="multipart/form-data">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $pages->id }}">
+                                <input type="hidden" name="id" value="{{ $page->id }}">
 
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group mb-3">
                                             <label for="title_ru" class="form-label">Название RU</label>
                                             <input type="text" id="title_ru" class="form-control" name="title_ru"
-                                                value="{{ old('title_ru', $pages->title_ru) }}">
+                                                value="{{ old('title_ru', $page->title_ru) }}">
                                         </div>
                                     </div> <!-- end col -->
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_tj" class="form-label">Название TJ</label>
                                             <input type="text" id="title_tj" name="title_tj" class="form-control"
-                                                value="{{ old('title_tj', $pages->title_tj) }}">
+                                                value="{{ old('title_tj', $page->title_tj) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group mb-3">
                                             <label for="title_en" class="form-label">Название EN</label>
                                             <input type="text" id="title_en" name="title_en" class="form-control"
-                                                value="{{ old('title_en', $pages->title_en) }}">
+                                                value="{{ old('title_en', $page->title_en) }}">
                                         </div>
                                     </div>
 
@@ -70,7 +72,7 @@
                                             <label for="meta_keywords_ru" class="form-label">Ключевые слова RU</label>
                                             <input type="text" id="meta_keywords_ru" class="form-control"
                                                 name="meta_keywords_ru"
-                                                value="{{ old('meta_keywords_ru', $pages->meta_keywords_ru) }}">
+                                                value="{{ old('meta_keywords_ru', $page->meta_keywords_ru) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -78,7 +80,7 @@
                                             <label for="meta_keywords_tj" class="form-label">Ключевые слова TJ</label>
                                             <input type="text" id="meta_keywords_tj" name="meta_keywords_tj"
                                                 class="form-control"
-                                                value="{{ old('meta_keywords_tj', $pages->meta_keywords_tj) }}">
+                                                value="{{ old('meta_keywords_tj', $page->meta_keywords_tj) }}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -86,7 +88,7 @@
                                             <label for="meta_keywords_en" class="form-label">Ключевые слова EN</label>
                                             <input type="text" id="meta_keywords_en" name="meta_keywords_en"
                                                 class="form-control"
-                                                value="{{ old('meta_keywords_en', $pages->meta_keywords_en) }}">
+                                                value="{{ old('meta_keywords_en', $page->meta_keywords_en) }}">
                                         </div>
                                     </div>
 
@@ -119,19 +121,19 @@
                                                 <div class="tab-pane" id="home-b1" role="tabpanel">
                                                     <textarea id="summernote" name="text_ru" id="home-b1" cols="107" rows="10"
                                                         class="form-control my-editor">
-                                            {!! old('text_ru', $pages->text_ru) !!}
+                                            {!! old('text_ru', $page->text_ru) !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane show" id="profile-b1" role="tabpanel">
                                                     <textarea id="summernote2" name="text_tj" id="profile-b1" cols="107" rows="10"
                                                         class="form-control my-editor">
-                                              {!! old('text_tj', $pages->text_tj) !!}
+                                              {!! old('text_tj', $page->text_tj) !!}
                                         </textarea>
                                                 </div>
                                                 <div class="tab-pane active" id="messages-b1" role="tabpanel">
                                                     <textarea id="summernote3" name="text_en" id="messages-b1" cols="107" rows="10"
                                                         class="form-control my-editor">
-                                              {!! old('text_en', $pages->text_en) !!}
+                                              {!! old('text_en', $page->text_en) !!}
                                         </textarea>
                                                 </div>
                                             </div>
@@ -139,12 +141,12 @@
                                     </div>
 
                                     <!-- Existing Images -->
-                                    @if ($pages->images && $pages->images->count() > 0)
+                                    @if ($page->images && $page->images->count() > 0)
                                         <div class="col-lg-12">
                                             <div class="form-group mb-3">
                                                 <label class="form-label">Существующие изображения</label>
                                                 <div class="row" id="existing-images">
-                                                    @foreach ($pages->images as $image)
+                                                    @foreach ($page->images as $image)
                                                         <div class="col-md-3 mb-3" id="image-{{ $image->id }}">
                                                             <div class="card">
                                                                 <img src="{{ asset('upload/pages/' . $image->image) }}"
@@ -174,7 +176,8 @@
                                     <!-- New Images Upload -->
                                     <div class="col-lg-12">
                                         <div class="form-group mb-3">
-                                            <label for="images" class="form-label">Добавить новые изображения</label>
+                                            <label for="images" class="form-label">Добавить новые
+                                                изображения</label>
                                             <input type="file" class="form-control" id="images" name="images[]"
                                                 multiple accept="image/*">
                                             <small class="text-muted">Разрешены форматы: JPEG, PNG, JPG, GIF, WEBP.
@@ -188,9 +191,9 @@
                                         <div class="form-group mb-3">
                                             <label for="active" class="form-label">Статус</label>
                                             <select class="form-select" id="active" name="status">
-                                                <option value="1" @if (old('status', $pages->status) == '1') selected @endif>
+                                                <option value="1" @if (old('status', $page->status) == '1') selected @endif>
                                                     Активный</option>
-                                                <option value="0" @if (old('status', $pages->status) == '0') selected @endif>
+                                                <option value="0" @if (old('status', $page->status) == '0') selected @endif>
                                                     Неактивный</option>
                                             </select>
                                         </div>
@@ -201,7 +204,7 @@
                                         <div class="form-group mb-3">
                                             <label for="url" class="form-label">Адрес страницы</label>
                                             <input type="text" id="url" name="url" class="form-control"
-                                                value="{{ old('url', $pages->url) }}">
+                                                value="{{ old('url', $page->url) }}">
                                         </div>
 
                                     </div> <!-- end col -->
@@ -287,8 +290,13 @@
 
                         const card = document.createElement('div');
                         card.className = 'card';
+                        // Добавляем класс draggable-image и атрибуты для перетаскивания
                         card.innerHTML = `
-                            <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                            <img src="${e.target.result}"
+                                 class="card-img-top draggable-image"
+                                 style="height: 150px; object-fit: cover; cursor: move;"
+                                 draggable="true"
+                                 data-url="${e.target.result}">
                             <div class="card-body p-2">
                                 <small class="text-muted">${file.name}</small>
                             </div>
@@ -349,31 +357,46 @@
     </script>
 
     <script type="text/javascript">
+        /**
+         * Обработка drag and drop для вставки изображений в редактор Summernote
+         * Копирует полный HTML-тег изображения со всеми атрибутами
+         */
         $(document).ready(function() {
-            var draggedImageUrl = null;
             var draggedImageElement = null;
+            var draggedImageHtml = null;
 
-            // Инициализация Summernote редакторов
-            $('#summernote, #summernote2, #summernote3').summernote({
-                height: 300,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-
-            // При начале перетаскивания из галереи
+            // При начале перетаскивания изображения из галереи
             $(document).on('dragstart', '.draggable-image', function(e) {
-                draggedImageUrl = $(this).data('url') || $(this).attr('src');
-                draggedImageElement = this;
+                draggedImageElement = $(this);
+
+                // Получаем все атрибуты изображения
+                var src = draggedImageElement.attr('src') || draggedImageElement.data('url') || '';
+                var className = draggedImageElement.attr('class') || '';
+                var style = draggedImageElement.attr('style') || '';
+                var draggable = draggedImageElement.attr('draggable') || 'true';
+                var dataUrl = draggedImageElement.data('url') || src;
+
+                // Создаем полный HTML-тег со всеми атрибутами
+                var imgHtml = '<img';
+                imgHtml += ' src="' + src + '"';
+                if (className) {
+                    imgHtml += ' class="' + className + '"';
+                }
+                if (style) {
+                    imgHtml += ' style="' + style + '"';
+                }
+                if (draggable) {
+                    imgHtml += ' draggable="' + draggable + '"';
+                }
+                if (dataUrl) {
+                    imgHtml += ' data-url="' + dataUrl + '"';
+                }
+                imgHtml += '>';
+
+                draggedImageHtml = imgHtml;
+
                 e.originalEvent.dataTransfer.effectAllowed = 'copy';
-                e.originalEvent.dataTransfer.setData('text/html', draggedImageUrl);
-                console.log('Drag started:', draggedImageUrl);
+                e.originalEvent.dataTransfer.setData('text/html', imgHtml);
             });
 
             // Визуальная обратная связь при наведении на редактор
@@ -394,7 +417,7 @@
                 e.stopPropagation();
                 $(this).removeClass('drag-over');
 
-                if (draggedImageUrl) {
+                if (draggedImageHtml) {
                     // Находим активный редактор Summernote
                     var $editable = $(this);
                     var $editor = $editable.closest('.note-editor');
@@ -436,48 +459,43 @@
                     }
 
                     if ($textarea.length > 0) {
-                        // Вставляем изображение в редактор
+                        // Вставляем изображение в место курсора или в конец, если курсор не установлен
                         try {
-                            $textarea.summernote('insertImage', draggedImageUrl, function($image) {
-                                $image.css('max-width', '100%');
-                                $image.css('height', 'auto');
-                            });
-                            console.log('Image inserted successfully:', draggedImageUrl, 'into',
-                                textareaId || $textarea.attr('id'));
+                            // Используем метод pasteHTML для вставки в место курсора
+                            // Если курсор не установлен, вставится в конец
+                            $textarea.summernote('pasteHTML', draggedImageHtml);
                         } catch (error) {
                             console.error('Ошибка при вставке изображения:', error);
-                            // Альтернативный способ: вставляем через HTML
+                            // Fallback: если pasteHTML не сработал, добавляем в конец
                             try {
-                                var imgHtml = '<img src="' + draggedImageUrl +
-                                    '" style="max-width: 100%; height: auto;" />';
-                                $textarea.summernote('pasteHTML', imgHtml);
-                                console.log('Image inserted via pasteHTML');
-                            } catch (pasteError) {
-                                console.error('Ошибка при вставке через pasteHTML:', pasteError);
-                                alert(
-                                    'Ошибка при вставке изображения. Попробуйте использовать кнопку вставки изображения в редакторе.'
-                                    );
+                                var currentContent = $textarea.summernote('code') || '';
+                                var newContent = currentContent + draggedImageHtml;
+                                $textarea.summernote('code', newContent);
+                            } catch (fallbackError) {
+                                console.error('Ошибка при fallback вставке:', fallbackError);
+                                alert('Ошибка при вставке изображения');
                             }
                         }
                     } else {
                         console.error('Не удалось найти textarea для вставки изображения');
-                        console.log('Editor structure:', $editor);
-                        console.log('Active tab pane:', $activeTabPane);
                         alert('Ошибка: не удалось найти редактор для вставки изображения');
                     }
 
-                    draggedImageUrl = null;
+                    draggedImageHtml = null;
                     draggedImageElement = null;
                     return false;
                 }
             });
 
+            // Очистка при завершении перетаскивания
             $(document).on('dragend', '.draggable-image', function() {
-                draggedImageUrl = null;
+                draggedImageHtml = null;
                 draggedImageElement = null;
             });
         });
     </script>
+
+
 
     <style>
         .note-editable.drag-over {
