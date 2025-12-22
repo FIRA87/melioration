@@ -26,36 +26,36 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <table id="basic-datatable" class="table dt-responsive nowrap w-100">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Название RU</th>
-                                    <th>Обложка галереи</th>
-                                    <th>Дата</th>
-                                    <th>Действие</th>
-                                </tr>
-                                </thead>
+    <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название RU</th>
+            <th>Обложка галереи</th>
+            <th>Дата</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
 
 
-                                <tbody>
-                                @foreach($galleries as $item)
-                                <tr>
-                                    <td>{{ $item->id}}</td>
-                                    <td title="{{ $item->title_ru }}"> {{ $item->title_ru  }} </td>
-                                    <td>
-                                        <img src="upload/cover/{{ $item->cover }}" alt="" class="img-fluid" style="max-height: 100px;">
-                                    </td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>
-                                        <a href="{{ route('edit.gallery', $item->id) }}" class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   </a>
-                                        <a href="{{ route('delete.gallery', $item->id) }}" class="btn btn-danger waves-effect waves-light" id="delete"> <i class="fa-solid fa-trash"></i> </a>
-                                    </td>
-                                </tr>
-                                @endforeach
+        <tbody>
+        @foreach($galleries as $item)
+        <tr>
+            <td>{{ $item->id}}</td>
+            <td title="{{ $item->title_ru }}"> {{ $item->title_ru  }} </td>
+            <td>
+                <img src="upload/cover/{{ $item->cover }}" alt="" class="img-fluid" style="max-height: 100px;">
+            </td>
+            <td>{{ $item->created_at }}</td>
+            <td>
+                <a href="{{ route('edit.gallery', $item->id) }}" class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   </a>
+                <a href="{{ route('delete.gallery', $item->id) }}" class="btn btn-danger waves-effect waves-light" id="delete"> <i class="fa-solid fa-trash"></i> </a>
+            </td>
+        </tr>
+        @endforeach
 
-                                </tbody>
-                            </table>
+        </tbody>
+    </table>
 
                         </div> <!-- end card body-->
                     </div> <!-- end card -->

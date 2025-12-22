@@ -27,13 +27,7 @@
                     @endif
               </div>
               <div class="mt-3"><a href="{{ url('news/details/' . $news->id ) }}" class="btn btn-sm">              
-                @if (session()->get('lang') == 'ru')
-                    Подробнее →
-                @elseif(session()->get('lang') == 'en')
-                    Read More →              
-                @else
-                    Муфассалтар →
-                @endif          
+               @trans('read_more')          
 
           </a></div>
             </div>
@@ -78,13 +72,7 @@
             <div class="col-lg-10 col-12">
                 <h2 class="fw-bold text-uppercase mb-3 mb-md-4" 
                     style="font-size: clamp(28px, 5vw, 36px);">
-                    @if(session()->get('lang') == 'ru')
-                        ОСНОВНЫЕ ОБЯЗАННОСТИ
-                    @elseif(session()->get('lang') == 'en')
-                        MAIN RESPONSIBILITIES
-                    @else
-                        Масъулиятҳои асосӣ
-                    @endif
+                 @trans('main_responsibilities')
                 </h2>
 
                 <p class="text-muted mb-4 mb-md-0" style="font-size: clamp(15px, 2.5vw, 15px); line-height: 1.8;">
@@ -101,13 +89,7 @@
             <!-- Ссылка "Узнать больше" — на мобильных под текстом, на десктопе справа -->
             <div class="col-lg-2 col-12 text-lg-end mt-3 mt-lg-0">
                 <a href="{{ url('news/details/'.$home_page2->id) }}" class="fw-semibold d-inline-block" style="color:#0A8250; text-decoration:none; font-size: clamp(15px, 2.5vw, 15px);">
-                    @if(session()->get('lang') == 'ru')
-                        Узнать больше →
-                    @elseif(session()->get('lang') == 'en')
-                        Read more →
-                    @else
-                        Бештар →
-                    @endif
+                   @trans('learn_more')
                 </a>
             </div>
         </div>
@@ -160,13 +142,7 @@
                 <a href="{{ url('news/details/'.$home_page2->id.'/'.$home_page2->slug) }}"
                    class="btn btn-outline-success btn-lg px-5 py-3"
                    style="font-size: clamp(16px, 3vw, 18px);">
-                    @if(session()->get('lang') == 'ru')
-                        Показать все обязанности
-                    @elseif(session()->get('lang') == 'en')
-                        Show All Responsibilities
-                    @else
-                        Ҳамаи вазифаҳоро нишон диҳед
-                    @endif
+                 @trans('show_all_responsibilities')
                 </a>
             </div>
         @endif
@@ -192,10 +168,7 @@
                     @endif
                 </h2>
                 <a href="{{ url('news/details/' . $item->id ) }}" class="btn btn-outline-success btn-sm">
-                    @if(session()->get('lang') == 'ru') Узнать больше
-                    @elseif(session()->get('lang') == 'en') Read more
-                    @else Дигар...
-                    @endif
+                  @trans('learn_more')
                 </a>
             </div>
 
@@ -266,13 +239,7 @@
                                 @endif
                             </p>
                             <a href="{{ route('frontend.project.detail', $project->id) }}" class="btn btn-outline-success align-self-start">
-                                @if (session()->get('lang') == 'ru')
-                                    Подробнее
-                                @elseif(session()->get('lang') == 'en')
-                                    Read More
-                                @else
-                                    Муфассалтар
-                                @endif
+                               @trans('read_more')
                             </a>
                         </div>
                     </div>
@@ -291,13 +258,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
            <h2 class="section-title mb-2 mb-md-0">
                <a href="{{ route('frontend.news') }}" class="fw-semibold" style="color: #000 !important; text-decoration: none !important;"> 
-                @if (session()->get('lang') == 'ru')
-                    НОВОСТИ
-                @elseif (session()->get('lang') == 'en') 
-                    NEWS
-               @else
-                    ХАБАРҲО
-               @endif
+               @trans('main_news')
                </a>
             </h2>
            
@@ -344,13 +305,7 @@
                                 @endif
                             </p>
                             <a href="{{ url('news/details/' . $news->id ) }}" class="mt-auto fw-semibold text-success">
-                                  @if (session()->get('lang') == 'ru') 
-            						Читать далее →
-                                   @elseif(session()->get('lang') == 'en')
-            						Read more →
-            					@else 
-            						Давомаш →
-                                @endif
+                                 @trans('read_more')
                             </a>
                         </div>
                     </div>
@@ -371,22 +326,10 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title fw-bold">
-                @if (session('lang') == 'ru')
-                    ВИДЕО
-                @elseif(session('lang') == 'en')
-                    VIDEO
-                @else
-                    ВИДЕО
-                @endif
+               @trans('main_video')
             </h2>
             <a href="{{ url('/videos') }}" class="text-decoration-none text-success">
-                @if (session('lang') == 'ru')
-                    Все видео →
-                @elseif(session('lang') == 'en')
-                    All videos →
-                @else
-                    Ҳамаи видео →
-                @endif
+               @trans('all_video')
             </a>
         </div>
         
@@ -487,13 +430,7 @@
     <div class="container">
 
         <h2 class="section-title mb-5 text-center">
-            @if(session('lang')=='ru') 
-                Фотогалерея
-            @elseif(session('lang')=='en')
-                Photo Gallery
-            @else 
-                Галереяи аксҳо
-            @endif
+           @trans('main_gallery')
         </h2>
 
         <div class="row g-4">
@@ -533,22 +470,10 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-uppercase" style="font-size: 2rem; letter-spacing: 2px;">
-                @if (session('lang') == 'ru')
-                    РУКОВОДСТВО
-                @elseif(session('lang') == 'en')
-                    LEADERSHIP
-                @else
-                    РОҲБАРИЯТ
-                @endif
+              @trans('leadership')
             </h2>
             <a href="{{ route('frontend.leader') }}" class="text-decoration-none text-muted hover-link">
-                @if (session('lang') == 'ru')
-                    Узнать больше
-                @elseif(session('lang') == 'en')
-                    Learn more
-                @else
-                    Бештар донед
-                @endif
+                @trans('learn_more')
             </a>
         </div>
         
@@ -651,16 +576,7 @@
 <section class="contact-section">
     <div class="container">
         <h2 class="contact-title text-center">
-
-                @if (session('lang') == 'ru')
-                     Обращения граждан и обратная связь
-                @elseif(session('lang') == 'en')
-                   Дархостҳо ва фикру мулоҳизаҳои шаҳрвандон
-                @else
-                   Citizen requests and feedback
-                @endif
-
-
+                @trans('citizen_requests')
        </h2>
 
         <div class="row">
@@ -681,7 +597,7 @@
                             <textarea name="message" class="contact-textarea" placeholder="Тема" required></textarea>
                         </div>
                        <div class="col-md-2 d-flex justify-content-center">
-                            <button type="submit" class="vote-btn">Отправить</button>
+                            <button type="submit" class="vote-btn">@trans('send_button')</button>
                         </div>
                     </div>
                 </form>
@@ -697,13 +613,7 @@
     <div class="container">
 
         <h3 class="fw-bold mb-4 text-uppercase">
-              @if (session('lang') == 'ru')
-                   Наши партнёры
-                @elseif(session('lang') == 'en')
-                    Our partners
-                @else
-                    Шарикони мо
-                @endif
+              @trans('our_partners')
           </h3>
 
         <div class="row justify-content-between text-center text-md-start">

@@ -12,7 +12,15 @@ class Page extends Model
 
     protected $guarded = [];
 
-     public function submenus(){
+    /**
+     * Get all images for this page.
+     */
+    public function images()
+    {
+        return $this->morphMany(PageImage::class, 'imageable')->orderBy('sort_order');
+    }
+
+    public function submenus(){
         return $this->hasMany(SubPage::class, 'page_id')->where('status', 1);
     }
 

@@ -35,7 +35,7 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form id="myForm" method="POST" action="{{ route('store.pages') }}">
+                            <form id="myForm" method="POST" action="{{ route('store.pages') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-4">
@@ -96,6 +96,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="form-group mb-3">
+                                            <label for="images" class="form-label">Изображения (можно загрузить несколько)</label>
+                                            <input type="file" class="form-control" id="images" name="images[]" multiple accept="image/*">
+                                            <small class="text-muted">Разрешены форматы: JPEG, PNG, JPG, GIF, WEBP. Максимальный размер: 5MB</small>
+                                        </div>
+                                        <div id="image-preview" class="row mt-2"></div>
                                     </div>
 
                                     <div class="col-lg-4">
@@ -170,6 +179,55 @@
         });
     </script>
 
+    <script type="text/javascript">
+        // Image preview functionality
+        document.getElementById('images').addEventListener('change', function(e) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
+            
+            const files = e.target.files;
+            
+            if (files) {
+                Array.from(files).forEach((file, index) => {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-3 mb-3';
+                        
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                            <div class="card-body p-2">
+                                <small class="text-muted">${file.name}</small>
+                            </div>
+                        `;
+                        
+                        col.appendChild(card);
+                        preview.appendChild(col);
+                    }
+                    
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
 
-   
+        // Инициализация Summernote редакторов
+        $(document).ready(function() {
+            $('#summernote, #summernote2, #summernote3').summernote({
+                height: 300,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+
 @endsection

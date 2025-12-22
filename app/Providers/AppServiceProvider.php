@@ -4,6 +4,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Blade;
+use App\Models\StaticTranslation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+
+         Blade::directive('trans', function ($key) {
+            return "<?php echo \App\Models\StaticTranslation::trans($key); ?>";
+        });
+
+
         
         view()->composer('*', function ($view) {
             // Кешируем настройки на 24 часа (они редко меняются)

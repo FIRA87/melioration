@@ -25,6 +25,9 @@ class PageRequest extends FormRequest
             'text_en' => 'nullable|string',
             'status' => 'required|in:0,1',
             'sort' => 'nullable|integer|min:0',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // Max 5MB per image
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'nullable|integer|exists:page_images,id',
         ];
     }
 

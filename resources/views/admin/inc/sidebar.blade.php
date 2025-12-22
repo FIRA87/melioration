@@ -368,6 +368,17 @@
                     </li>
 
 
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('admin/static-translations*') ? 'active' : '' }}" 
+                        href="{{ route('static-translations.index') }}">
+                            <i class="link-icon" data-feather="globe"></i>
+                            <span class="link-title">Статические переводы</span>
+                        </a>
+                    </li>
+
+
+
+
 
                     <li class="menu-title mt-2">Настройка</li>
 
@@ -380,7 +391,7 @@
                         <div class="collapse" id="setting">
                             <ul class="nav-second-level">
                                 <li style="margin-left: -20px">
-                                    <a href={{ route('setting.index') }}><i class="mdi mdi-cog"></i>
+                                    <a href="{{ route('setting.index') }}"><i class="mdi mdi-cog"></i>
                                         Настройка</a>
                                 </li>
 
@@ -420,23 +431,20 @@
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="sidebarRole">
-                            <ul class="nav-second-level">
-                                <li style="margin-left: -20px"><a href="{{ route('all.permission') }}"><i
-                                            class="mdi mdi-account"></i> Все разрешения</a></li>
-                                <li style="margin-left: -20px">
-                                    <a href="{{ route('all.roles') }}"><i class="mdi mdi-account-key"></i> Роли
-                                        пользователей</a>
-                                </li>
-                                <li style="margin-left: -20px">
-                                    <a href="{{ route('add.roles.permission') }}"><i
-                                            class="mdi mdi-account-key"></i>Добавить разрешение для роли</a>
-                                </li>
-                                <li style="margin-left: -20px">
-                                    <a href="{{ route('all.roles.permission') }}"><i
-                                            class="mdi mdi-database-plus"></i> Все роли с разрешениями</a>
-                                </li>
+<ul class="nav-second-level">
+    <li style="margin-left: -20px"><a href="{{ route('all.permission') }}">
+        <i class="mdi mdi-account"></i> Все разрешения</a></li>
+    <li style="margin-left: -20px"><a href="{{ route('all.roles') }}">
+        <i class="mdi mdi-account-key"></i> Роли  пользователей</a>
+    </li>
+    <li style="margin-left: -20px"><a href="{{ route('add.roles.permission') }}">
+        <i class="mdi mdi-account-key"></i>Добавить разрешение для роли</a>
+    </li>
+    <li style="margin-left: -20px"><a href="{{ route('all.roles.permission') }}">
+        <i class="mdi mdi-database-plus"></i> Все роли с разрешениями</a>
+    </li>
 
-                            </ul>
+</ul>
                         </div>
                     </li>
                 @else

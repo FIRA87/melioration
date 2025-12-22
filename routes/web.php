@@ -28,6 +28,7 @@ use App\Http\Controllers\Backend\QuestionController;
 use App\Http\Controllers\Backend\PresidentController;
 use App\Http\Controllers\Backend\ServiceRequestAdminController;
 use App\Http\Controllers\Backend\JobApplicationBackendController;
+use App\Http\Controllers\Backend\StaticTranslationController;
 use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\Frontend\SurveyVoteController;
 use App\Http\Controllers\Frontend\ServiceRequestController;
@@ -40,8 +41,6 @@ Route::get('/page/6', function () { return redirect('/frontend/jobs'); });
 Route::get('/page/8', function () { return redirect('/news'); });
 Route::get('/submenu/1', function () { return redirect('/leaders'); });
 Route::get('/page/7', function () { return redirect('/frontend/documents'); });
-
-
 
 
 
@@ -135,6 +134,9 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         //Route::resource('questions', QuestionController::class)->except(['show']);
         //Route::resource('options', OptionController::class)->except(['show']);
     });
+
+    // Маршруты для статических переводов
+    Route::resource('static-translations', StaticTranslationController::class);
 
     // Admin Users Management
     Route::controller(AdminController::class)->group(function () {
@@ -235,6 +237,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/update/pages', 'update')->name('update.pages');
         Route::get('/delete/pages/{id}', 'delete')->name('delete.pages');
         Route::post('/admin/pages/update-status', 'updateStatus');
+        Route::post('/admin/pages/delete-image', 'deleteImage')->name('pages.delete.image');
     });
 
     // SubMenu routes
@@ -246,6 +249,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::post('/update/submenu', 'update')->name('update.submenu');
         Route::get('/delete/submenu/{id}', 'delete')->name('delete.submenu');
         Route::post('/admin/submenu/update-status', 'updateStatus');
+        Route::post('/admin/submenu/delete-image', 'deleteImage')->name('submenu.delete.image');
     });
 
     // Site Settings
