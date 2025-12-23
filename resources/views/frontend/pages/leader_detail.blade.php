@@ -28,14 +28,14 @@
             <div class="card-body text-center py-4 py-md-5 px-3 px-md-4" style="background: linear-gradient(to bottom, #f8f9fa, #ffffff);">
                 
                 <!-- Фото -->
-                <div class="d-flex justify-content-center mb-3 mb-md-4">
+                <div class="d-flex justify-content-center align-items-center mb-3 mb-md-4 leader-photo-container">
                     @if(!empty($leader->image) || !empty($leader->photo))
                         <img src="{{ asset($leader->image ?? $leader->photo) }}"
                              alt="{{ session('lang')=='ru' ? $leader->title_ru : (session('lang')=='en' ? $leader->title_en : $leader->title_tj) }}"
-                             class="rounded-circle shadow-lg border border-4 border-white"
-                             style="width: 150px !important; height: 150px !important; object-fit: cover;">
+                             class="rounded-circle shadow-lg border border-4 border-white leader-photo"
+                             style="width: 150px !important; height: 150px !important; object-fit: cover; display: block;">
                     @else
-                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center" 
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center leader-photo-placeholder" 
                              style="width: 150px !important; height: 150px !important;"> 
                             <i class="bi bi-person-circle text-white" style="font-size: 60px !important;"></i>
                         </div>
@@ -146,6 +146,20 @@
         box-sizing: border-box;
     }
     
+    /* Центрирование фото на всех устройствах */
+    .leader-photo-container {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    .leader-photo,
+    .leader-photo-placeholder {
+        margin: 0 auto !important;
+        flex-shrink: 0 !important;
+    }
+    
     /* Адаптивные размеры фото */
     @media (min-width: 768px) {
         .card-body img.rounded-circle {
@@ -168,26 +182,61 @@
     
     /* Улучшенная типографика для мобильных */
     @media (max-width: 767px) {
+        /* Стили для биографии - исправляем проблему с разрывом текста */
         .biography-content {
             font-size: 0.95rem !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: normal !important;
+            white-space: normal !important;
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        .biography-content * {
+            display: inline !important;
+            white-space: normal !important;
+            word-break: normal !important;
+        }
+        
+        .biography-content p,
+        .biography-content div,
+        .biography-content h1,
+        .biography-content h2,
+        .biography-content h3,
+        .biography-content h4,
+        .biography-content h5,
+        .biography-content h6,
+        .biography-content ul,
+        .biography-content ol,
+        .biography-content li {
+            display: block !important;
+            white-space: normal !important;
+            word-break: normal !important;
+            width: 100% !important;
+            max-width: 100% !important;
         }
         
         .biography-content p {
             margin-bottom: 0.75rem !important;
         }
         
-        /* Перенос длинных слов */
-        .biography-content {
-            word-wrap: break-word !important;
-            overflow-wrap: break-word !important;
-            hyphens: auto !important;
+        /* Центрирование фото на мобильных */
+        .leader-photo-container {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
         }
         
-        /* Убеждаемся что все элементы видны */
-        .card-body * {
+        .leader-photo,
+        .leader-photo-placeholder {
             display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
+            margin: 0 auto !important;
+            flex-shrink: 0 !important;
         }
         
         .row {
@@ -233,9 +282,14 @@
             padding-bottom: 1rem !important;
         }
         
-        /* Гарантируем отображение контента */
-        h1, p, .text-primary, hr, .row, .col-12 {
-            display: block !important;
+        /* Дополнительные стили для биографии на очень маленьких экранах */
+        .biography-content {
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+        }
+        
+        .biography-content p {
+            margin-bottom: 0.5rem !important;
         }
     }
     
