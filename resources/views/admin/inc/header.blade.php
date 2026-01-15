@@ -140,20 +140,20 @@
         <div class="logo-box">
             <a href="{{ route('admin.dashboard') }}" class="logo logo-dark text-center">
                             <span class="logo-sm">
-                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="22">
+                                <img src="{{ '/'. $siteSettings->logo }}" alt="" height="22">
                                 <!-- <span class="logo-lg-text-light">UBold</span> -->
                             </span>
                 <span class="logo-lg">
-                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="20">
+                                <img src="{{ '/'. $siteSettings->logo }}" alt="" height="50">
                     <!-- <span class="logo-lg-text-light">U</span> -->
                             </span>
             </a>
             <a href="{{ route('admin.dashboard') }}" class="logo logo-light text-center">
                             <span class="logo-sm">
-                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="70">
+                                <img src="{{ '/'. $siteSettings->logo }}" alt="" height="70">
                             </span>
                 <span class="logo-lg">
-                                <img src="{{ asset('backend/assets/images/logo.png') }}" alt="" height="70">
+                                <img src="{{ '/'. $siteSettings->logo }}" alt="" height="70">
                             </span>
             </a>
 

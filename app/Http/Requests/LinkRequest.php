@@ -35,6 +35,7 @@ class LinkRequest extends FormRequest
             'img' => $this->isMethod('post') ? 'required|image|mimes:jpeg,jpg,png,gif|max:2048' : 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
             'status' => 'required|in:0,1,Active,Inactive',
             'sort' => 'nullable|integer|min:0',
+            'type' => 'integer|min:1',
         ];
     }
 
@@ -66,6 +67,7 @@ class LinkRequest extends FormRequest
             'status.in' => 'Статус может быть только: 0, 1, Active или Inactive.',
             'sort.integer' => 'Позиция должна быть целым числом.',
             'sort.min' => 'Позиция не может быть отрицательной.',
+            'type.integer' => 'Тип должен быть целым числом.',
         ];
     }
 }

@@ -1,5 +1,4 @@
 <!doctype html>
-<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,14 +26,11 @@
 </head>
 <body>
 
-  @include('frontend.inc.header')
+@include('frontend.inc.header')
 
- @yield('content')
+@yield('content')
 
-
-<!-- Footer -->
-  @include('frontend.inc.footer')
-
+@include('frontend.inc.footer')
 
 
 
@@ -66,6 +62,23 @@
     }
     @endif
 
+</script>
+
+<script>
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        preventDuplicates: true,
+        showDuration: 300,
+        hideDuration: 500,
+        timeOut: 5000,
+        extendedTimeOut: 2000,
+        showEasing: 'swing',
+        hideEasing: 'linear',
+        showMethod: 'fadeIn',
+        hideMethod: 'fadeOut'
+    };
 </script>
 
 

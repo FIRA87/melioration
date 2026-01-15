@@ -109,15 +109,7 @@
 <section class="py-3 bg-light">
     <div class="container">
         <a href="{{ route('frontend.galleries') }}" class="text-decoration-none text-dark d-inline-flex align-items-center">
-            <i class="bi bi-arrow-left me-2"></i>
-           @if (session()->get('lang') == 'ru')
-                Назад
-            @elseif(session()->get('lang') == 'en')
-                Back
-            @else
-               Баргаштан
-            @endif
-        </a>
+            <i class="bi bi-arrow-left me-2"></i>   @trans('back')      </a>
     </div>
 </section>
 

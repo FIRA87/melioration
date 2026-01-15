@@ -1,6 +1,9 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 
+
+@if(auth()->user()->hasRole('Super Admin') OR auth()->user()->hasRole('admin') OR auth()->user()->hasRole('Editor') )
+ 
 <div class="card">
     <div class="card-header">
         <h4>Редактировать перевод</h4>
@@ -57,5 +60,16 @@
         </form>
     </div>
 </div>
+
+
+@else
+<div class="d-flex align-items-center p-3 mb-3 rounded-3" style="background:#fff3f3; border:1px solid #f5c2c7;">
+    <i class="fa-solid fa-lock text-danger fs-4 me-2"></i>
+    <div class="text-danger fw-semibold">У вас нет доступа!</div>
+</div>
+
+@endif
+
+
 
 @endsection

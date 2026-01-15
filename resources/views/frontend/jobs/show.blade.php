@@ -15,18 +15,11 @@
 @section('content')
 <div class="container py-5">
     <div class="row">
-        <div class="col-lg-8 mx-auto">
+        <div class="col-lg-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('frontend.jobs.index') }}">
-                            @if(session()->get('lang') == 'ru')
-                                Вакансии
-                            @elseif(session()->get('lang') == 'en')
-                                Vacancies
-                            @else
-                                Ҷойҳои кории холӣ
-                            @endif
+                        <a href="{{ route('frontend.jobs.index') }}">@trans('vacancies')
                         </a>
                     </li>
                     <li class="breadcrumb-item active">{{ $job->{'title_'.app()->getLocale()} }}</li>

@@ -10,7 +10,7 @@ class StaticTranslationController extends Controller
 {
     public function index()
     {
-        $translations = StaticTranslation::orderBy('group')->orderBy('key')->paginate(20);
+        $translations = StaticTranslation::orderBy('group')->orderBy('key')->get();
         $groups = StaticTranslation::distinct()->pluck('group');
         
         return view('backend.translations.index', compact('translations', 'groups'));

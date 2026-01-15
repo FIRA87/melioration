@@ -12,21 +12,21 @@ class Page extends Model
 
     protected $guarded = [];
 
-    /**
-     * Get all images for this page.
-     */
-    public function images()
-    {
-        return $this->morphMany(PageImage::class, 'imageable')->orderBy('sort_order');
-    }
-
-    public function submenus(){
+     public function submenus(){
         return $this->hasMany(SubPage::class, 'page_id')->where('status', 1);
     }
 
     public function subSubmenus()
     {
         return $this->hasMany(SubSubPage::class, 'sub_page_id');
+    }
+
+      /**
+     * Get all images for this page.
+     */
+    public function images()
+    {
+        return $this->morphMany(PageImage::class, 'imageable')->orderBy('sort_order');
     }
 
 

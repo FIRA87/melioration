@@ -1,14 +1,7 @@
 @extends('frontend.master')
 
-
 @section('title')
-  @if(session()->get('lang') == 'ru')
-        Подать заявку
-    @elseif(session()->get('lang') == 'en')
-        Apply
-    @else
-        Аризадиҳӣ
-    @endif
+    @trans('apply')   
 @endsection
 
 
@@ -19,30 +12,14 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('frontend.jobs.index') }}">
-                            @if(session()->get('lang') == 'ru')
-                                Вакансии
-                            @elseif(session()->get('lang') == 'en')
-                                Vacancies
-                            @else
-                                Ҷойҳои кории холӣ
-                            @endif
-                        </a>
+                        <a href="{{ route('frontend.jobs.index') }}">@trans('vacancies') </a>
                     </li>
                     <li class="breadcrumb-item">
                         <a href="{{ route('frontend.jobs.show', $job->slug) }}">
                             {{ $job->{'title_'.app()->getLocale()} }}
                         </a>
                     </li>
-                    <li class="breadcrumb-item active">
-                        @if(session()->get('lang') == 'ru')
-                            Подать заявку
-                        @elseif(session()->get('lang') == 'en')
-                            Apply
-                        @else
-                            Аризадиҳӣ
-                        @endif
-                    </li>
+                    <li class="breadcrumb-item active">@trans('apply')         </li>
                 </ol>
             </nav>
 

@@ -1,6 +1,9 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 
+
+@if(auth()->user()->hasRole('Super Admin') OR auth()->user()->hasRole('admin') OR auth()->user()->hasRole('Editor') )
+ 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <div class="page-content">
@@ -58,25 +61,31 @@
 				<div class="form-group col-sm-9 text-secondary">
 					<select name="group_name" class="form-select mb-3" aria-label="Default select example">
 					<option selected="">Откройте эту группу</option>
-					<option value="brand">Бренд</option>
+					<option value="media">Медиабиблиотека</option>
+					<option value="menu">Меню</option>
+					<option value="submenu">Подменю</option>
+					<option value="leader">Руководство</option>
 					<option value="category">Категория</option>
-					<option value="subcategory">Подкатегория</option>
-					<option value="product">Продукт</option>
-					<option value="slider">Слайдер</option>
-					<option value="ads">Реклама</option>
-					<option value="coupon">Купон</option>
-					<option value="area">Страна</option>
-					<option value="vendor">Поставщик</option>
-					<option value="order">Заказать</option>
-					<option value="return">Возврат</option>
-					<option value="report">Отчет</option>
-					<option value="user">Управление пользователями</option>
-					<option value="review">Обзор</option>
-					<option value="setting">Настройка</option>
-					<option value="blog">Блог</option>
-					<option value="role">Роль</option>
-					<option value="admin">Администратор</option>
-					<option value="stock">Запасы</option>
+					<option value="links">Партнёры</option>
+					<option value="news">Новости</option>
+					<option value="video">Видео</option>
+					<option value="gallery">Галерея</option>
+					<option value="presidents">Президент</option>
+					<option value="projects">Проекты</option>
+					<option value="tasks">Задачи</option>
+					<option value="services">Услуги</option>
+					<option value="surveys">Голосования</option>
+					<option value="contacts">Форма обратной связи</option>
+					<option value="jobs">Вакансия</option>
+					<option value="documents">Документы</option>
+					<option value="setting">Настройка сайта</option>
+					<option value="admin">Пользователи</option>
+					<option value="permission">Роли и права/Все разрешения</option>
+					<option value="roles">Роли  пользователей</option>
+					<option value="add_roles_permission">Добавить разрешение для роли</option>
+					<option value="all_roles_permission">Все роли с разрешениями</option>
+					<option value="static_translations">Статические переводы</option>
+				
 				</select>
 				</div>
 			</div>
@@ -143,7 +152,13 @@
 
 
 
+@else
+<div class="d-flex align-items-center p-3 mb-3 rounded-3" style="background:#fff3f3; border:1px solid #f5c2c7;">
+    <i class="fa-solid fa-lock text-danger fs-4 me-2"></i>
+    <div class="text-danger fw-semibold">У вас нет доступа!</div>
+</div>
 
+@endif
 
 
 @endsection

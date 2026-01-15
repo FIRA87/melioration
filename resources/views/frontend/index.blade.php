@@ -1,7 +1,7 @@
 @extends('frontend.master')
 @section('content')
 @php
-	$latestNews = App\Models\News::orderBy('publish_date', 'desc')->limit(4)->get();
+	$latestNews = App\Models\News::orderBy('publish_date', 'desc')->limit(3)->get();
 @endphp
 
 
@@ -26,10 +26,7 @@
                         {{ $news->title_tj }}
                     @endif
               </div>
-              <div class="mt-3"><a href="{{ url('news/details/' . $news->id ) }}" class="btn btn-sm">              
-               @trans('read_more')          
-
-          </a></div>
+              <div class="mt-3"><a href="{{ url('news/details/' . $news->id ) }}" class="btn btn-sm">@trans('read_more') →</a></div>
             </div>
           </div>
              @endforeach
@@ -41,10 +38,10 @@
       <div class="col-12 col-lg-4">
          @if (is_countable($prezident) && count($prezident) > 0)
                 @foreach ($prezident as $item)
-        <div class="small-card p-3 h-100 bg-white shadow-sm">
+        <div class="small-card h-100 bg-white shadow-sm">
           <img src="{{ asset($item->image) }}" alt="portrait" style="width:100%;object-fit:cover;border-radius:8px;"/>        
-          <p class="text-muted small">
-             <a href="{{ url('prezident/detail/' . $item->id ) }}" class="text-decoration-none" style="color: #000 !important; text-decoration: none !important;"> 
+          <p class="text-muted small" style="padding: 10px;">
+             <a href="{{ url('prezident/detail/' . $item->id ) }}" class="text-decoration-none" style="color: #000 !important; text-decoration: none !important;padding: 10px;"> 
               @if (session()->get('lang') == 'ru')              
                     {!! Str::limit(strip_tags($item->text_ru), 200) !!}
                 @elseif(session()->get('lang') == 'en')
@@ -72,7 +69,7 @@
             <div class="col-lg-10 col-12">
                 <h2 class="fw-bold text-uppercase mb-3 mb-md-4" 
                     style="font-size: clamp(28px, 5vw, 36px);">
-                 @trans('main_responsibilities')
+                     @trans('main_responsibilities')
                 </h2>
 
                 <p class="text-muted mb-4 mb-md-0" style="font-size: clamp(15px, 2.5vw, 15px); line-height: 1.8;">
@@ -89,7 +86,8 @@
             <!-- Ссылка "Узнать больше" — на мобильных под текстом, на десктопе справа -->
             <div class="col-lg-2 col-12 text-lg-end mt-3 mt-lg-0">
                 <a href="{{ url('news/details/'.$home_page2->id) }}" class="fw-semibold d-inline-block" style="color:#0A8250; text-decoration:none; font-size: clamp(15px, 2.5vw, 15px);">
-                   @trans('learn_more')
+                     @trans('learn_more') →
+                    
                 </a>
             </div>
         </div>
@@ -142,7 +140,7 @@
                 <a href="{{ url('news/details/'.$home_page2->id.'/'.$home_page2->slug) }}"
                    class="btn btn-outline-success btn-lg px-5 py-3"
                    style="font-size: clamp(16px, 3vw, 18px);">
-                 @trans('show_all_responsibilities')
+                     @trans('show_all_responsibilities')
                 </a>
             </div>
         @endif
@@ -168,7 +166,7 @@
                     @endif
                 </h2>
                 <a href="{{ url('news/details/' . $item->id ) }}" class="btn btn-outline-success btn-sm">
-                  @trans('learn_more')
+                   @trans('learn_more')
                 </a>
             </div>
 
@@ -207,7 +205,7 @@
 
 <section class="py-5 bg-light">
     <div class="container">
-        <h2 class="section-title">Проекты</h2>
+        <h2 class="section-title">@trans('projects')</h2>
 
         <div class="row g-4">
             @foreach($projects as $project)
@@ -258,7 +256,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
            <h2 class="section-title mb-2 mb-md-0">
                <a href="{{ route('frontend.news') }}" class="fw-semibold" style="color: #000 !important; text-decoration: none !important;"> 
-               @trans('main_news')
+              @trans('main_news')
                </a>
             </h2>
            
@@ -268,7 +266,7 @@
 
         <div class="row g-4">  
             @foreach($latestNews as $news)  
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-4">
                     <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
                         <div class="position-relative">               
             			     @if($news->images && $news->images->isNotEmpty())
@@ -304,9 +302,7 @@
             						{!! Str::limit(strip_tags($news->news_details_tj ?? ''), 120) !!}
                                 @endif
                             </p>
-                            <a href="{{ url('news/details/' . $news->id ) }}" class="mt-auto fw-semibold text-success">
-                                 @trans('read_more')
-                            </a>
+                            <a href="{{ url('news/details/' . $news->id ) }}" class="mt-auto fw-semibold text-success">@trans('read_more') → </a>
                         </div>
                     </div>
                 </div>
@@ -325,12 +321,8 @@
 <section class="py-5 bg-light">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="section-title fw-bold">
-               @trans('main_video')
-            </h2>
-            <a href="{{ url('/videos') }}" class="text-decoration-none text-success">
-               @trans('all_video')
-            </a>
+            <h2 class="section-title fw-bold">@trans('main_video')    </h2>
+            <a href="{{ url('/videos') }}" class="text-decoration-none text-success">  @trans('all_video') →  </a>
         </div>
         
         <div class="row g-3">
@@ -376,11 +368,11 @@
                         @if(isset($video->title_ru))
                         <div class="video-title">
                             @if (session('lang') == 'ru')
-                                {{ Str::limit($video->title_ru, 50) }}
+                                {{ Str::limit($video->title_ru, 200) }}
                             @elseif(session('lang') == 'en')
-                                {{ Str::limit($video->title_en ?? $video->title_ru, 50) }}
+                                {{ Str::limit($video->title_en ?? $video->title_ru, 200) }}
                             @else
-                                {{ Str::limit($video->title_tj ?? $video->title_ru, 50) }}
+                                {{ Str::limit($video->title_tj ?? $video->title_ru, 200) }}
                             @endif
                         </div>
                         @endif
@@ -428,28 +420,22 @@
 
 <section class="py-5 bg-white">
     <div class="container">
-
-        <h2 class="section-title mb-5 text-center">
-           @trans('main_gallery')
-        </h2>
-
+        <h2 class="section-title mb-5 text-center"> @trans('main_gallery')   </h2>
         <div class="row g-4">
             @foreach($galleries as $item)
                 <div class="col-sm-12 col-md-6 col-lg-4">
                     <a href="{{ url('gallery/details/'.$item->id) }}" class="text-decoration-none">
-                        <div class="gallery-card shadow-sm rounded overflow-hidden position-relative">
-                            
-                            <div class="ratio ratio-1x1">
-                                <img src="/upload/cover/{{ $item->cover }}"
-                                     class="w-100 h-100 gallery-img"
-                                     alt="">
-                            </div>
-
+                        <div class="gallery-card shadow-sm rounded overflow-hidden position-relative">                            
+                            <div class="ratio ratio-1x1"><img src="/upload/cover/{{ $item->cover }}" class="w-100 h-100 gallery-img" alt=""></div>
                             <div class="p-3 bg-white">
                                 <h5 class="mb-0 text-dark text-truncate">
-                                    @if(session('lang')=='ru') {{ $item->title_ru }}
-                                    @elseif(session('lang')=='en') {{ $item->title_en }}
-                                    @else {{ $item->title_tj }} @endif
+                                    @if(session('lang')=='ru') 
+                                        {{ $item->title_ru }}
+                                    @elseif(session('lang')=='en') 
+                                        {{ $item->title_en }}
+                                    @else 
+                                         {{ $item->title_tj }} 
+                                    @endif
                                 </h5>
                             </div>
                         </div>
@@ -470,10 +456,10 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-uppercase" style="font-size: 2rem; letter-spacing: 2px;">
-              @trans('leadership')
+               @trans('leadership')
             </h2>
             <a href="{{ route('frontend.leader') }}" class="text-decoration-none text-muted hover-link">
-                @trans('learn_more')
+               @trans('learn_more')
             </a>
         </div>
         
@@ -529,8 +515,7 @@
 <!-- Опросник -->
 <section class="survey-section">
     <div class="container">
-        <div class="survey-card">
-         
+        <div class="survey-card">        
 
             @foreach ($survey->questions as $question)
                 <div class="question-card">
@@ -543,7 +528,7 @@
                                       class="survey-textarea" 
                                       placeholder="Введите ваш ответ здесь..."
                                       required></textarea>
-                            <button type="submit" class="vote-btn">Отправить</button>
+                            <button type="submit" class="vote-btn">@trans('send_button')</button>
                             <div class="vote-result" style="display:none"></div>
                         </form>
                     @else
@@ -562,7 +547,7 @@
                                     </label>
                                 @endforeach
                             </div>
-                            <button type="submit" class="vote-btn">Голосовать</button>
+                            <button type="submit" class="vote-btn">@trans('vote')</button>
                             <div class="vote-result" style="display:none"></div>
                         </form>
                     @endif
@@ -575,9 +560,7 @@
 <!-- Форма обратной связи -->
 <section class="contact-section">
     <div class="container">
-        <h2 class="contact-title text-center">
-                @trans('citizen_requests')
-       </h2>
+        <h2 class="contact-title text-center">@trans('citizen_requests') </h2>
 
         <div class="row">
             <div class="col-md-12 mx-auto">
@@ -611,16 +594,12 @@
 
 <section class="py-5 bg-white">
     <div class="container">
-
-        <h3 class="fw-bold mb-4 text-uppercase">
-              @trans('our_partners')
-          </h3>
+        <h3 class="fw-bold mb-4 text-uppercase">  @trans('our_partners')  </h3>
 
         <div class="row justify-content-between text-center text-md-start">
-
             @foreach($partners as $item)
-            <div class="col-12 col-md-4 mb-4 d-flex align-items-center gap-3">
-                <a href="{{ $item->link }}" target="_blank"><img src="{{ $item->img }}" alt="logo"  style="width: 50px;"></a>
+            <div class="col-12 col-md-3 mb-4 d-flex align-items-center gap-3">
+                <a href="{{ $item->url }}" target="_blank"><img src="{{ $item->img }}" alt="logo"  style="width: 50px;"></a>
                 <span class="fw-semibold">
                     @if (session('lang') == 'ru')
                        {{ $item->title_ru }}

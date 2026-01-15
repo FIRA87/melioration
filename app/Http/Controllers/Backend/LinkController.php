@@ -17,10 +17,7 @@ class LinkController extends Controller
      */
     public function index()
     {
-        $links = Link::orderBy('sort', 'asc')
-            ->orderBy('id', 'asc')
-            ->paginate(50); // Пагинация вместо all()
-
+        $links = Link::orderBy('sort', 'asc')->orderBy('id', 'asc')->paginate(50); 
         return view('backend.links.index', compact('links'));
     }
 
@@ -51,6 +48,7 @@ class LinkController extends Controller
             'img'      => 'upload/links/' . $name_gen,
             'status'   => $data['status'],
             'sort'     => $data['sort'] ?? 0,
+            'type'     => $data['type'] ?? 1,
             'created_at' => Carbon::now(),
         ]);
 
@@ -80,6 +78,7 @@ class LinkController extends Controller
             'url'      => $data['url'],
             'status'   => $data['status'],
             'sort'     => isset($data['sort']) && $data['sort'] !== '' ? (int)$data['sort'] : 0,
+            'type'     => isset($data['type']) && $data['type'] !== '' ? (int)$data['type'] : 1,
         ];
 
         // Обработка изображения
@@ -123,14 +122,21 @@ class LinkController extends Controller
         return date('Y-m-d') . $image->getClientOriginalName();
     }
 
-    /**
-     * Сохранение изображения с ресайзом
+     /**
+     * Сохранение изображения с ограничением по стороне
      */
     private function saveImage($image, string $name): void
     {
         $path = public_path('upload/links/' . $name);
-        Image::make($image)->resize(700, 700)->save($path);
+
+        Image::make($image)
+            ->resize(2000, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize(); // не увеличивать маленькие
+            })
+            ->save($path, 85); // качество
     }
+
 
     /**
      * Удаление старого изображения

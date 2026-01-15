@@ -1,13 +1,7 @@
 @extends('frontend.master')
 
 @section('title')
-    @if (session()->get('lang') == 'ru')
-        Руководство
-    @elseif(session()->get('lang') == 'en')
-       Management
-    @else
-        Сохтори ташкилӣ
-    @endif
+@trans('leadership')
 @endsection
 
 
@@ -18,13 +12,7 @@
     <div class="container">
         <div class="custom-banner-content">          
             <h1 class="custom-banner-title text-left">
-                @if (session()->get('lang') == 'ru')
-                    Руководство
-                @elseif(session()->get('lang') == 'en')
-                   Management
-                @else
-                    Сохтори ташкилӣ
-                @endif
+             @trans('leadership')
             </h1>
         </div>
     </div>

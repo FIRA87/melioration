@@ -2,83 +2,94 @@
 @section('admin')
 
 
-    <div class="content">
-        <!-- Start Content-->
-        <div class="container-fluid">
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('add.news') }}" class="btn btn-blue waves-effect waves-light text-white">Добавить</a></li>
-                            </ol>
-                        </div>
-                        <h4 class="page-title">Все новости<span class="btn btn-danger"> {{ count($allNews) }}</span>
-                        </h4>
+  
+<div class="content">
+    <!-- Start Content-->
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        @if(Auth::user()->can('news.add'))
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('add.news') }}" class="btn btn-blue waves-effect waves-light text-white">Добавить</a>
+                            </li>
+                        </ol>
+                        @endif
                     </div>
+                    <h4 class="page-title">Все новости<span class="btn btn-danger"> {{ count($allNews) }}</span>
+                    </h4>
                 </div>
             </div>
-            <!-- end page title -->
+        </div>
+        <!-- end page title -->
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <table id="basic-datatable" class="table dt-responsive nowrap w-100">
-                                <thead>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Изображение</th>
+                                <th>Заголовок </th>
+                                <th>Категория</th>
+                                <th>На главной</th>
+                                <th>Слайдер</th>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                            </thead>
+
+
+                            <tbody>
+                            @foreach($allNews as $key=> $item)
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Изображение</th>
-                                    <th>Заголовок </th>
-                                    <th>Категория</th>
-                                    <th>На главной</th>
-                                    <th>Слайдер</th>
-                                    <th>Дата</th>
-                                    <th>Статус</th>
-                                    <th>Действия</th>
-                                </tr>
-                                </thead>
+                                    <td>{{ $item->id }}</td>
+                                    <td>
+                                        <img src="{{ asset($item->image) }}"
+                                             class="rounded-circle avatar-lg img-thumbnail" alt="profile-image"
+                                             style="height: 100px; width: 100px;">
+                                    </td>
+                                    <td title="{{ $item->title_ru }}">{{ Str::limit($item->title_ru, 30) }}</td>
+                                    <td>{{ $item->category->title_ru  }}</td>
+                                    <td>
+                                        @if($item->home_page == 1)
+                                            <span class="badge bg-success ">Да</span>
+                                        @else
+                                            <span class="badge bg-danger ">Нет</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($item->top_slider == 1)
+                                            <span class="badge bg-success ">Да</span>
+                                        @else
+                                            <span class="badge bg-danger ">Нет</span>
+                                        @endif
+                                    </td>
+                                    <td> {{ $item->publish_date }}</td>
+
+                                    <td>
+                                        @if($item->status == 1)
+                                            <span class="badge bg-success ">Активный</span>
+                                        @else
+                                            <span class="badge bg-danger ">Неактивный</span>
+                                        @endif
+                                    </td>
 
 
-                                <tbody>
-                                @foreach($allNews as $key=> $item)
-                                    <tr>
-                                        <td>{{ $item->id }}</td>
-                                        <td>
-                                            <img src="{{ asset($item->image) }}"
-                                                 class="rounded-circle avatar-lg img-thumbnail" alt="profile-image"
-                                                 style="height: 100px; width: 100px;">
-                                        </td>
-                                        <td title="{{ $item->title_ru }}">{{ Str::limit($item->title_ru, 30) }}</td>
-                                        <td>{{ $item->category->title_ru  }}</td>
-                                        <td>
-                                            @if($item->home_page == 1)
-                                                <span class="badge bg-success ">Да</span>
-                                            @else
-                                                <span class="badge bg-danger ">Нет</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($item->top_slider == 1)
-                                                <span class="badge bg-success ">Да</span>
-                                            @else
-                                                <span class="badge bg-danger ">Нет</span>
-                                            @endif
-                                        </td>
-                                        <td> {{ $item->publish_date }}</td>
-
-                                        <td>
-                                            @if($item->status == 1)
-                                                <span class="badge bg-success ">Активный</span>
-                                            @else
-                                                <span class="badge bg-danger ">Неактивный</span>
-                                            @endif
-                                        </td>
-                                        <td>
+                                    <td>
+                                        @if(Auth::user()->can('news.edit'))
                                             <a href="{{ route('edit.news', $item->id) }}"
-                                               class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   </a>
+                                               class="btn btn-primary waves-effect waves-light"><i class="fa-solid fa-pen"></i>   
+                                            </a>
+                                         @endif
 
+                                        @if(Auth::user()->can('news.delete'))
                                             <form action="{{ route('delete.news', $item) }}" method="POST" style="display:inline">
                                                 @csrf
                                                 @method('DELETE')
@@ -87,42 +98,48 @@
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </form>
+                                        
 
-                                            @if($item->status == 1)
-                                                <a href="{{ route('inactive.news', $item->id) }}"
-                                                   class="btn btn-primary waves-effect waves-light"
-                                                   title="Неактивный"><i class="fa-solid fa-thumbs-down"></i></a>
-                                            @else
-                                                <a href="{{ route('active.news', $item->id) }}"
-                                                   class="btn btn-primary waves-effect waves-light" title="Активный "><i
-                                                            class="fa-solid fa-thumbs-up"></i></a>
-                                            @endif
+                                        @if($item->status == 1)
+                                            <a href="{{ route('inactive.news', $item->id) }}"
+                                               class="btn btn-primary waves-effect waves-light"
+                                               title="Неактивный"><i class="fa-solid fa-thumbs-down"></i></a>
+                                        @else
+                                            <a href="{{ route('active.news', $item->id) }}"
+                                               class="btn btn-primary waves-effect waves-light" title="Активный "><i
+                                                        class="fa-solid fa-thumbs-up"></i></a>
+                                        @endif
 
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                                </tbody>
-                            </table>
-
-                        </div> <!-- end card body-->
-                    </div> <!-- end card -->
-                </div><!-- end col-->
-            </div>
-            <!-- end row-->
-
-        </div> <!-- container -->
-
-    </div> <!-- content -->
+                                         @endif
 
 
-    <script>
-        $(document).ready(function () {
-            $('#basic-datatable').DataTable({
-                order: [['id', 'desc']],
-            });
+
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                            </tbody>
+                        </table>
+
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div>
+        <!-- end row-->
+
+    </div> <!-- container -->
+
+</div> <!-- content -->
+
+
+<script>
+    $(document).ready(function () {
+        $('#basic-datatable').DataTable({
+            order: [['id', 'desc']],
         });
-    </script>
+    });
+</script>
+
+
 
 @endsection

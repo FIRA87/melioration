@@ -1,27 +1,13 @@
 @extends('frontend.master')
 @section('title')
-    @if (session()->get('lang') == 'ru')
-        Все проекты
-    @elseif(session()->get('lang') == 'en')
-        All Projects
-    @else
-        Ҳамаи лоиҳаҳо
-    @endif
+  @trans('projects')
 @endsection
 @section('content')
 <!-- Баннер -->
 <section class="custom-banner py-5">
     <div class="container">
         <div class="text-left">
-            <h1 class="custom-banner-title text-left">
-                  @if (session()->get('lang') == 'ru')
-                        Наши проекты
-                    @elseif(session()->get('lang') == 'en')
-                        Our Projects
-                    @else
-                        Лоиҳаҳои мо
-                    @endif
-            </h1>
+            <h1 class="custom-banner-title text-left">@trans('our_projects') </h1>
         </div>
     </div>
 </section>
@@ -97,7 +83,7 @@
 
             {{-- Кнопка сброса --}}
             <div class="col-lg-2 col-md-2">
-                <button type="button" class="btn btn-outline-secondary w-100" id="resetFilters">
+                <button type="button" class="btn btn-success w-100" id="resetFilters">
                     <i class="bi bi-arrow-clockwise me-1"></i>
                     @if (session()->get('lang') == 'ru')
                         Сбросить
@@ -228,15 +214,7 @@
                     </p>
                     {{-- Кнопка --}}
                     <a href="{{ route('frontend.project.detail', $project->id) }}"
-                       class="btn btn-primary mt-auto rounded-pill">
-                        @if (session()->get('lang') == 'ru')
-                            Подробнее
-                        @elseif(session()->get('lang') == 'en')
-                            Read More
-                        @else
-                            Муфассалтар
-                        @endif
-                    </a>
+                       class="btn btn-success mt-auto rounded-pill" style="color: #fff !important;">@trans('read_more')  </a>
                 </div>
             </div>
         </div>
@@ -331,125 +309,125 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const statusFilter = document.getElementById('statusFilter');
-    const resetButton = document.getElementById('resetFilters');
-    const projectCards = document.querySelectorAll('.project-card');
-    const resultsCount = document.getElementById('resultsCount');
-    const noResults = document.getElementById('noResults');
-    const projectsGrid = document.getElementById('projectsGrid');
-    const paginationContainer = document.getElementById('paginationContainer');
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const resetButton = document.getElementById('resetFilters');
+        const projectCards = document.querySelectorAll('.project-card');
+        const resultsCount = document.getElementById('resultsCount');
+        const noResults = document.getElementById('noResults');
+        const projectsGrid = document.getElementById('projectsGrid');
+        const paginationContainer = document.getElementById('paginationContainer');
 
-    // Функция фильтрации
-    function filterProjects() {
-        const searchTerm = searchInput.value.toLowerCase().trim();
-        const statusValue = statusFilter.value;
-        let visibleCount = 0;
+        // Функция фильтрации
+        function filterProjects() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const statusValue = statusFilter.value;
+            let visibleCount = 0;
 
-        projectCards.forEach(card => {
-            // Получаем все поля для поиска на всех языках
-            const titleRu = card.getAttribute('data-title-ru') || '';
-            const titleEn = card.getAttribute('data-title-en') || '';
-            const titleTj = card.getAttribute('data-title-tj') || '';
-            const textRu = card.getAttribute('data-text-ru') || '';
-            const textEn = card.getAttribute('data-text-en') || '';
-            const textTj = card.getAttribute('data-text-tj') || '';
-            const status = card.getAttribute('data-status');
+            projectCards.forEach(card => {
+                // Получаем все поля для поиска на всех языках
+                const titleRu = card.getAttribute('data-title-ru') || '';
+                const titleEn = card.getAttribute('data-title-en') || '';
+                const titleTj = card.getAttribute('data-title-tj') || '';
+                const textRu = card.getAttribute('data-text-ru') || '';
+                const textEn = card.getAttribute('data-text-en') || '';
+                const textTj = card.getAttribute('data-text-tj') || '';
+                const status = card.getAttribute('data-status');
 
-            // Проверка поиска по всем языкам (RU, EN, TJ)
-            const matchesSearch = !searchTerm || 
-                                  titleRu.includes(searchTerm) || 
-                                  titleEn.includes(searchTerm) || 
-                                  titleTj.includes(searchTerm) ||
-                                  textRu.includes(searchTerm) ||
-                                  textEn.includes(searchTerm) ||
-                                  textTj.includes(searchTerm);
+                // Проверка поиска по всем языкам (RU, EN, TJ)
+                const matchesSearch = !searchTerm || 
+                                      titleRu.includes(searchTerm) || 
+                                      titleEn.includes(searchTerm) || 
+                                      titleTj.includes(searchTerm) ||
+                                      textRu.includes(searchTerm) ||
+                                      textEn.includes(searchTerm) ||
+                                      textTj.includes(searchTerm);
 
-            // Проверка статуса
-            const matchesStatus = statusValue === 'all' || status === statusValue;
+                // Проверка статуса
+                const matchesStatus = statusValue === 'all' || status === statusValue;
 
-            // Показать/скрыть карточку с плавной анимацией
-            if (matchesSearch && matchesStatus) {
-                card.classList.remove('hiding');
-                card.style.display = 'block';
-                // Небольшая задержка для плавного появления
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'scale(1)';
-                }, 10);
-                visibleCount++;
+                // Показать/скрыть карточку с плавной анимацией
+                if (matchesSearch && matchesStatus) {
+                    card.classList.remove('hiding');
+                    card.style.display = 'block';
+                    // Небольшая задержка для плавного появления
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 10);
+                    visibleCount++;
+                } else {
+                    card.classList.add('hiding');
+                    setTimeout(() => {
+                        if (card.classList.contains('hiding')) {
+                            card.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+
+            // Обновить счетчик результатов
+            updateResultsCount(visibleCount);
+
+            // Показать/скрыть сообщение "Ничего не найдено"
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+                paginationContainer.style.display = 'none';
             } else {
-                card.classList.add('hiding');
-                setTimeout(() => {
-                    if (card.classList.contains('hiding')) {
-                        card.style.display = 'none';
-                    }
-                }, 300);
+                noResults.style.display = 'none';
+                paginationContainer.style.display = 'flex';
             }
+        }
+
+        // Обновление счетчика результатов
+        function updateResultsCount(count) {
+            const lang = '{{ session()->get("lang") ?? "tj" }}';
+            const total = projectCards.length;
+            
+            let text = '';
+            if (lang === 'ru') {
+                text = `Показано: <strong>${count}</strong> из <strong>${total}</strong> проектов`;
+            } else if (lang === 'en') {
+                text = `Showing: <strong>${count}</strong> of <strong>${total}</strong> projects`;
+            } else {
+                text = `Намоиш дода шудааст: <strong>${count}</strong> аз <strong>${total}</strong> лоиҳа`;
+            }
+            
+            resultsCount.innerHTML = text;
+        }
+
+        // События поиска с небольшой задержкой (debounce) для производительности
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(filterProjects, 300);
         });
 
-        // Обновить счетчик результатов
-        updateResultsCount(visibleCount);
+        // Событие изменения фильтра статуса
+        statusFilter.addEventListener('change', filterProjects);
 
-        // Показать/скрыть сообщение "Ничего не найдено"
-        if (visibleCount === 0) {
-            noResults.style.display = 'block';
-            paginationContainer.style.display = 'none';
-        } else {
-            noResults.style.display = 'none';
-            paginationContainer.style.display = 'flex';
-        }
-    }
+        // Сброс всех фильтров
+        resetButton.addEventListener('click', function() {
+            searchInput.value = '';
+            statusFilter.value = 'all';
+            filterProjects();
+            
+            // Визуальная обратная связь
+            resetButton.innerHTML = '<i class="bi bi-check me-1"></i>{{ session()->get("lang") == "ru" ? "Сброшено" : (session()->get("lang") == "en" ? "Reset" : "Тоза карда шуд") }}';
+            setTimeout(() => {
+                resetButton.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i>{{ session()->get("lang") == "ru" ? "Сбросить" : (session()->get("lang") == "en" ? "Reset" : "Тоза кардан") }}';
+            }, 2000);
+        });
 
-    // Обновление счетчика результатов
-    function updateResultsCount(count) {
-        const lang = '{{ session()->get("lang") ?? "tj" }}';
-        const total = projectCards.length;
-        
-        let text = '';
-        if (lang === 'ru') {
-            text = `Показано: <strong>${count}</strong> из <strong>${total}</strong> проектов`;
-        } else if (lang === 'en') {
-            text = `Showing: <strong>${count}</strong> of <strong>${total}</strong> projects`;
-        } else {
-            text = `Намоиш дода шудааст: <strong>${count}</strong> аз <strong>${total}</strong> лоиҳа`;
-        }
-        
-        resultsCount.innerHTML = text;
-    }
-
-    // События поиска с небольшой задержкой (debounce) для производительности
-    let searchTimeout;
-    searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(filterProjects, 300);
-    });
-
-    // Событие изменения фильтра статуса
-    statusFilter.addEventListener('change', filterProjects);
-
-    // Сброс всех фильтров
-    resetButton.addEventListener('click', function() {
-        searchInput.value = '';
-        statusFilter.value = 'all';
+        // Инициализация при загрузке страницы
         filterProjects();
-        
-        // Визуальная обратная связь
-        resetButton.innerHTML = '<i class="bi bi-check me-1"></i>{{ session()->get("lang") == "ru" ? "Сброшено" : (session()->get("lang") == "en" ? "Reset" : "Тоза карда шуд") }}';
-        setTimeout(() => {
-            resetButton.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i>{{ session()->get("lang") == "ru" ? "Сбросить" : (session()->get("lang") == "en" ? "Reset" : "Тоза кардан") }}';
-        }, 2000);
-    });
 
-    // Инициализация при загрузке страницы
-    filterProjects();
-
-    // Подсветка текста при поиске (опционально)
-    searchInput.addEventListener('focus', function() {
-        this.select();
+        // Подсветка текста при поиске (опционально)
+        searchInput.addEventListener('focus', function() {
+            this.select();
+        });
     });
-});
 </script>
 
 @endsection

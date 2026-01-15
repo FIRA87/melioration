@@ -1,13 +1,7 @@
 @extends('frontend.master')
 
 @section('title')
-    @if(session('lang') == 'ru')
-        Документы
-    @elseif(session('lang') == 'en')    
-        Documents
-    @else 
-        Ҳуҷҷатҳо
-    @endif
+   @trans('documents')
 @endsection
 
 @section('content')
@@ -17,15 +11,7 @@
 <section class="custom-banner">
     <div class="container">
         <div class="custom-banner-left">          
-            <h1 class="custom-banner-title text-left">
-                @if(session('lang') == 'ru')
-            Документы
-        @elseif(session('lang') == 'en')
-            Documents
-        @else 
-            Ҳуҷҷатҳо
-        @endif
-            </h1>
+            <h1 class="custom-banner-title text-left">@trans('documents')          </h1>
         </div>
     </div>
 </section>
@@ -42,9 +28,12 @@
                 <!-- Поиск -->
                 <div class="col-md-4">
                     <label class="form-label fw-bold">
-                        @if(session('lang') == 'ru') Поиск по документам
-                        @elseif(session('lang') == 'en') Search documents
-                        @else Ҷустуҷӯ дар ҳуҷҷатҳо
+                        @if(session('lang') == 'ru') 
+                            Поиск по документам
+                        @elseif(session('lang') == 'en') 
+                            Search documents
+                        @else 
+                            Ҷустуҷӯ дар ҳуҷҷатҳо
                         @endif
                     </label>
                     <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="@if(session('lang') == 'ru')Введите название документа...@elseif(session('lang') == 'en')Enter document title...@else Навиштани номи ҳуҷҷат...@endif">

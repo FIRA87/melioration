@@ -1,8 +1,7 @@
 @extends('admin.admin_dashboard')
 @section('admin')
     @php
-        $user = Auth::user();
-        $status = $user->status ?? 'inactive';
+      
     @endphp
 
     <div class="content">
@@ -36,7 +35,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="text-end">
-                                        <h3 class="text-dark mt-1"><span data-plugin="counterup"></span></h3>
+                                        <h3 class="text-dark mt-1"><span data-plugin="counterup">{{ $news->count() }}</span></h3>
                                         <p class="text-muted mb-1 text-truncate">Все новости</p>
                                     </div>
                                 </div>
@@ -51,13 +50,12 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="avatar-lg rounded-circle bg-success border-success border shadow">
-
                                         <i class="mdi mdi-checkbox-marked font-22 avatar-title text-white"></i>
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="text-end">
-                                        <h3 class="text-dark mt-1"><span data-plugin="counterup"></span></h3>
+                                        <h3 class="text-dark mt-1"><span data-plugin="counterup"> {{  $activeNews }}</span></h3>
                                         <p class="text-muted mb-1 text-truncate">Активные новости</p>
                                     </div>
                                 </div>
@@ -77,7 +75,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="text-end">
-                                        <h3 class="text-dark mt-1"><span data-plugin="counterup"></span></h3>
+                                        <h3 class="text-dark mt-1"><span data-plugin="counterup">{{  $activeSliderNews  }}</span></h3>
                                         <p class="text-muted mb-1 text-truncate">Слайдер</p>
                                     </div>
                                 </div>
@@ -97,8 +95,8 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="text-end">
-                                        <h3 class="text-dark mt-1"><span data-plugin="counterup"></span></h3>
-                                        <p class="text-muted mb-1 text-truncate" style="overflow: visible">Количество </p>
+                                        <h3 class="text-dark mt-1"><span data-plugin="counterup">{{ $users->count() }}</span></h3>
+                                        <p class="text-muted mb-1 text-truncate" style="overflow: visible">Польватели </p>
                                     </div>
                                 </div>
                             </div> <!-- end row-->
@@ -120,17 +118,23 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Заголовок</th>
-                                            <th>Категория</th>
+                                          
                                             <th>Картинка</th>
                                             <th>Дата </th>
-
-
                                         </tr>
                                     </thead>
                                     <tbody>
-
-
-
+                                    @foreach($news->take(3) as $item)
+                                        <tr>
+                                        <td><h5 class="m-0 fw-normal"> {{ $item->id }}</h5>     </td>
+                                        <td>  {{ $item->title_ru }}   </td>
+                                        <td> <img src="{{ asset($item->image) }}" class="rounded-circle avatar-lg img-thumbnail"   alt="profile-image" style="height: 100px; width: 100px;"> </td>
+                                        <td> {{ $item->publish_date }}</td>
+                                     
+                                      
+    
+                                    </tr>
+                                @endforeach
 
 
                                     </tbody>

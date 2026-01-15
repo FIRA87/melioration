@@ -1,14 +1,7 @@
 @extends('frontend.master')
 
 @section('title')
-
-    @if(session()->get('lang') == 'ru')
-       Конакты
-    @elseif(session()->get('lang') == 'en')
-      Contact
-    @else
-        Тамос
-    @endif
+    @trans('contact')
 
 @endsection
 
@@ -25,15 +18,7 @@
         <div class="row gy-4 gy-sm-0 align-items-center">
             <div class="col-12 col-sm-6">
                 <div class="banner__content">
-                    <h1 class="banner__title display-4 wow fadeInLeft" data-wow-duration="0.8s">                        
-                        @if(session()->get('lang') == 'ru')
-                           Конакты
-                        @elseif(session()->get('lang') == 'en')
-                          Contact
-                        @else
-                            Тамос
-                        @endif
-                    </h1> 
+                    <h1 class="banner__title display-4 wow fadeInLeft" data-wow-duration="0.8s"> @trans('contact') </h1> 
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb wow fadeInRight" data-wow-duration="0.8s">
                             <li class="breadcrumb-item">
@@ -45,15 +30,7 @@
                                     <a href="{{ url('/') }}" class="nav-item nav-link">Асосӣ</a>
                                 @endif
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">                                
-                            @if(session()->get('lang') == 'ru')
-                               Конакты
-                            @elseif(session()->get('lang') == 'en')
-                              Contact
-                            @else
-                                Тамос
-                            @endif
-                            </li>
+                            <li class="breadcrumb-item active" aria-current="page"> @trans('contact')    </li>
                         </ol>
                     </nav>
                 </div>
@@ -76,15 +53,7 @@
                  <form action="{{ route('contact_form_submit') }}" method="POST" class="form_subscribe_ajax sign-up__form wow fadeInDown">
                         @csrf
                        
-                        <h3 class="contact__title wow fadeInDown" data-wow-duration="0.8s">
-                             @if(session()->get('lang') == 'ru')
-                              Свяжитесь с нами
-                            @elseif(session()->get('lang') == 'en')
-                              Get in touch with us
-                            @else
-                              Бо мо тамос гиред
-                            @endif
-                        </h3>
+                        <h3 class="contact__title wow fadeInDown" data-wow-duration="0.8s">@trans('contact_us')     </h3>
 
                         <div class="sign-up__form-part">
                             <div class="input-group">

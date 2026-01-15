@@ -1,6 +1,10 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 
+
+@if(auth()->user()->hasRole('Super Admin') OR auth()->user()->hasRole('admin') OR auth()->user()->hasRole('Editor') )
+ 
+ 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <div class="page-content">
@@ -59,25 +63,32 @@
 				<div class="form-group col-sm-9 text-secondary">
 					<select name="group_name" class="form-select mb-3" aria-label="Default select example">
 	<option selected="">Откройте эту группу</option>
-	<option value="brand" {{ $permission->group_name == 'brand' ? 'selected': ''}}>Бренд</option>
-	<option value="category"{{ $permission->group_name == 'category' ? 'selected': ''}}>Категория</option>
-	<option value="subcategory"{{ $permission->group_name == 'subcategory' ? 'selected': ''}}>Подкатегория</option>
-	<option value="product"{{ $permission->group_name == 'product' ? 'selected': ''}}>Продукт</option>
-	<option value="slider"{{ $permission->group_name == 'slider' ? 'selected': ''}}>Слайдер</option>
-	<option value="ads"{{ $permission->group_name == 'ads' ? 'selected': ''}}>Реклама</option>
-	<option value="coupon"{{ $permission->group_name == 'coupon' ? 'selected': ''}}>Купон</option>
-	<option value="area"{{ $permission->group_name == 'area' ? 'selected': ''}}>Страна</option>
-	<option value="vendor"{{ $permission->group_name == 'vendor' ? 'selected': ''}}>Поставщик</option>
-	<option value="order"{{ $permission->group_name == 'order' ? 'selected': ''}}>Заказ</option>
-	<option value="return"{{ $permission->group_name == 'return' ? 'selected': ''}}>Возврат</option>
-	<option value="report"{{ $permission->group_name == 'report' ? 'selected': ''}}>Отчет</option>
-	<option value="user"{{ $permission->group_name == 'user' ? 'selected': ''}}>Управление пользователями</option>
-	<option value="review"{{ $permission->group_name == 'review' ? 'selected': ''}}>Обзор</option>
-	<option value="setting"{{ $permission->group_name == 'setting' ? 'selected': ''}}>Настройка</option>
-	<option value="blog"{{ $permission->group_name == 'blog' ? 'selected': ''}}>Блог</option>
-	<option value="role"{{ $permission->group_name == 'role' ? 'selected': ''}}>Роль</option>
-	<option value="admin"{{ $permission->group_name == 'admin' ? 'selected': ''}}>Администратор</option>
-	<option value="stock"{{ $permission->group_name == 'stock' ? 'selected': ''}}>Запасы</option>
+	
+<option value="media" {{ $permission->group_name == 'media' ? 'selected': ''}}>Медиабиблиотека</option>
+<option value="menu" {{ $permission->group_name == 'menu' ? 'selected': ''}}>Меню</option>
+<option value="submenu" {{ $permission->group_name == 'submenu' ? 'selected': ''}}>Подменю</option>
+<option value="leader" {{ $permission->group_name == 'leader' ? 'selected': ''}}>Руководство</option>
+<option value="leader" {{ $permission->group_name == 'leader' ? 'selected': ''}}>Категория</option>
+<option value="links" {{ $permission->group_name == 'links' ? 'selected': ''}}>Партнёры</option>
+<option value="news" {{ $permission->group_name == 'news' ? 'selected': ''}}>Новости</option>
+<option value="video" {{ $permission->group_name == 'video' ? 'selected': ''}}>Видео</option>
+<option value="gallery" {{ $permission->group_name == 'gallery' ? 'selected': ''}}>Галерея</option>
+<option value="presidents" {{ $permission->group_name == 'presidents' ? 'selected': ''}}>Президент</option>
+<option value="projects" {{ $permission->group_name == 'projects' ? 'selected': ''}}>Проекты</option>
+<option value="tasks" {{ $permission->group_name == 'tasks' ? 'selected': ''}}>Задачи</option>
+<option value="services" {{ $permission->group_name == 'services' ? 'selected': ''}}>Услуги</option>
+<option value="surveys" {{ $permission->group_name == 'surveys' ? 'selected': ''}}>Голосования</option>
+<option value="contacts" {{ $permission->group_name == 'contacts' ? 'selected': ''}}>Форма обратной связи</option>
+<option value="jobs" {{ $permission->group_name == 'jobs' ? 'selected': ''}}>Вакансия</option>
+<option value="documents" {{ $permission->group_name == 'documents' ? 'selected': ''}}>Документы</option>
+<option value="setting" {{ $permission->group_name == 'setting' ? 'selected': ''}}>Настройка сайта</option>
+<option value="admin" {{ $permission->group_name == 'admin' ? 'selected': ''}}>Пользователи</option>
+<option value="permission" {{ $permission->group_name == 'permission' ? 'selected': ''}}>Роли и права/Все разрешения</option>
+<option value="roles" {{ $permission->group_name == 'roles' ? 'selected': ''}}>Роли  пользователей</option>
+<option value="add_roles_permission" {{ $permission->group_name == 'add_roles_permission' ? 'selected': ''}}>Добавить разрешение для роли</option>
+<option value="all_roles_permission" {{ $permission->group_name == 'all_roles_permission' ? 'selected': ''}}>Все роли с разрешениями</option>
+<option value="static_translations" {{ $permission->group_name == 'static_translations' ? 'selected': ''}}>Статические переводы</option>
+
 				</select>
 				</div>
 			</div>
@@ -140,6 +151,12 @@
 
 
 
+@else
+<div class="d-flex align-items-center p-3 mb-3 rounded-3" style="background:#fff3f3; border:1px solid #f5c2c7;">
+    <i class="fa-solid fa-lock text-danger fs-4 me-2"></i>
+    <div class="text-danger fw-semibold">У вас нет доступа!</div>
+</div>
 
+@endif
 
 @endsection

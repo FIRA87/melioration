@@ -1,13 +1,7 @@
 @extends('frontend.master')
 
 @section('title')
-    @if(session('lang')=='ru')
-        {{ $item->title_ru }}
-    @elseif(session('lang')=='en')
-        {{ $item->title_en }}
-    @else
-        {{ $item->title_tj }}
-    @endif
+  @trans('main_gallery')
 @endsection
 
 
@@ -19,12 +13,7 @@
     <div class="container">
         <div class="text-left">
             <h1 class="custom-banner-title text-left">
-              @if(session('lang')=='ru') 
-                 Фотогалерея
-              @elseif(session('lang')=='en')
-                 Photo gallery
-              @else Галереяи аксҳо
-                 @endif
+             @trans('main_gallery')
             </h1>
         </div>
     </div>

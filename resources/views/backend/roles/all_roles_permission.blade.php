@@ -45,31 +45,31 @@
 				</td>
 
 				<td>
-<a href="{{ route('admin.edit.roles',$item->id) }}" class="btn btn-info">Редактировать</a>
-<a href="{{ route('admin.delete.roles',$item->id) }}" class="btn btn-danger" id="delete" >Удалить</a>
+		<a href="{{ route('admin.edit.roles',$item->id) }}" class="btn btn-info"><i class="fa-solid fa-pen"></i></a>
+		<a href="{{ route('admin.delete.roles',$item->id) }}" class="btn btn-danger" id="delete" ><i class="fa-solid fa-trash"></i></a>
 
-				</td>
-			</tr>
-			@endforeach
-
-
-		</tbody>
-		<tfoot>
-			<tr>
-                <th>Sl</th>
-                <th> Имя роли </th>
-                <th> Разрешение </th>
-                <th> Действия</th>
-			</tr>
-		</tfoot>
-	</table>
-						</div>
-					</div>
-				</div>
+						</td>
+					</tr>
+					@endforeach
 
 
-
+				</tbody>
+				<tfoot>
+					<tr>
+		                <th>Sl</th>
+		                <th> Имя роли </th>
+		                <th> Разрешение </th>
+		                <th> Действия</th>
+					</tr>
+				</tfoot>
+			</table>
 			</div>
+		</div>
+	</div>
+
+
+
+</div>
 
 
 

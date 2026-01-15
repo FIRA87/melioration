@@ -36,11 +36,14 @@ use App\Http\Controllers\Frontend\MenuController;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\Frontend\JobApplicationController;
 
-
+Route::get('/page/4', function () { return redirect('/projects'); });
+Route::get('/page/5', function () { return redirect('/services'); });
 Route::get('/page/6', function () { return redirect('/frontend/jobs'); });
 Route::get('/page/8', function () { return redirect('/news'); });
 Route::get('/submenu/1', function () { return redirect('/leaders'); });
 Route::get('/page/7', function () { return redirect('/frontend/documents'); });
+
+
 
 
 
@@ -56,6 +59,8 @@ Route::get('/news/details/{id}', [IndexController::class, 'newsDetails'])->name(
 Route::get('/news/category/{id}', [IndexController::class, 'catWiseNews']);
 Route::post('/news/search', [IndexController::class, 'newsSearch'])->name('news.search');
 Route::get('/gallery/details/{id}', [IndexController::class, 'galleryDetails'])->name('frontend.gallery.detail');
+Route::get('/services', [ServiceRequestController::class, 'index'])->name('frontend.services');
+Route::post('/service-request', [ServiceRequestController::class, 'store'])->name('frontend.service.request');
 Route::get('/projects', [IndexController::class, 'allProjects'])->name('frontend.projects');
 Route::get('/projects/{id}', [IndexController::class, 'projectDetail'])->name('frontend.project.detail');
 Route::get('/galleries', [IndexController::class, 'allGalleries'])->name('frontend.galleries');
@@ -135,8 +140,10 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         //Route::resource('options', OptionController::class)->except(['show']);
     });
 
-    // Маршруты для статических переводов
+
+     // Маршруты для статических переводов
     Route::resource('static-translations', StaticTranslationController::class);
+
 
     // Admin Users Management
     Route::controller(AdminController::class)->group(function () {
@@ -250,6 +257,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
         Route::get('/delete/submenu/{id}', 'delete')->name('delete.submenu');
         Route::post('/admin/submenu/update-status', 'updateStatus');
         Route::post('/admin/submenu/delete-image', 'deleteImage')->name('submenu.delete.image');
+     
     });
 
     // Site Settings
@@ -344,7 +352,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
     Route::post('/jobs/{job}/delete-attachment', [JobController::class, 'deleteAttachment'])->name('jobs.delete.attachment');
 
-    // Управление заявками на вакансии
+    // Управление заявками на вакансии  
     Route::get('/admin/applications', [JobApplicationBackendController::class, 'index'])->name('backend.applications.index');
     Route::get('/admin/applications/{application}', [JobApplicationBackendController::class, 'show'])->name('backend.applications.show');
     Route::patch('/admin/applications/{application}/status', [JobApplicationBackendController::class, 'updateStatus'])->name('backend.applications.status');

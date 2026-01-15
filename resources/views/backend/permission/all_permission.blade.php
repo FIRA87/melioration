@@ -1,6 +1,9 @@
 @extends('admin.admin_dashboard')
 @section('admin')
 
+
+
+ 
 <div class="page-content">
 				<!--breadcrumb-->
 				<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -16,7 +19,9 @@
 					</div>
 					<div class="ms-auto">
 						<div class="btn-group">
-		<a href="{{ route('add.permission') }}" class="btn btn-primary">Добавить разрешение</a>
+						@if(Auth::user()->can('add_roles_permission'))
+							<a href="{{ route('add.permission') }}" class="btn btn-primary">Добавить</a>
+						@endif
 						</div>
 					</div>
 				</div>
@@ -26,14 +31,14 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="table-responsive">
-							<table id="example" class="table table-striped table-bordered" style="width:100%">
+							<table id="basic-datatable" class="table table-striped table-bordered" style="width:100%">
 								<thead>
-			<tr>
-                <th>Sl</th>
-                <th> Имя разрешения </th>
-                <th> Имя группы </th>
-                <th> Действия </th>
-			</tr>
+					<tr>
+		                <th>Sl</th>
+		                <th> Имя разрешения </th>
+		                <th> Имя группы </th>
+		                <th> Действия </th>
+					</tr>
 		</thead>
 		<tbody>
 	@foreach($permissions as $key => $item)
@@ -43,9 +48,13 @@
 				<td>{{ $item->group_name }}</td>
 
 				<td>
-<a href="{{ route('edit.permission',$item->id) }}" class="btn btn-info">Редактировать</a>
-<a href="{{ route('delete.permission',$item->id) }}" class="btn btn-danger" id="delete" >Удалить</a>
+					@if(Auth::user()->can('all_roles_permission'))
+                    	<a href="{{ route('edit.permission',$item->id) }}" class="btn btn-info"><i class="fa-solid fa-pen"></i></a>
+ 					@endif
 
+                    @if(Auth::user()->can('all_roles_permission'))
+                    	<a href="{{ route('delete.permission',$item->id) }}" class="btn btn-danger" id="delete" ><i class="fa-solid fa-trash"></i> </a>
+                   @endif
 				</td>
 			</tr>
 			@endforeach
@@ -61,13 +70,13 @@
 			</tr>
 		</tfoot>
 	</table>
-						</div>
-					</div>
-				</div>
-
-
-
 			</div>
+		</div>
+	</div>
+
+
+
+</div>
 
 
 

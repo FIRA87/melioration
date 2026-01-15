@@ -4,16 +4,29 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
+use App\Models\News;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class AdminController extends Controller
 {
-    public function index() {
-           return view('admin.index');
+    public function index()
+    {
+        $news = News::orderBy('created_at', 'desc')->get(); // коллекция
+        $activeNews = $news->where('status', 1)->count();       
+        $activeSliderNews = $news->where('status', 1)->where('top_slider', 1)->count(); 
+        $sliderNews = $news->where('top_slider', 1)->count();   
+        $users = User::all(); // коллекция
+    
+        $user = Auth::user();
+        $status = $user->status ?? 'inactive';
+    
+        return view('admin.index', compact('news', 'status', 'user', 'activeNews', 'activeSliderNews', 'sliderNews', 'users'));
     }
+
 
     public function adminLogout(Request $request) {
         Auth::guard('web')->logout();
@@ -128,7 +141,8 @@ class AdminController extends Controller
 
     public function editAdmin($id){
         $adminuser = User::findOrFail($id);
-        return view('backend.admin.edit', compact('adminuser'));
+         $roles = Role::all();
+        return view('backend.admin.edit', compact('adminuser', 'roles'));
     }
 
     public function updateAdmin(Request $request){
@@ -142,6 +156,11 @@ class AdminController extends Controller
         $user->role = 'admin';
         $user->status = 'inactive';
         $user->save();
+        
+        $user->roles()->detach();
+        if ($request->roles) {
+            $user->assignRole($request->roles);
+        }
 
         $notification = array(
             'message' =>'Пользователь успешно обновлен',

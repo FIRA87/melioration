@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class StaticTranslation extends Model
 {
-
     use HasFactory;
-
 
     protected $fillable = [
         'key',
@@ -20,42 +18,76 @@ class StaticTranslation extends Model
         'description'
     ];
 
+    protected static $cache = null;
+
+    /**
+     * Автоочистка кеша при изменениях модели
+     */
+    protected static function booted()
+    {
+        static::created(function () {
+            static::$cache = null;
+        });
+
+        static::updated(function () {
+            static::$cache = null;
+        });
+
+        static::deleted(function () {
+            static::$cache = null;
+        });
+    }
+
+    /**
+     * Загрузка всего словаря (1 раз за запрос)
+     */
+    protected static function loadCache()
+    {
+        if (static::$cache === null) {
+            static::$cache = static::all()->keyBy('key');
+        }
+    }
+
     /**
      * Получить перевод по ключу
      */
     public static function trans($key, $lang = null)
     {
+        static::loadCache();
+
         if (!$lang) {
             $lang = session()->get('lang', 'ru');
         }
 
-        $translation = static::where('key', $key)->first();
+        $item = static::$cache->get($key);
 
-        if (!$translation) {
-            return $key; // возвращаем ключ, если перевод не найден
+        if (!$item) {
+            return $key;
         }
 
         $field = 'value_' . $lang;
-        return $translation->$field ?? $translation->value_ru;
+
+        return $item->$field ?? $item->value_ru;
     }
 
     /**
-     * Получить все переводы определенной группы
+     * Получить группу переводов
      */
     public static function getGroup($group, $lang = null)
     {
+        static::loadCache();
+
         if (!$lang) {
             $lang = session()->get('lang', 'ru');
         }
 
-        $translations = static::where('group', $group)->get();
-        $result = [];
-
-        foreach ($translations as $translation) {
-            $field = 'value_' . $lang;
-            $result[$translation->key] = $translation->$field ?? $translation->value_ru;
-        }
-
-        return $result;
+        return static::$cache
+            ->where('group', $group)
+            ->map(function ($item) use ($lang) {
+                $field = 'value_' . $lang;
+                return $item->$field ?? $item->value_ru;
+            })
+            ->toArray();
     }
 }
+

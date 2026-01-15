@@ -111,7 +111,7 @@ class IndexController extends Controller
 	public function prezidentDetail($id)
 	{
 	    $prizent = President::findOrFail($id);
-	    return view('frontend.pages.prizent_detail', compact('prizent'));
+	    return view('frontend.pages.prezident_detail', compact('prizent'));
 	}
 
 
@@ -156,7 +156,7 @@ class IndexController extends Controller
 
 			'galleries' => $safeQuery(fn() => Gallery::limit(3)->get()),
 			'videos' => $safeQuery(fn() =>Video::where('status', 1)->orderByDesc('id')->limit(4)->get()),
-			'links' => $safeQuery(fn() =>Link::where('status', 1)->limit(6)->get()),
+			'links' => $safeQuery(fn() =>Link::where('status', 1)->where('type', 1)->limit(3)->get()),
 			'prezident' => $safeQuery(fn() =>President::where('status', 1)->limit(1)->get()),
 			'projects' => $safeQuery(fn() =>Project::where('status', 1)->limit(3)->get()),
 			'leaders' => $safeQuery(fn() =>Leader::where('status', 1)->limit(4)->get()),

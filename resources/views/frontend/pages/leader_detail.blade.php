@@ -116,11 +116,19 @@
             </div>
 
             <!-- Биография -->
-            @if(session('lang')=='ru' && $leader->text_ru || session('lang')=='en' && $leader->text_en || session('lang')=='tj' && $leader->text_tj)
+          
             <div class="card-body bg-white p-3 p-md-5">
                 <div class="mx-auto" style="max-width: 900px;">
                     <h2 class="h5 h4-md fw-bold text-dark mb-3 mb-md-4 pb-2 border-start border-4 border-primary ps-3">
-                        Биография
+                          @if(session('lang')=='ru')
+                             Биография
+                        @elseif(session('lang')=='en')
+                              Biography
+                        @else
+                              Биография
+                        @endif
+
+                      
                     </h2>
                     <div class="text-muted lh-lg biography-content">
                         @if(session('lang')=='ru')
@@ -133,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            @endif
+         
 
         </div>
     </div>

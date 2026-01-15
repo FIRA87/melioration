@@ -18,9 +18,9 @@ class SubMenuController extends Controller
      */
     public function index()
     {
-        $submenu= SubPage::all();
+        $allSubmenu = SubPage::all();
         $menu= Page::where('status', 1)->get();
-        return view('backend.submenu.index', compact('submenu', 'menu'));
+        return view('backend.submenu.index', compact('allSubmenu', 'menu'));
     }
 
     /**
@@ -152,6 +152,7 @@ class SubMenuController extends Controller
         return redirect()->route('all.submenu')->with($notification);
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
@@ -182,59 +183,61 @@ class SubMenuController extends Controller
 
     /**
      * Delete a single image via AJAX
-     * Удаляет изображение подменю через AJAX запрос
      */
-    public function deleteImage(Request $request)
-    {
-        if (!$request->ajax()) {
+/**
+ * Delete a single image via AJAX
+ */
+public function deleteImage(Request $request)
+{
+    try {
+        // Проверяем наличие image_id
+        $imageId = $request->input('image_id');
+        
+        if (!$imageId) {
             return response()->json([
                 'success' => false,
-                'message' => 'Разрешен только AJAX запрос'
+                'message' => 'ID изображения не указан'
             ], 400);
         }
-
-        $request->validate([
-            'image_id' => 'required|integer|exists:page_images,id'
-        ]);
-
-        $imageId = $request->image_id;
+        
+        // Ищем изображение
         $pageImage = PageImage::find($imageId);
         
         if (!$pageImage) {
             return response()->json([
                 'success' => false,
-                'message' => 'Изображение не найдено'
+                'message' => 'Изображение не найдено в базе данных'
             ], 404);
         }
-
-        // Проверяем, что изображение принадлежит модели SubPage
-        if ($pageImage->imageable_type !== SubPage::class) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Изображение не принадлежит подменю'
-            ], 403);
-        }
-
-        try {
-            // Удаляем физический файл
-            $imagePath = public_path('upload/subpages/' . $pageImage->image);
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
+        
+        // Удаляем физический файл
+        $imagePath = public_path('upload/subpages/' . $pageImage->image);
+        
+        if (file_exists($imagePath)) {
+            if (!unlink($imagePath)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Не удалось удалить файл изображения'
+                ], 500);
             }
-            
-            // Удаляем из базы данных
-            $pageImage->delete();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Изображение успешно удалено'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ошибка при удалении изображения: ' . $e->getMessage()
-            ], 500);
         }
+        
+        // Удаляем запись из базы данных
+        $pageImage->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Изображение успешно удалено'
+        ]);
+        
+    } catch (\Exception $e) {
+        \Log::error('Ошибка при удалении изображения: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Произошла ошибка при удалении изображения: ' . $e->getMessage()
+        ], 500);
     }
+}
 
 }

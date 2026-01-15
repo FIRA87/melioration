@@ -14,7 +14,7 @@
 <section class="custom-banner">
     <div class="container">
         <div class="custom-banner-content">          
-           <h1 class="mb-4 fw-bold text-left" >
+           <h1 class="mb-4 fw-bold text-left " >
             @if (session()->get('lang') == 'ru')
                 {{ $project->title_ru }}
             @elseif(session()->get('lang') == 'en')
@@ -32,23 +32,19 @@
 <section class="py-3 bg-light">
     <div class="container">
         <a href="{{ route('frontend.projects') }}" class="text-decoration-none text-dark d-inline-flex align-items-center">
-            <i class="bi bi-arrow-left me-2"></i>
-           @if (session()->get('lang') == 'ru')
-                        Наши проекты
-                    @elseif(session()->get('lang') == 'en')
-                        Our Projects
-                    @else
-                        Лоиҳаҳои мо
-                    @endif
-        </a>
+            <i class="bi bi-arrow-left me-2"></i> @trans('our_projects')  </a>
     </div>
 </section>
 
 <div class="container py-5">   
     <!-- Основное изображение -->
-    @if($project->image)
+   <div class="row">
+    <div class="col-md-12">
+         @if($project->image)
         <img src="/{{ $project->image }}" class="img-fluid rounded shadow-sm mb-4" alt="{{ $project->title_tj }}">
     @endif
+     </div>
+   </div>
 
     <!-- Даты проекта -->
     @if($project->start_date || $project->end_date)
@@ -61,7 +57,7 @@
                                 <i class="bi bi-calendar-check"></i>
                             </div>
                             <div class="date-content">
-                                <h6 class="date-label">
+                                <h6 class="date-label text-white">
                                     @if (session()->get('lang') == 'ru')
                                         Дата начала
                                     @elseif(session()->get('lang') == 'en')
@@ -83,7 +79,7 @@
                                 <i class="bi bi-calendar-x"></i>
                             </div>
                             <div class="date-content">
-                                <h6 class="date-label">
+                                <h6 class="date-label text-white">
                                     @if (session()->get('lang') == 'ru')
                                         Дата окончания
                                     @elseif(session()->get('lang') == 'en')

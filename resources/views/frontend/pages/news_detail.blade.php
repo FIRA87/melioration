@@ -57,7 +57,7 @@
 
                 <!-- Дата публикации -->
                 <p class="text-muted mb-4">
-                    {{ \Carbon\Carbon::parse($news->publish_date ?? $news->created_at)->locale(session('lang') == 'ru' ? 'ru' : 'en')->isoFormat('D MMMM YYYY') }}
+                    {{ \Carbon\Carbon::parse($news->publish_date ?? $news->created_at)->format('Y-m-d') }}
                 </p>
 
                 <!-- Текст новости -->
@@ -135,7 +135,9 @@
                                              alt="Thumbnail {{ $index + 1 }}"
                                              style="cursor: pointer; height: 80px; object-fit: cover;"
                                              data-bs-target="#newsGalleryCarousel" 
-                                             data-bs-slide-to="{{ $index }}">
+                                             data-bs-slide-to="{{ $index }}"
+											 data-image="{{ asset($image->image) }}"
+											 >
                                     </div>
                                 @endforeach
                             </div>
@@ -147,12 +149,21 @@
         </div>
 
 <!-- Модальное окно для полноэкранного просмотра -->
+
 <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-transparent border-0">
             <div class="modal-body p-0 position-relative">
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 1050;"></button>
-                <img id="modalImage" src="" class="img-fluid w-100 rounded" alt="Full Image">
+                <button type="button" 
+                        class="btn-close btn-close-white position-absolute top-0 end-0 m-3" 
+                        data-bs-dismiss="modal" 
+                        aria-label="Close" 
+                        style="z-index: 1050; opacity: 1; filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));"></button>
+                <img id="modalImage" 
+                     src="" 
+                     class="img-fluid w-100 rounded" 
+                     alt="Full Image"
+                     style="max-height: 90vh; object-fit: contain;">
             </div>
         </div>
     </div>
@@ -344,14 +355,14 @@
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const carousel = document.getElementById('newsCarousel');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const pagination = document.getElementById('pagination');
-        
-        if (!carousel) return;
-        
+document.addEventListener('DOMContentLoaded', function() {
+    // === БЛОК 1: ОБРАБОТКА КАРУСЕЛИ НОВОСТЕЙ ===
+    const carousel = document.getElementById('newsCarousel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pagination = document.getElementById('pagination');
+    
+    if (carousel && prevBtn && nextBtn && pagination) {
         const items = carousel.querySelectorAll('.news-item');
         const itemWidth = 280 + 12; // ширина + gap
         const visibleItems = Math.floor(carousel.parentElement.offsetWidth / itemWidth);
@@ -392,18 +403,108 @@
         window.addEventListener('resize', () => {
             goToPage(0);
         });
-		
-		   // Обработчик для модального окна с изображением
+    }
+    
+    // === БЛОК 2: ОБРАБОТКА МОДАЛЬНОГО ОКНА ===
     const imageModal = document.getElementById('imageModal');
-    if (imageModal) {
+    const modalImage = document.getElementById('modalImage');
+    let modalInstance = null;
+    
+    if (imageModal && modalImage) {
+        // Создаем экземпляр модального окна Bootstrap
+        modalInstance = new bootstrap.Modal(imageModal, {
+            backdrop: true,  // Включаем backdrop
+            keyboard: true   // Закрытие по ESC
+        });
+        
+        // Обработчик события открытия модального окна
         imageModal.addEventListener('show.bs.modal', function (event) {
-            const trigger = event.relatedTarget; // Элемент, который вызвал модальное окно
-            const imageUrl = trigger.getAttribute('data-image');
-            const modalImage = document.getElementById('modalImage');
-            modalImage.src = imageUrl;
+            const trigger = event.relatedTarget;
+            if (trigger) {
+                const imageUrl = trigger.getAttribute('data-image');
+                if (imageUrl) {
+                    modalImage.src = imageUrl;
+                }
+            }
+        });
+        
+        // Функция для безопасного закрытия модального окна
+        function closeModal() {
+            if (modalInstance) {
+                modalInstance.hide();
+            }
+            // Дополнительная очистка на случай если что-то пойдет не так
+            setTimeout(() => {
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                backdrops.forEach(backdrop => backdrop.remove());
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            }, 100);
+        }
+        
+        // Обработчик для кнопки закрытия
+        const closeButton = imageModal.querySelector('.btn-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeModal();
+            });
+        }
+        
+        // Закрытие по клику на backdrop (затемненный фон)
+        imageModal.addEventListener('click', function(e) {
+            // Закрываем только если клик был по самому модальному окну (backdrop), а не по содержимому
+            if (e.target === imageModal) {
+                closeModal();
+            }
+        });
+        
+        // Закрытие по клику на modal-dialog (область вне изображения)
+        const modalDialog = imageModal.querySelector('.modal-dialog');
+        if (modalDialog) {
+            modalDialog.addEventListener('click', function(e) {
+                // Закрываем если клик был по modal-dialog, но не по его содержимому
+                if (e.target === modalDialog || e.target.classList.contains('modal-content') || e.target.classList.contains('modal-body')) {
+                    closeModal();
+                }
+            });
+        }
+        
+        // Предотвращаем закрытие при клике на само изображение
+        if (modalImage) {
+            modalImage.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+        
+        // Очистка после закрытия модального окна
+        imageModal.addEventListener('hidden.bs.modal', function () {
+            // Убеждаемся что backdrop удален
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(backdrop => backdrop.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
         });
     }
+    
+    // === БЛОК 3: АЛЬТЕРНАТИВНЫЙ МЕТОД - ПРЯМОЙ КЛИК НА ИЗОБРАЖЕНИЯ ===
+    const galleryImages = document.querySelectorAll('.gallery-image');
+    galleryImages.forEach(function(img) {
+        img.addEventListener('click', function(e) {
+            e.preventDefault();
+            const imageUrl = this.getAttribute('data-image');
+            if (modalImage && imageUrl && modalInstance) {
+                modalImage.src = imageUrl;
+                modalInstance.show();
+            }
+        });
     });
+});
+
+
 </script>
 
 @endsection

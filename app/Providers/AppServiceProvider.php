@@ -19,9 +19,8 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
          Blade::directive('trans', function ($key) {
-            return "<?php echo \App\Models\StaticTranslation::trans($key); ?>";
+                return "<?php echo \App\Models\StaticTranslation::trans($key); ?>";
         });
-
 
         
         view()->composer('*', function ($view) {

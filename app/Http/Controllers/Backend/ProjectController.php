@@ -55,7 +55,7 @@ class ProjectController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $name_gen = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $image->getClientOriginalName());
-            Image::make($image)->resize(800, 600)->save($imagePathBase . '/' . $name_gen);
+            Image::make($image)->resize(1296, 700)->save($imagePathBase . '/' . $name_gen);
             $save_url = 'upload/projects/' . $name_gen;
         }
 
@@ -138,7 +138,7 @@ class ProjectController extends Controller
             }
             $image = $request->file('image');
             $name_gen = now()->format('Ymd_His') . '_' . preg_replace('/\s+/', '_', $image->getClientOriginalName());
-            Image::make($image)->resize(800, 600)->save($imagePathBase . '/' . $name_gen);
+            Image::make($image)->resize(1296, 700)->save($imagePathBase . '/' . $name_gen);
             $save_url = 'upload/projects/' . $name_gen;
         }
 

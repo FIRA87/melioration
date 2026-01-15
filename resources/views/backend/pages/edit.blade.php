@@ -1,10 +1,11 @@
 @extends('admin.admin_dashboard')
 @section('admin')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+ @if(auth()->user()->hasRole('Super Admin') OR auth()->user()->hasRole('admin') OR auth()->user()->hasRole('Editor') )
+ 
+ 
 
-
-
-    <div class="content">
+   <div class="content">
         <!-- Start Content-->
         <div class="container-fluid">
             <!-- start page title -->
@@ -147,11 +148,10 @@
                                                 <label class="form-label">Существующие изображения</label>
                                                 <div class="row" id="existing-images">
                                                     @foreach ($page->images as $image)
-                                                        <div class="col-md-3 mb-3" id="image-{{ $image->id }}">
+                                                        <div class="col-md-2 mb-3" id="image-{{ $image->id }}">
                                                             <div class="card">
                                                                 <img src="{{ asset('upload/pages/' . $image->image) }}"
-                                                                    class="card-img-top draggable-image"
-                                                                    style="height: 150px; object-fit: cover; cursor: move;"
+                                                                    class="card-img-top draggable-image"                                                                   
                                                                     draggable="true"
                                                                     data-url="{{ asset('upload/pages/' . $image->image) }}">
                                                                 <div class="card-body p-2 text-center">
@@ -271,6 +271,8 @@
             });
         });
     </script>
+
+
 
     <script type="text/javascript">
         // Image preview functionality for new uploads
@@ -496,6 +498,64 @@
     </script>
 
 
+<script type="text/javascript">
+$(document).ready(function() {
+    // Общие настройки для всех редакторов Summernote
+    var summernoteConfig = {
+        height: 300,
+        placeholder: 'Введите текст...',
+        
+        // КРИТИЧЕСКИ ВАЖНО: Отключаем автоматическую конвертацию изображений
+        callbacks: {
+            // Блокируем загрузку изображений через кнопку
+            onImageUpload: function(files) {
+                alert('Пожалуйста, используйте галерею изображений выше для добавления картинок.\nЭто предотвратит перегрузку базы данных.');
+                return false;
+            },
+            
+            // Блокируем вставку изображений через Ctrl+V
+            onPaste: function(e) {
+                var clipboardData = e.originalEvent.clipboardData;
+                if (clipboardData && clipboardData.items) {
+                    for (var i = 0; i < clipboardData.items.length; i++) {
+                        if (clipboardData.items[i].type.indexOf('image') !== -1) {
+                            e.preventDefault();
+                            alert('Вставка изображений из буфера обмена отключена.\nИспользуйте перетаскивание из галереи выше.');
+                            return false;
+                        }
+                    }
+                }
+            }
+        },
+        
+        // Отключаем drag and drop файлов напрямую в редактор
+        // (но наш скрипт выше будет работать для наших элементов)
+        disableDragAndDrop: true,
+        
+        // Панель инструментов (можете настроить под себя)
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'italic', 'clear']],
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link']], // Только ссылки, без picture и video
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    };
+
+    // Инициализация всех редакторов
+    $('#summernote').summernote(summernoteConfig);
+    $('#summernote2').summernote(summernoteConfig);
+    $('#summernote3').summernote(summernoteConfig);
+    
+    console.log('Summernote инициализирован с защитой от Base64');
+});
+</script>
+
 
     <style>
         .note-editable.drag-over {
@@ -504,4 +564,11 @@
         }
     </style>
 
+@else
+    <div class="d-flex align-items-center p-3 mb-3 rounded-3" 
+         style="background:#fff3f3; border:1px solid #f5c2c7;">
+        <i class="fa-solid fa-lock text-danger fs-4 me-2"></i>
+        <div class="text-danger fw-semibold">У вас нет доступа!</div>
+    </div>
+@endif
 @endsection

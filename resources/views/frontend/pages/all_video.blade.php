@@ -1,106 +1,153 @@
 @extends('frontend.master')
 
 @section('title')
-    @if(session()->get('lang') == 'ru')
-       Видео
-    @elseif(session()->get('lang') == 'en')
-       Video
-    @else
-        Видео
-    @endif
+    @trans('all_video')
 @endsection
-
-
-
 
 @section('content')
-    <!-- Banner Start -->
-    <section class="banner">
-        <div class="container ">
-            <div class="row gy-4 gy-sm-0 align-items-center">
-                <div class="col-12 col-sm-6">
-                    <div class="banner__content">
-                        <h1 class="banner__title display-4 wow fadeInLeft" data-wow-duration="0.8s">
-                        @if(session()->get('lang') == 'ru')
-                           Видео
-                        @elseif(session()->get('lang') == 'en')
-                           Video
-                        @else
-                            Видео
-                        @endif
-                        </h1> 
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb wow fadeInRight" data-wow-duration="0.8s">
-                                <li class="breadcrumb-item">
-                                    @if (session()->get('lang') == 'ru')
-                                        <a href="{{ url('/') }}" class="nav-item nav-link">Главная</a>
-                                    @elseif(session()->get('lang') == 'en')
-                                        <a href="{{ url('/') }}" class="nav-item nav-link">Main</a>
-                                    @else
-                                        <a href="{{ url('/') }}" class="nav-item nav-link">Асосӣ</a>
-                                    @endif
-                                </li>
-                                <li class="breadcrumb-item">
-                                 @if(session()->get('lang') == 'ru')
-                                   Видео
-                                @elseif(session()->get('lang') == 'en')
-                                   Video
-                                @else
-                                    Видео
-                                @endif
-                                </li>
-           
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6">
-                    <div class="banner__thumb text-end">
-                        <img src="assets/images/service_banner.png" alt="image">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Banner End -->
-    
-    <!-- feature start -->
-    <section class="feature feature--tertiary section">
-        <div class="container">
-            <div class="row g-3 g-sm-2 g-md-3 g-xxl-4">
-                 @foreach($videos as $key=> $item)
-                <div class="col-12 col-sm-6 col-xl-3">
-                    <div class="card card--custom wow fadeInUp" data-wow-duration="0.8s">
-                        <div >
-                                <img class="w-100" src="/{{ $item->caption }}" alt="img" >                      
-                        </div>
-                        <div class="card__content">
-                            <h4 class="card__title"><a href="http://www.youtube.com/watch?v={{ $item->video_url }}" style="font-size: 18px;">
-                                  @if (session()->get('lang') == 'ru')
-                                                {{ $item->title_ru }}
-                                            @elseif(session()->get('lang') == 'en')
-                                                {{ $item->title_en }}
-                                            @else
-                                                {{ $item->title_tj }}
-                                            @endif
-                            </a></h4>
-              
-                            <a href="http://www.youtube.com/watch?v={{ $item->video_url }}" class="btn_theme social_box" >
-                                <i class="bi bi-arrow-up-right"></i><span></span></a>                            
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <nav aria-label="Page navigation" class="nav_pagination" data-wow-duration="0.8s">
-                           {{ $videos->links() }}
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- feature end -->
-@endsection
 
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous" />
+
+<!-- Banner Start -->
+<section class="banner">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-sm-6">
+                <h1 class="display-4">@trans('main_video')</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner End -->
+
+<section class="feature feature--tertiary section">
+    <div class="container">
+        <div class="row g-4">
+
+            @foreach($videos as $video)
+
+                @php
+                    $videoUrl = $video->video_url;
+
+                    // Извлекаем YouTube ID (КЛЮЧЕВО!)
+                    if (preg_match('/(?:youtube\.com\/(?:.*v=|v\/|embed\/)|youtu\.be\/)([^"&?\/\s]{11})/i', $videoUrl, $matches)) {
+                        $youtubeId = $matches[1];
+                        $embedUrl = "https://www.youtube.com/embed/{$youtubeId}?autoplay=1";
+                        $thumbnail = "https://img.youtube.com/vi/{$youtubeId}/maxresdefault.jpg";
+                    } else {
+                        // fallback
+                        $embedUrl = $videoUrl;
+                        $thumbnail = asset($video->caption ?? 'upload/no-image.jpg');
+                    }
+                @endphp
+
+                <div class="col-12 col-md-6 col-xl-3">
+
+                    <!-- Карточка -->
+                    <div class="card card--custom">
+                        <div class="position-relative overflow-hidden video-trigger"
+                             data-bs-toggle="modal"
+                             data-bs-target="#videoModal{{ $video->id }}">
+
+                            <img src="{{ $thumbnail }}"
+                                 class="w-100"
+                                 alt="Video"
+                                 onerror="this.src='{{ asset('upload/no-image.jpg') }}'">
+
+                            <div class="play-overlay">
+                                <i class="fa-solid fa-circle-play"></i>
+                            </div>
+                        </div>
+
+                        <div class="card__content p-3">
+                            <h4 style="font-size:18px">
+                                @if (session('lang') === 'ru')
+                                    {{ $video->title_ru }}
+                                @elseif(session('lang') === 'en')
+                                    {{ $video->title_en }}
+                                @else
+                                    {{ $video->title_tj }}
+                                @endif
+                            </h4>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- МОДАЛЬНОЕ ОКНО -->
+                <div class="modal fade" id="videoModal{{ $video->id }}" tabindex="-1">
+                    <div class="modal-dialog modal-xl modal-dialog-centered">
+                        <div class="modal-content bg-dark">
+                            <div class="modal-body p-0">
+                                <div class="ratio ratio-16x9">
+                                    <iframe
+                                        src=""
+                                        data-src="{{ $embedUrl }}"
+                                        class="video-iframe"
+                                        frameborder="0"
+                                        allow="autoplay; encrypted-media"
+                                        allowfullscreen
+                                        playsinline>
+                                    </iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            @endforeach
+
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                {{ $videos->links() }}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- СТИЛИ -->
+<style>
+.play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 64px;
+    color: rgba(255,255,255,.9);
+    background: rgba(0,0,0,.25);
+    transition: .3s;
+}
+
+.video-trigger:hover .play-overlay {
+    background: rgba(0,0,0,.45);
+    transform: scale(1.05);
+}
+
+.card--custom {
+    cursor: pointer;
+}
+</style>
+
+<!-- JS -->
+<script>
+document.querySelectorAll('.modal').forEach(modal => {
+
+    modal.addEventListener('shown.bs.modal', function () {
+        const iframe = modal.querySelector('iframe');
+        iframe.src = iframe.dataset.src;
+    });
+
+    modal.addEventListener('hidden.bs.modal', function () {
+        const iframe = modal.querySelector('iframe');
+        iframe.src = '';
+    });
+
+});
+</script>
+
+@endsection

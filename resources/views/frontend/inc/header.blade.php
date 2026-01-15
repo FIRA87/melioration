@@ -4,29 +4,6 @@
     <div class="container py-3">
         <div class="header-top d-flex justify-content-between align-items-center flex-wrap">
 
-            <!-- Логотип 1 -->
-            <div class="d-flex align-items-center gap-2 header-item">
-                <a href="{{ url('/') }}">
-                    <img src="{{ asset('frontend/img/vazorat.webp') }}" class="header-logo" alt="logo1">
-                </a>
-
-                <div class="header-text">
-                    <div class="">
-                    @if(session('lang') == 'ru') 
-                        Министерство сельского хозяйства<br> Республики Таджикистан
-                    @elseif(session('lang') == 'en')
-                         Ministry of Agriculture of the<br> Republic of Tajikistan
-                    @else
-                        Вазорати кишоварзии<br> Ҷумҳурии Тоҷикистон
-
-                    @endif
-                </div>
-                    <small class="text-muted">
-                    
-                    </small>
-                </div>
-            </div>
-
             <!-- Логотип 2 -->
             <div class="d-flex align-items-center gap-2 header-item">
                 <a href="{{ url('/') }}">
@@ -54,101 +31,81 @@
     <div class="border-top"></div>
 
     <!-- Навигация -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-        <div class="container">
-            
-            <!-- Языки и поиск (мобильная версия - слева) -->
-            <div class="d-flex align-items-center gap-2 d-lg-none order-0">
-                <select class="form-select form-select-sm border-0" onchange="location.href=this.value" style="width:70px; border: 0;">             
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <!-- Мобильная версия: языки и поиск сверху -->
+        <div class="d-flex d-lg-none w-100 justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+                <select class="form-select form-select-sm border-0" onchange="location.href=this.value" style="width:70px;">
                     <option value="{{ route('tj.lang') }}" @selected(session('lang')=='tj')>Тоҷ</option>
-                     <option value="{{ route('ru.lang') }}" @selected(session('lang')=='ru')>Рус</option>
+                    <option value="{{ route('ru.lang') }}" @selected(session('lang')=='ru')>Рус</option>
                     <option value="{{ route('en.lang') }}" @selected(session('lang')=='en')>Eng</option>
                 </select>
-
-<button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#searchModal"> <i class="bi bi-search"></i></button>
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
 
-            <!-- Гамбургер кнопка -->
-            <button class="navbar-toggler border-0 ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Меню -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-
-                    <!-- Главная -->
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{{ url('/') }}">
-                            @if(session('lang') == 'ru') 
-                                Главная
-                            @elseif(session('lang') == 'en')
-                                Home
-                            @else
-                                Асосӣ
-                            @endif
-                        </a>                 
-                    </li>
-
-                    <!-- Динамические страницы -->
-                    @foreach($pages as $p)
-                        @php
-                            $hasSubmenu = isset($subPages[$p->id]) && $subPages[$p->id]->count() > 0;
-                        @endphp
-                        
-                        <li class="nav-item {{ $hasSubmenu ? 'dropdown' : '' }}">
-                            <a class="nav-link fw-semibold {{ $hasSubmenu ? 'dropdown-toggle' : '' }}" href="{{ route('menu.show', $p->id) }}"  @if($hasSubmenu) id="dropdown{{ $p->id }}"  role="button"  aria-expanded="false"  @endif
-                               >
-                               @if(session('lang') == 'ru')
-                                   {{ $p->title_ru }}
-                               @elseif(session('lang') == 'en')
-                                   {{ $p->title_en }}
-                               @else
-                                   {{ $p->title_tj }}
-                               @endif
-                            </a>
-
-                            @if($hasSubmenu)
-                                <ul class="dropdown-menu border-0 shadow-sm">
-                                    @foreach($subPages[$p->id] as $child)
-                                        <li>
-                                            <a class="dropdown-item" 
-                                               href="{{ route('submenu.show', $child) }}">
-                                                @if(session('lang') == 'ru')
-                                                    {{ $child->title_ru }}
-                                                @elseif(session('lang') == 'en')
-                                                    {{ $child->title_en }}
-                                                @else
-                                                    {{ $child->title_tj }}
-                                                @endif
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                    @endforeach
-
-                </ul>
-
-                <!-- Языки + поиск (десктоп версия) -->
-                <div class="d-none d-lg-flex align-items-center gap-2 ms-3">
-                    <select class="form-select form-select-sm" onchange="location.href=this.value" style="width:80px; border: 0;">
-                     
-                        <option value="{{ route('tj.lang') }}" @selected(session('lang')=='tj')>Тоҷ</option>
-                        <option value="{{ route('ru.lang') }}" @selected(session('lang')=='ru')>Рус</option>
-                        <option value="{{ route('en.lang') }}" @selected(session('lang')=='en')>Eng</option>
-                    </select>
-
-                    <button class="btn btn-outline-secondary btn-sm" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#searchModal">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </div>
         </div>
-    </nav>
+
+        <!-- Меню и десктопные блоки -->
+        <div class="collapse navbar-collapse d-lg-flex justify-content-between align-items-center" id="navbarNav">
+            
+            <!-- Меню слева -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="{{ url('/') }}">
+                        @if(session('lang') == 'ru') Главная
+                        @elseif(session('lang') == 'en') Home
+                        @else Асосӣ @endif
+                    </a>
+                </li>
+                @foreach($pages as $p)
+                    @php
+                        $hasSubmenu = isset($subPages[$p->id]) && $subPages[$p->id]->count() > 0;
+                    @endphp
+                    <li class="nav-item {{ $hasSubmenu ? 'dropdown' : '' }}">
+                        <a class="nav-link fw-semibold {{ $hasSubmenu ? 'dropdown-toggle' : '' }}" href="{{ route('menu.show', $p->id) }}" @if($hasSubmenu) id="dropdown{{ $p->id }}" role="button" aria-expanded="false" @endif>
+                            @if(session('lang') == 'ru') {{ $p->title_ru }} 
+                            @elseif(session('lang') == 'en') {{ $p->title_en }} 
+                            @else {{ $p->title_tj }} @endif
+                        </a>
+                        @if($hasSubmenu)
+                            <ul class="dropdown-menu border-0 shadow-sm">
+                                @foreach($subPages[$p->id] as $child)
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('submenu.show', $child) }}">
+                                            @if(session('lang') == 'ru') {{ $child->title_ru }}
+                                            @elseif(session('lang') == 'en') {{ $child->title_en }}
+                                            @else {{ $child->title_tj }} @endif
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+
+            <!-- Языки + поиск справа (десктоп) -->
+            <div class="d-none d-lg-flex align-items-center gap-2 ms-3">
+                <select class="form-select form-select-sm" onchange="location.href=this.value" style="width:80px; border: 0;">
+                    <option value="{{ route('tj.lang') }}" @selected(session('lang')=='tj')>Тоҷ</option>
+                    <option value="{{ route('ru.lang') }}" @selected(session('lang')=='ru')>Рус</option>
+                    <option value="{{ route('en.lang') }}" @selected(session('lang')=='en')>Eng</option>
+                </select>
+                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#searchModal">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
 </header>
 
 <!-- Поиск (модальное окно) -->
@@ -186,7 +143,7 @@
     .header-logo {
         width: 60px;
         height: 60px;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: 8px;
     }
 
